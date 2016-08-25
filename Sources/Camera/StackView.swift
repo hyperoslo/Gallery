@@ -1,5 +1,5 @@
 import UIKit
 
-class StackView: UIView {
+class StackView: UIControl {
   
 }
