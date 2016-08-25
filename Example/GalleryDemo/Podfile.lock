@@ -1,5 +1,7 @@
 PODS:
-  - Gallery (0.1.0)
+  - Cartography (0.6.0)
+  - Gallery (0.1.0):
+    - Cartography
 
 DEPENDENCIES:
   - Gallery (from `../../`)
@@ -9,7 +11,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Gallery: 539145b697e34a6d54d974c5c48a662c9dc07cdb
+  Cartography: 70af183a248547694a8cfaa6b989cb7e04589985
+  Gallery: a1ec8e9f64ab9e446e4c3294bb8326cd80dcd154
 
 PODFILE CHECKSUM: 4fa8ad0618da426878d529d7f6b1249cfb933302
 
