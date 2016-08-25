@@ -1,5 +1,6 @@
 import UIKit
 import Cartography
+import AVFoundation
 
 class CameraView: UIView {
 
@@ -10,6 +11,9 @@ class CameraView: UIView {
   lazy var stackView: StackView = self.makeStackView()
   lazy var shutterButton: ShutterButton = self.makeShutterButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
+  lazy var focusImageView: UIImageView = self.makeFocusImageView()
+
+  var previewLayer: AVCaptureVideoPreviewLayer?
 
   // MARK: - Initialization
 
@@ -26,7 +30,62 @@ class CameraView: UIView {
   // MARK: - Setup
 
   func setup() {
+    [closeButton, flashButton, rotateButton, bottomContainer].forEach {
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      self.addSubview($0)
+    }
 
+    [stackView, shutterButton, doneButton].forEach {
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      self.bottomContainer.addSubview($0)
+    }
+
+    constrain(closeButton, flashButton, rotateButton, bottomContainer) {
+      closeButton, flashButton, rotateButton, bottomContainer in
+
+      closeButton.top == closeButton.superview!.top + 10
+      closeButton.left == closeButton.superview!.left + 12
+
+      flashButton.top == flashButton.superview!.top + 10
+      flashButton.centerX == flashButton.superview!.centerX
+
+      rotateButton.top == rotateButton.superview!.top + 10
+      rotateButton.right == rotateButton.superview!.right - 12
+
+      bottomContainer.left == bottomContainer.superview!.left
+      bottomContainer.right == bottomContainer.superview!.right
+      bottomContainer.bottom == bottomContainer.superview!.bottom
+      bottomContainer.height == 80
+    }
+
+    constrain(stackView, shutterButton, doneButton) {
+      stackView, shutterButton, doneButton in
+
+      stackView.centerY == stackView.superview!.centerY
+      stackView.left == stackView.superview!.left + 38
+      stackView.width == 44
+      stackView.height == 44
+
+      shutterButton.center == shutterButton.superview!.center
+      shutterButton.width == 60
+      shutterButton.height == 60
+
+      doneButton.centerY == doneButton.superview!.centerY
+      doneButton.right == doneButton.superview!.right - 38
+    }
+  }
+
+  func setupPreviewLayer(session: AVCaptureSession) {
+    guard previewLayer == nil else { return }
+
+    let layer = AVCaptureVideoPreviewLayer(session: session)
+    layer.autoreverses = true
+    layer.videoGravity = AVLayerVideoGravityResizeAspectFill
+
+    self.layer.insertSublayer(layer, atIndex: 0)
+    layer.frame = self.layer.bounds
+
+    previewLayer = layer
   }
 
   // MARK: - Controls
@@ -77,6 +136,16 @@ class CameraView: UIView {
     button.setTitle("Done", forState: .Normal)
 
     return button
+  }
+
+  func makeFocusImageView() -> UIImageView {
+    let view = UIImageView()
+    view.frame.size = CGSize(width: 110, height: 110)
+    view.image = BundleAsset.image("gallery_camera_focus")
+    view.backgroundColor = .clearColor()
+    view.alpha = 0
+
+    return view
   }
 
 }
