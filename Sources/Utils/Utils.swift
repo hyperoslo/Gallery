@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import AVFoundation
 
 struct Utils {
@@ -18,11 +18,23 @@ struct Utils {
 
   static func videoOrientation() -> AVCaptureVideoOrientation {
     switch UIDevice.currentDevice().orientation {
-    case .Portrait: return .Portrait
-    case .LandscapeLeft: return .LandscapeRight
-    case .LandscapeRight: return .LandscapeLeft
-    case .PortraitUpsideDown: return .PortraitUpsideDown
-    default: return .Portrait
+    case .Portrait:
+      return .Portrait
+    case .LandscapeLeft:
+      return .LandscapeRight
+    case .LandscapeRight:
+      return .LandscapeLeft
+    case .PortraitUpsideDown:
+      return .PortraitUpsideDown
+    default:
+      return .Portrait
     }
+  }
+
+  static func addShadow(view: UIView) {
+    view.layer.shadowColor = UIColor.blackColor().CGColor
+    view.layer.shadowOpacity = 0.5
+    view.layer.shadowOffset = CGSize(width: 0, height: 1)
+    view.layer.shadowRadius = 1
   }
 }
