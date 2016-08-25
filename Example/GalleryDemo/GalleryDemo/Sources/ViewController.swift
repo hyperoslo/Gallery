@@ -11,7 +11,7 @@ class ViewController: UIViewController {
 
     button = UIButton(type: .System)
     button.frame.size = CGSize(width: 200, height: 50)
-    button.setTitle("Open Photos", forState: .Normal)
+    button.setTitle("Open Gallery", forState: .Normal)
     button.addTarget(self, action: #selector(buttonTouched(_:)), forControlEvents: .TouchUpInside)
 
     view.addSubview(button)
