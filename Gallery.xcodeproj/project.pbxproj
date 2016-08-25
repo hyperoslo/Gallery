@@ -114,10 +114,18 @@
 			path = Gallery;
 			sourceTree = "<group>";
 		};
-		D5B2E8951C3A780C00C0327D = {
+		D27B730E1D6EF0640093318F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				D27B730C1D6EF04D0093318F /* Cartography.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D5B2E8951C3A780C00C0327D = {
+			isa = PBXGroup;
+			children = (
+				D27B730E1D6EF0640093318F /* Frameworks */,
 				D500FD111C3AABED00782D78 /* Playground-iOS.playground */,
 				D5C629691C3A809D007F7B7C /* Sources */,
 				D5C6295C1C3A800E007F7B7C /* Gallery */,
