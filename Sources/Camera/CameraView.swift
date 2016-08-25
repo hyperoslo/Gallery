@@ -45,12 +45,16 @@ class CameraView: UIView {
 
       closeButton.top == closeButton.superview!.top + 10
       closeButton.left == closeButton.superview!.left + 12
+      closeButton.width == 44
+      closeButton.height == 44
 
       flashButton.top == flashButton.superview!.top + 10
       flashButton.centerX == flashButton.superview!.centerX
 
       rotateButton.top == rotateButton.superview!.top + 10
       rotateButton.right == rotateButton.superview!.right - 12
+      rotateButton.width == 44
+      rotateButton.height == 44
 
       bottomContainer.left == bottomContainer.superview!.left
       bottomContainer.right == bottomContainer.superview!.right
