@@ -67,7 +67,15 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   }
 
   func rotateButtonTouched(button: UIButton) {
-
+    UIView.animateWithDuration(0.3, animations: {
+      self.cameraView.overlayView.alpha = 1
+    }, completion: { _ in
+      self.cameraMan.switchCamera {
+        UIView.animateWithDuration(0.7) {
+          self.cameraView.overlayView.alpha = 0
+        }
+      }
+    })
   }
 
   func stackViewTouched(stackView: StackView) {
