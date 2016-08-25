@@ -1,0 +1,8 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'GalleryDemo' do
+ pod 'Gallery', path: '../../'
+end
+

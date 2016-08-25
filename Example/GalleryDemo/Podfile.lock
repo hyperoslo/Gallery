@@ -1,0 +1,16 @@
+PODS:
+  - Gallery (0.1.0)
+
+DEPENDENCIES:
+  - Gallery (from `../../`)
+
+EXTERNAL SOURCES:
+  Gallery:
+    :path: "../../"
+
+SPEC CHECKSUMS:
+  Gallery: 539145b697e34a6d54d974c5c48a662c9dc07cdb
+
+PODFILE CHECKSUM: 4fa8ad0618da426878d529d7f6b1249cfb933302
+
+COCOAPODS: 1.0.1
