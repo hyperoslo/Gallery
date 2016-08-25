@@ -3,6 +3,7 @@ import Cartography
 
 class ShutterButton: UIButton {
 
+  lazy var overlayView: UIView = self.makeOverlayView()
   lazy var numberLabel: UILabel = self.makeNumberLabel()
   lazy var roundLayer: CAShapeLayer = self.makeRoundLayer()
 
@@ -23,6 +24,9 @@ class ShutterButton: UIButton {
   override func layoutSubviews() {
     super.layoutSubviews()
 
+    overlayView.frame = CGRectInset(bounds, 3, 3)
+    overlayView.layer.cornerRadius = overlayView.frame.size.width/2
+
     roundLayer.path = UIBezierPath(ovalInRect: CGRectInset(bounds, 3, 3)).CGPath
     layer.cornerRadius = bounds.size.width/2
   }
@@ -32,6 +36,7 @@ class ShutterButton: UIButton {
   func setup() {
     backgroundColor = UIColor.whiteColor()
 
+    addSubview(overlayView)
     layer.addSublayer(roundLayer)
 
     addSubview(numberLabel)
@@ -43,6 +48,14 @@ class ShutterButton: UIButton {
   }
 
   // MARK: - Controls
+
+  func makeOverlayView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = UIColor.whiteColor()
+    view.userInteractionEnabled = false
+
+    return view
+  }
 
   func makeNumberLabel() -> UILabel {
     let label = UILabel()
@@ -60,5 +73,13 @@ class ShutterButton: UIButton {
     layer.fillColor = nil
 
     return layer
+  }
+
+  // MARK: - Highlight
+
+  override var highlighted: Bool {
+    didSet {
+      overlayView.backgroundColor = highlighted ? UIColor.grayColor() : UIColor.whiteColor()
+    }
   }
 }
