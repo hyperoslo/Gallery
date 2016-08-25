@@ -29,7 +29,6 @@ public class GalleryController: UIViewController {
 
   func makeCameraController() -> CameraController {
     let controller = CameraController()
-    controller.view.backgroundColor = UIColor.greenColor()
     controller.title = "Camera"
 
     return controller
