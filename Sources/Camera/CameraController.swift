@@ -3,6 +3,8 @@ import Cartography
 
 class CameraController: UIViewController {
 
+  let cameraMan = CameraMan()
+  var locationManager: LocationManager?
   lazy var cameraView: CameraView = self.makeCameraView()
 
   // MARK: - Life cycle
@@ -11,6 +13,19 @@ class CameraController: UIViewController {
     super.viewDidLoad()
 
     setup()
+    setupLocation()
+  }
+
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    locationManager?.start()
+  }
+
+  override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    locationManager?.stop()
   }
 
   // MARK: - Setup
@@ -30,6 +45,12 @@ class CameraController: UIViewController {
     cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), forControlEvents: .TouchUpInside)
     cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), forControlEvents: .TouchUpInside)
     cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
+  }
+
+  func setupLocation() {
+    if Config.Camera.recordLocation {
+      locationManager = LocationManager()
+    }
   }
 
   // MARK: - Action
