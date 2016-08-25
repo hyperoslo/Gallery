@@ -54,8 +54,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
       closeButton, flashButton, rotateButton, bottomContainer in
 
-      closeButton.top == closeButton.superview!.top + 10
-      closeButton.left == closeButton.superview!.left + 12
+      closeButton.top == closeButton.superview!.top + 8
+      closeButton.left == closeButton.superview!.left + 8
       closeButton.width == 44
       closeButton.height == 44
 
@@ -64,8 +64,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       flashButton.height == 44
       flashButton.width == 60
 
-      rotateButton.top == rotateButton.superview!.top + 10
-      rotateButton.right == rotateButton.superview!.right - 12
+      rotateButton.top == rotateButton.superview!.top + 8
+      rotateButton.right == rotateButton.superview!.right - 8
       rotateButton.width == 44
       rotateButton.height == 44
 
