@@ -144,8 +144,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
     let point = gestureRecognizer.locationInView(self)
 
-    return point.y > closeButton.frame.maxY + focusImageView.frame.size.height/3
-      && point.y < bottomContainer.frame.origin.y - focusImageView.frame.size.height/3
+    return point.y > closeButton.frame.maxY
+      && point.y < bottomContainer.frame.origin.y
   }
 
   // MARK: - Controls
