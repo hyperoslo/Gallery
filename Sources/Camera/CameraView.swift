@@ -2,7 +2,7 @@ import UIKit
 import Cartography
 import AVFoundation
 
-class CameraView: UIView {
+class CameraView: UIView, UIGestureRecognizerDelegate {
 
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var flashButton: TripleButton = self.makeFlashButton()
@@ -45,7 +45,7 @@ class CameraView: UIView {
       self.bottomContainer.addSubview($0)
     }
 
-    addSubview(focusImageView)
+    insertSubview(focusImageView, belowSubview: bottomContainer)
 
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
       closeButton, flashButton, rotateButton, bottomContainer in
@@ -128,6 +128,14 @@ class CameraView: UIView {
     })
   }
 
+  // MARK: - UIGestureRecognizerDelegate
+  override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    let point = gestureRecognizer.locationInView(self)
+
+    return point.y > closeButton.frame.maxY + focusImageView.frame.size.height/3
+      && point.y < bottomContainer.frame.origin.y - focusImageView.frame.size.height/3
+  }
+
   // MARK: - Controls
 
   func makeCloseButton() -> UIButton {
@@ -190,6 +198,7 @@ class CameraView: UIView {
 
   func makeTapGR() -> UITapGestureRecognizer {
     let gr = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+    gr.delegate = self
 
     return gr
   }
