@@ -14,6 +14,7 @@ class CameraView: UIView {
   lazy var focusImageView: UIImageView = self.makeFocusImageView()
   lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
 
+  var timer: NSTimer?
   var previewLayer: AVCaptureVideoPreviewLayer?
 
   // MARK: - Initialization
@@ -43,6 +44,8 @@ class CameraView: UIView {
       $0.translatesAutoresizingMaskIntoConstraints = false
       self.bottomContainer.addSubview($0)
     }
+
+    addSubview(focusImageView)
 
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
       closeButton, flashButton, rotateButton, bottomContainer in
@@ -99,7 +102,30 @@ class CameraView: UIView {
   // MARK: - Action
 
   func viewTapped(gr: UITapGestureRecognizer) {
-    
+    let point = gr.locationInView(self)
+
+    focusImageView.transform = CGAffineTransformIdentity
+    timer?.invalidate()
+
+    focusImageView.center = point
+
+    UIView.animateWithDuration(0.5, animations: {
+      self.focusImageView.alpha = 1
+      self.focusImageView.transform = CGAffineTransformMakeScale(0.6, 0.6)
+    }, completion: { _ in
+      self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self,
+        selector: #selector(CameraView.timerFired(_:)), userInfo: nil, repeats: false)
+    })
+  }
+
+  // MARK: - Timer
+
+  func timerFired(timer: NSTimer) {
+    UIView.animateWithDuration(0.3, animations: {
+      self.focusImageView.alpha = 0
+    }, completion: { _ in
+      self.focusImageView.transform = CGAffineTransformIdentity
+    })
   }
 
   // MARK: - Controls
