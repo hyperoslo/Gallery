@@ -1,10 +1,11 @@
 import UIKit
 import Cartography
+import AVFoundation
 
-class CameraController: UIViewController {
+class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate {
 
-  let cameraMan = CameraMan()
   var locationManager: LocationManager?
+  lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
 
   // MARK: - Life cycle
@@ -14,6 +15,8 @@ class CameraController: UIViewController {
 
     setup()
     setupLocation()
+
+    cameraMan.setup()
   }
 
   override func viewWillAppear(animated: Bool) {
@@ -81,9 +84,37 @@ class CameraController: UIViewController {
 
   // MARK: - Controls
 
+  func makeCameraMan() -> CameraMan {
+    let man = CameraMan()
+    man.delegate = self
+
+    return man
+  }
+
   func makeCameraView() -> CameraView {
     let cameraView = CameraView()
+    cameraView.delegate = self
 
     return cameraView
+  }
+
+  // MARK: - CameraManDelegate
+
+  func cameraManDidStart(cameraMan: CameraMan) {
+    cameraView.setupPreviewLayer(cameraMan.session)
+  }
+
+  func cameraManNotAvailable(cameraMan: CameraMan) {
+    cameraView.focusImageView.hidden = true
+  }
+
+  func cameraMan(cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
+    cameraView.flashButton.hidden = !input.device.hasFlash
+  }
+
+  // MARK: - CameraViewDelegate
+
+  func cameraView(cameraView: CameraView, didTouch point: CGPoint) {
+    cameraMan.focus(point)
   }
 }

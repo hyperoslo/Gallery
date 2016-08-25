@@ -2,6 +2,10 @@ import UIKit
 import Cartography
 import AVFoundation
 
+protocol CameraViewDelegate: class {
+  func cameraView(cameraView: CameraView, didTouch point: CGPoint)
+}
+
 class CameraView: UIView, UIGestureRecognizerDelegate {
 
   lazy var closeButton: UIButton = self.makeCloseButton()
@@ -16,6 +20,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   var timer: NSTimer?
   var previewLayer: AVCaptureVideoPreviewLayer?
+  weak var delegate: CameraViewDelegate?
 
   // MARK: - Initialization
 
@@ -112,6 +117,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
     focusImageView.transform = CGAffineTransformIdentity
     timer?.invalidate()
+    delegate?.cameraView(self, didTouch: point)
 
     focusImageView.center = point
 
