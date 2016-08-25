@@ -59,7 +59,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   // MARK: - Action
 
   func closeButtonTouched(button: UIButton) {
-
+    dismissViewControllerAnimated(true, completion: nil)
   }
 
   func flashButtonTouched(button: UIButton) {

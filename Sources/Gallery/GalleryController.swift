@@ -17,6 +17,10 @@ public class GalleryController: UIViewController {
     setup()
   }
 
+  public override func prefersStatusBarHidden() -> Bool {
+    return true
+  }
+
   // MARK: - Child view controller
 
   func makeImagesController() -> ImagesController {
