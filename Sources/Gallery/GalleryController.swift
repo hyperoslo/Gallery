@@ -1,7 +1,7 @@
 import UIKit
 import Cartography
 
-public class PhotosController: UIViewController {
+public class GalleryController: UIViewController {
 
   lazy var imagesController: ImagesController = self.makeImagesController()
   lazy var cameraController: CameraController = self.makeCameraController()
