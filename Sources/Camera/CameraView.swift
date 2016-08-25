@@ -17,6 +17,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var doneButton: UIButton = self.makeDoneButton()
   lazy var focusImageView: UIImageView = self.makeFocusImageView()
   lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
+  lazy var overlayView: UIView = self.makeOverlayView()
+  lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
   var timer: NSTimer?
   var previewLayer: AVCaptureVideoPreviewLayer?
@@ -54,6 +56,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       Utils.addShadow($0)
     }
 
+    overlayView.addSubview(blurView)
+    insertSubview(overlayView, belowSubview: rotateButton)
     insertSubview(focusImageView, belowSubview: bottomContainer)
 
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
@@ -94,6 +98,13 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
       doneButton.centerY == doneButton.superview!.centerY
       doneButton.right == doneButton.superview!.right - 38
+    }
+
+    constrain(overlayView, blurView) {
+      overlayView, blurView in
+
+      overlayView.edges == overlayView.superview!.edges
+      blurView.edges == blurView.superview!.edges
     }
   }
 
@@ -219,6 +230,20 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     gr.delegate = self
 
     return gr
+  }
+
+  func makeOverlayView() -> UIView {
+    let view = UIView()
+    view.alpha = 0
+
+    return view
+  }
+
+  func makeBlurView() -> UIVisualEffectView {
+    let effect = UIBlurEffect(style: .Dark)
+    let blurView = UIVisualEffectView(effect: effect)
+
+    return blurView
   }
 
 }
