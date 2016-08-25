@@ -45,6 +45,10 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       self.bottomContainer.addSubview($0)
     }
 
+    [closeButton, flashButton, rotateButton].forEach {
+      Utils.addShadow($0)
+    }
+
     insertSubview(focusImageView, belowSubview: bottomContainer)
 
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
@@ -55,8 +59,10 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       closeButton.width == 44
       closeButton.height == 44
 
-      flashButton.top == flashButton.superview!.top + 10
+      flashButton.centerY == closeButton.centerY
       flashButton.centerX == flashButton.superview!.centerX
+      flashButton.height == 44
+      flashButton.width == 60
 
       rotateButton.top == rotateButton.superview!.top + 10
       rotateButton.right == rotateButton.superview!.right - 12
@@ -146,7 +152,13 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   }
 
   func makeFlashButton() -> TripleButton {
-    let button = TripleButton()
+    let states: [TripleButton.State] = [
+      TripleButton.State(title: "AUTO", image: BundleAsset.image("gallery_camera_flash_auto")!),
+      TripleButton.State(title: "ON", image: BundleAsset.image("gallery_camera_flash_on")!),
+      TripleButton.State(title: "OFF", image: BundleAsset.image("gallery_camera_flash_off")!),
+    ]
+
+    let button = TripleButton(states: states)
 
     return button
   }

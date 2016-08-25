@@ -39,7 +39,7 @@ class CameraController: UIViewController {
   }
 
   func flashButtonTouched(button: UIButton) {
-
+    cameraView.flashButton.toggle()
   }
 
   func rotateButtonTouched(button: UIButton) {
