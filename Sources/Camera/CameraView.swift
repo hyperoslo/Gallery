@@ -12,6 +12,7 @@ class CameraView: UIView {
   lazy var shutterButton: ShutterButton = self.makeShutterButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
   lazy var focusImageView: UIImageView = self.makeFocusImageView()
+  lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
 
   var previewLayer: AVCaptureVideoPreviewLayer?
 
@@ -31,6 +32,8 @@ class CameraView: UIView {
   // MARK: - Setup
 
   func setup() {
+    addGestureRecognizer(tapGR)
+
     [closeButton, flashButton, rotateButton, bottomContainer].forEach {
       $0.translatesAutoresizingMaskIntoConstraints = false
       self.addSubview($0)
@@ -93,6 +96,12 @@ class CameraView: UIView {
     previewLayer = layer
   }
 
+  // MARK: - Action
+
+  func viewTapped(gr: UITapGestureRecognizer) {
+    
+  }
+
   // MARK: - Controls
 
   func makeCloseButton() -> UIButton {
@@ -151,6 +160,12 @@ class CameraView: UIView {
     view.alpha = 0
 
     return view
+  }
+
+  func makeTapGR() -> UITapGestureRecognizer {
+    let gr = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+
+    return gr
   }
 
 }
