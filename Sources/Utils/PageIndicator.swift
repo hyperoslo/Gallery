@@ -71,6 +71,7 @@ class PageIndicator: UIView {
     let button = UIButton(type: .Custom)
     button.setTitle(title, forState: .Normal)
     button.setTitleColor(Config.PageIndicator.textColor, forState: .Normal)
+    button.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
     button.backgroundColor = Config.PageIndicator.backgroundColor
     button.addTarget(self, action: #selector(buttonTouched(_:)), forControlEvents: .TouchUpInside)
     button.titleLabel?.font = buttonFont(false)
