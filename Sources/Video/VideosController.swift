@@ -15,7 +15,7 @@ class VideosController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    addChildViewController(gridController)
+    addChildController(gridController)
   }
 
   // MARK: - Controls
