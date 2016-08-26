@@ -15,6 +15,18 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
 
+  // MARK: - Initialization
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    setup()
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   // MARK: - Setup
 
   func setup() {
@@ -117,7 +129,8 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
   }
 
   func makeCollectionView() -> UICollectionView {
-    let view = UICollectionView()
+    let layout = UICollectionViewFlowLayout()
+    let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
     view.dataSource = self
     view.delegate = self
 
