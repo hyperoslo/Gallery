@@ -1,10 +1,13 @@
 import UIKit
 import Cartography
+import Photos
 
-class GridController: UIViewController {
+class GridController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
+
+  var items: [PHAsset] = []
 
   // MARK: - Life cycle
 
@@ -29,6 +32,9 @@ class GridController: UIViewController {
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
     gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
     gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), forControlEvents: .TouchUpInside)
+
+    gridView.collectionView.dataSource = self
+    gridView.collectionView.delegate = self
   }
 
   // MARK: - Action
@@ -44,6 +50,18 @@ class GridController: UIViewController {
   func arrowButtonTouched(button: ArrowButton) {
     button.toggle()
   }
+
+  // MARK: - UICollectionViewDataSource
+
+  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return items.count
+  }
+
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    fatalError()
+  }
+
+  // MARK: - UICollectionViewDelegate
 
   // MARK: - Controls
 

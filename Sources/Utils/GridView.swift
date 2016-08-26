@@ -2,9 +2,7 @@ import UIKit
 import Photos
 import Cartography
 
-class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
-
-  var items: [PHAsset] = []
+class GridView: UIView {
 
   // MARK: - Initialization
 
@@ -134,21 +132,7 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
   func makeCollectionView() -> UICollectionView {
     let layout = UICollectionViewFlowLayout()
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    view.dataSource = self
-    view.delegate = self
 
     return view
   }
-
-  // MARK: - UICollectionViewDataSource
-
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return items.count
-  }
-
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    fatalError()
-  }
-
-  // MARK: - UICollectionViewDelegate
 }
