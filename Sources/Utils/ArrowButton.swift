@@ -41,6 +41,17 @@ class ArrowButton: UIButton {
                   height: size.height)
   }
 
+  // MARK: - Logic
+
+  func toggle() {
+    let transform = CGAffineTransformEqualToTransform(arrow.transform, CGAffineTransformIdentity)
+      ? CGAffineTransformMakeRotation(CGFloat(M_PI)) : CGAffineTransformIdentity
+    
+    UIView.animateWithDuration(0.25) {
+      self.arrow.transform = transform
+    }
+  }
+
   // MARK: - Controls
 
   func makeLabel() -> UILabel {

@@ -42,7 +42,7 @@ class GridController: UIViewController {
   }
 
   func arrowButtonTouched(button: ArrowButton) {
-    
+    button.toggle()
   }
 
   // MARK: - Controls
