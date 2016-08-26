@@ -192,7 +192,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeBottomContainer() -> UIView {
     let view = UIView()
-    view.backgroundColor = UIColor(red: 3/255, green: 15/255, blue: 29/255, alpha: 0.7)
+    view.backgroundColor = Config.BottomContainer.backgroundColor
 
     return view
   }

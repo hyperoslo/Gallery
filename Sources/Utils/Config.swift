@@ -15,4 +15,8 @@ public struct Config {
       public static var numberColor: UIColor = UIColor(red: 54/255, green: 56/255, blue: 62/255, alpha: 1)
     }
   }
+
+  public struct BottomContainer {
+    public static var backgroundColor: UIColor = UIColor(red: 3/255, green: 15/255, blue: 29/255, alpha: 0.7)
+  }
 }
