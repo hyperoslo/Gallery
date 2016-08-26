@@ -25,7 +25,6 @@ public class GalleryController: UIViewController {
 
   func makeImagesController() -> ImagesController {
     let controller = ImagesController()
-    controller.view.backgroundColor = UIColor.redColor()
     controller.title = "Images"
 
     return controller
@@ -40,7 +39,6 @@ public class GalleryController: UIViewController {
 
   func makeVideosController() -> VideosController {
     let controller = VideosController()
-    controller.view.backgroundColor = UIColor.blueColor()
     controller.title = "Videos"
 
     return controller
@@ -55,14 +53,6 @@ public class GalleryController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    addChildViewController(pagesController)
-    view.addSubview(pagesController.view)
-    pagesController.didMoveToParentViewController(self)
-
-    pagesController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    constrain(pagesController.view) { view in
-      view.edges == view.superview!.edges
-    }
+    addChildController(pagesController)
   }
 }
