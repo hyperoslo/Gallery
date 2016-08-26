@@ -173,9 +173,9 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeFlashButton() -> TripleButton {
     let states: [TripleButton.State] = [
-      TripleButton.State(title: "AUTO", image: BundleAsset.image("gallery_camera_flash_auto")!),
-      TripleButton.State(title: "ON", image: BundleAsset.image("gallery_camera_flash_on")!),
       TripleButton.State(title: "OFF", image: BundleAsset.image("gallery_camera_flash_off")!),
+      TripleButton.State(title: "ON", image: BundleAsset.image("gallery_camera_flash_on")!),
+      TripleButton.State(title: "AUTO", image: BundleAsset.image("gallery_camera_flash_auto")!)
     ]
 
     let button = TripleButton(states: states)

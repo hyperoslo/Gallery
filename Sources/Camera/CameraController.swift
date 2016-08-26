@@ -64,6 +64,10 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
 
   func flashButtonTouched(button: UIButton) {
     cameraView.flashButton.toggle()
+
+    if let flashMode = AVCaptureFlashMode(rawValue: cameraView.flashButton.selectedIndex) {
+      cameraMan.flash(flashMode)
+    }
   }
 
   func rotateButtonTouched(button: UIButton) {
