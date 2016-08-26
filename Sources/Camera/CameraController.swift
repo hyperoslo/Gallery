@@ -68,11 +68,11 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
 
   func rotateButtonTouched(button: UIButton) {
     UIView.animateWithDuration(0.3, animations: {
-      self.cameraView.overlayView.alpha = 1
+      self.cameraView.rotateOverlayView.alpha = 1
     }, completion: { _ in
       self.cameraMan.switchCamera {
         UIView.animateWithDuration(0.7) {
-          self.cameraView.overlayView.alpha = 0
+          self.cameraView.rotateOverlayView.alpha = 0
         }
       }
     })
@@ -83,7 +83,20 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   }
 
   func shutterButtonTouched(button: ShutterButton) {
+    guard let previewLayer = cameraView.previewLayer else { return }
 
+    button.enabled = false
+    UIView.animateWithDuration(0.1, animations: {
+      self.cameraView.shutterOverlayView.alpha = 1
+    }, completion: { _ in
+      UIView.animateWithDuration(0.1) {
+        self.cameraView.shutterOverlayView.alpha = 0
+      }
+    })
+
+    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) {
+      button.enabled = true
+    }
   }
 
   func doneButtonTouched(button: UIButton) {

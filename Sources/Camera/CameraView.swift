@@ -17,7 +17,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var doneButton: UIButton = self.makeDoneButton()
   lazy var focusImageView: UIImageView = self.makeFocusImageView()
   lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
-  lazy var overlayView: UIView = self.makeOverlayView()
+  lazy var rotateOverlayView: UIView = self.makeRotateOverlayView()
+  lazy var shutterOverlayView: UIView = self.makeShutterOverlayView()
   lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
   var timer: NSTimer?
@@ -56,10 +57,11 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       Utils.addShadow($0)
     }
 
-    overlayView.addSubview(blurView)
-    insertSubview(overlayView, belowSubview: rotateButton)
+    rotateOverlayView.addSubview(blurView)
+    insertSubview(rotateOverlayView, belowSubview: rotateButton)
     insertSubview(focusImageView, belowSubview: bottomContainer)
-
+    insertSubview(shutterOverlayView, belowSubview: bottomContainer)
+    
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
       closeButton, flashButton, rotateButton, bottomContainer in
 
@@ -100,11 +102,12 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       doneButton.right == doneButton.superview!.right - 38
     }
 
-    constrain(overlayView, blurView) {
-      overlayView, blurView in
+    constrain(rotateOverlayView, blurView, shutterOverlayView) {
+      overlayView, blurView, shutterOverlayView in
 
       overlayView.edges == overlayView.superview!.edges
       blurView.edges == blurView.superview!.edges
+      shutterOverlayView.edges == shutterOverlayView.superview!.edges
     }
   }
 
@@ -232,9 +235,17 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     return gr
   }
 
-  func makeOverlayView() -> UIView {
+  func makeRotateOverlayView() -> UIView {
     let view = UIView()
     view.alpha = 0
+
+    return view
+  }
+
+  func makeShutterOverlayView() -> UIView {
+    let view = UIView()
+    view.alpha = 0
+    view.backgroundColor = UIColor.blackColor()
 
     return view
   }
