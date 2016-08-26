@@ -28,7 +28,7 @@ class GridController: UIViewController {
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
     gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    gridView.titleView.addTarget(self, action: #selector(titleViewTouched(_:)), forControlEvents: .TouchUpInside)
+    gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), forControlEvents: .TouchUpInside)
   }
 
   // MARK: - Action
@@ -41,7 +41,7 @@ class GridController: UIViewController {
 
   }
 
-  func titleViewTouched(view: TitleView) {
+  func arrowButtonTouched(button: ArrowButton) {
     
   }
 

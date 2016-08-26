@@ -10,7 +10,7 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
 
   lazy var topView: UIView = self.makeTopView()
   lazy var bottomView: UIView = self.makeBottomView()
-  lazy var titleView: TitleView = self.makeTitleView()
+  lazy var arrowButton: ArrowButton = self.makeArrowButton()
   lazy var collectionView: UICollectionView = self.makeCollectionView()
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
@@ -35,7 +35,7 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    [closeButton, titleView].forEach {
+    [closeButton, arrowButton].forEach {
       self.topView.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -64,16 +64,16 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
       bottomView.height == 80
     }
 
-    constrain(closeButton, titleView) {
-      closeButton, titleView in
+    constrain(closeButton, arrowButton) {
+      closeButton, arrowButton in
 
       closeButton.top == closeButton.superview!.top
       closeButton.left == closeButton.superview!.left
       closeButton.width == 40
       closeButton.height == 40
 
-      titleView.center == titleView.superview!.center
-      titleView.height == 40
+      arrowButton.center == arrowButton.superview!.center
+      arrowButton.height == 40
     }
 
     constrain(doneButton) {
@@ -100,10 +100,12 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     return view
   }
 
-  func makeTitleView() -> TitleView {
-    let view = TitleView()
+  func makeArrowButton() -> ArrowButton {
+    let button = ArrowButton()
+    button.label.text = "ALL PHOTOS"
+    button.layoutSubviews()
 
-    return view
+    return button
   }
 
   func makeGridView() -> GridView {
