@@ -7,6 +7,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   var locationManager: LocationManager?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
+  let imageStack = ImageStack()
 
   // MARK: - Life cycle
 
@@ -100,6 +101,13 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
 
     cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) {
       button.enabled = true
+
+      LibraryAssets.fetch { assets in
+        if let first = assets.first {
+          self.imageStack.pushAsset(first)
+          self.cameraView.stackView.startLoader()
+        }
+      }
     }
   }
 

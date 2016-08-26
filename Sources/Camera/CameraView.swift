@@ -91,8 +91,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
       stackView.centerY == stackView.superview!.centerY
       stackView.left == stackView.superview!.left + 38
-      stackView.width == 44
-      stackView.height == 44
+      stackView.width == 60
+      stackView.height == 60
 
       shutterButton.center == shutterButton.superview!.center
       shutterButton.width == 60
