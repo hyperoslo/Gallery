@@ -25,6 +25,24 @@ class GridController: UIViewController {
 
       gridView.edges == gridView.superview!.edges
     }
+
+    gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
+    gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
+    gridView.titleView.addTarget(self, action: #selector(titleViewTouched(_:)), forControlEvents: .TouchUpInside)
+  }
+
+  // MARK: - Action
+
+  func closeButtonTouched(button: UIButton) {
+    dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  func doneButtonTouched(button: UIButton) {
+
+  }
+
+  func titleViewTouched(view: TitleView) {
+    
   }
 
   // MARK: - Controls

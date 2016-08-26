@@ -95,7 +95,7 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
 
   func makeBottomView() -> UIView {
     let view = UIView()
-    view.backgroundColor = Config.BottomContainer.backgroundColor
+    view.backgroundColor = Config.Camera.BottomContainer.backgroundColor
 
     return view
   }
@@ -114,7 +114,8 @@ class GridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .Custom)
-    button.setImage(BundleAsset.image("gallery_close"), forState: .Normal)
+    button.setImage(BundleAsset.image("gallery_close")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+    button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button
   }
