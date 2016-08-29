@@ -31,7 +31,7 @@ class AlbumCell: UITableViewCell {
     constrain(albumImageView, albumTitleLabel, itemCountLabel) {
       albumImageView, albumTitleLabel, itemCountLabel in
 
-      albumImageView.left == albumImageView.superview!.left + 5
+      albumImageView.left == albumImageView.superview!.left + 10
       albumImageView.top == albumImageView.superview!.top + 5
       albumImageView.bottom == albumImageView.superview!.bottom - 5
       albumImageView.width == albumImageView.height

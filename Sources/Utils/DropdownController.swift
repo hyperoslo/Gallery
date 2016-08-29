@@ -74,6 +74,9 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
     cell.albumTitleLabel.text = album.collection.localizedTitle
     cell.itemCountLabel.text = "\(album.items.count)"
+    album.fetchThumbnail {
+      cell.albumImageView.image = $0
+    }
 
     return cell
   }

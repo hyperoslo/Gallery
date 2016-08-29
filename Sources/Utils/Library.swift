@@ -17,7 +17,7 @@ class Library {
   // MARK: - Logic
 
   func reload() {
-    let types: [PHAssetCollectionType] = [.Moment, .SmartAlbum, .Album]
+    let types: [PHAssetCollectionType] = [.SmartAlbum, .Album]
 
     albumsFetchResults = types.map {
       return PHAssetCollection.fetchAssetCollectionsWithType($0, subtype: .Any, options: nil)
