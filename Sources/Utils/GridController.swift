@@ -11,6 +11,11 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
   var selectedItems: [PHAsset] = []
   var albums: [PHAssetCollection] = []
 
+  struct Dimension {
+    static let columnCount: CGFloat = 4
+    static let cellSpacing: CGFloat = 2
+  }
+
   // MARK: - Life cycle
 
   override func viewDidLoad() {
@@ -26,6 +31,7 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
     }
 
     dropdownController.items = LibraryAssets.fetchAlbums()
+    dropdownController.tableView.reloadData()
   }
 
   // MARK: - Setup
@@ -100,7 +106,8 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
 
   func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
 
-    let size = (collectionView.bounds.size.width - 6) / 4
+    let size = (collectionView.bounds.size.width - (Dimension.columnCount - 1) * Dimension.cellSpacing)
+                / Dimension.columnCount
     return CGSize(width: size, height: size)
   }
 
