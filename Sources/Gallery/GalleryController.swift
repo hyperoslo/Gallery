@@ -14,6 +14,7 @@ public class GalleryController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    Permission.request()
     setup()
   }
 

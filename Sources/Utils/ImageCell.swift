@@ -4,6 +4,7 @@ import Cartography
 class ImageCell: UICollectionViewCell {
 
   lazy var imageView: UIImageView = self.makeImageView()
+  lazy var overlay: UIView = self.makeOverlay()
 
   // MARK: - Initialization
 
@@ -17,16 +18,27 @@ class ImageCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Highlight
+
+  override var highlighted: Bool {
+    didSet {
+      overlay.hidden = !highlighted
+    }
+  }
+
   // MARK: - Setup
 
   func setup() {
-    contentView.addSubview(imageView)
-    imageView.translatesAutoresizingMaskIntoConstraints = false
+    [imageView, overlay].forEach {
+      self.contentView.addSubview($0)
+      $0.translatesAutoresizingMaskIntoConstraints = false
+    }
 
-    constrain(imageView) {
-      imageView in
+    constrain(imageView, overlay) {
+      imageView, overlay in
 
       imageView.edges == imageView.superview!.edges
+      overlay.edges == overlay.superview!.edges
     }
   }
 
@@ -38,5 +50,14 @@ class ImageCell: UICollectionViewCell {
     imageView.contentMode = .ScaleAspectFill
 
     return imageView
+  }
+
+  func makeOverlay() -> UIView {
+    let view = UIView()
+    view.userInteractionEnabled = false
+    view.backgroundColor = UIColor.purpleColor().colorWithAlphaComponent(0.3)
+    view.hidden = true
+
+    return view
   }
 }
