@@ -131,7 +131,12 @@ class GridView: UIView {
 
   func makeCollectionView() -> UICollectionView {
     let layout = UICollectionViewFlowLayout()
+    layout.minimumInteritemSpacing = 2
+    layout.minimumLineSpacing = 2
+
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    view.backgroundColor = UIColor.whiteColor()
+    view.allowsMultipleSelection = true
 
     return view
   }

@@ -2,12 +2,13 @@ import UIKit
 import Cartography
 import Photos
 
-class GridController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class GridController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
 
   var items: [PHAsset] = []
+  var selectedItems: [PHAsset] = []
 
   // MARK: - Life cycle
 
@@ -15,6 +16,13 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
     super.viewDidLoad()
 
     setup()
+
+    gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: "Cell")
+
+    LibraryAssets.fetch { assets in
+      self.items = assets
+      self.gridView.collectionView.reloadData()
+    }
   }
 
   // MARK: - Setup
@@ -58,10 +66,27 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
   }
 
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    fatalError()
+
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ImageCell
+
+    LibraryAssets.resolveAsset(items[indexPath.item]) { image in
+      cell.imageView.image = image
+    }
+
+    return cell
   }
 
-  // MARK: - UICollectionViewDelegate
+  // MARK: - UICollectionViewDelegateFlowLayout
+
+  func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+
+    let size = (collectionView.bounds.size.width - 6) / 4
+    return CGSize(width: size, height: size)
+  }
+
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
+  }
 
   // MARK: - Controls
 
