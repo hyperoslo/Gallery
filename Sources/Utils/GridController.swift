@@ -73,6 +73,8 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
       cell.imageView.image = image
     }
 
+    configureFrameView(cell, indexPath: indexPath)
+
     return cell
   }
 
@@ -85,7 +87,42 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
   }
 
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    
+    let item = items[indexPath.item]
+
+    if !selectedItems.contains(item) {
+      selectedItems.append(item)
+    }
+
+    configureFrameViews()
+  }
+
+  func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    let item = items[indexPath.item]
+
+    if let index = selectedItems.indexOf(item) {
+      selectedItems.removeAtIndex(index)
+    }
+
+    configureFrameViews()
+  }
+
+  func configureFrameViews() {
+    for case let cell as ImageCell in gridView.collectionView.visibleCells() {
+      if let indexPath = gridView.collectionView.indexPathForCell(cell) {
+        configureFrameView(cell, indexPath: indexPath)
+      }
+    }
+  }
+
+  func configureFrameView(cell: ImageCell, indexPath: NSIndexPath) {
+    let item = items[indexPath.item]
+
+    if let index = selectedItems.indexOf(item) {
+      cell.frameView.hidden = false
+      cell.frameView.label.text = "\(index + 1)"
+    } else {
+      cell.frameView.hidden = true
+    }
   }
 
   // MARK: - Controls
