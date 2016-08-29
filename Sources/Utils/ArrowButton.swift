@@ -43,8 +43,8 @@ class ArrowButton: UIButton {
 
   // MARK: - Logic
 
-  func toggle() {
-    let transform = CGAffineTransformEqualToTransform(arrow.transform, CGAffineTransformIdentity)
+  func toggle(expanding: Bool) {
+    let transform = expanding
       ? CGAffineTransformMakeRotation(CGFloat(M_PI)) : CGAffineTransformIdentity
     
     UIView.animateWithDuration(0.25) {

@@ -57,4 +57,17 @@ struct LibraryAssets {
     
     return images
   }
+
+  static func fetchAlbums() -> [PHAssetCollection] {
+    let result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: nil)
+
+    var items: [PHAssetCollection] = []
+    result.enumerateObjectsUsingBlock { item, index, stop in
+      if let item = item as? PHAssetCollection {
+        items.append(item)
+      }
+    }
+
+    return items
+  }
 }

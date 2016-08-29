@@ -1,10 +1,16 @@
 import UIKit
 import Cartography
+import Photos
 
 class DropdownController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-  var items: [String] = []
+  var items: [PHAssetCollection] = []
   lazy var tableView: UITableView = self.makeTableView()
+
+  var animating: Bool = false
+  var expanding: Bool = false
+
+  var topConstraint: NSLayoutConstraint?
 
   // MARK: - Initialization
 
@@ -20,12 +26,38 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
   func setup() {
     view.addSubview(tableView)
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.rowHeight = 80
+
+    tableView.registerClass(AlbumCell.self, forCellReuseIdentifier: String(AlbumCell.self))
 
     constrain(tableView) {
       tableView in
 
       tableView.edges == tableView.superview!.edges
     }
+  }
+
+  // MARK: - Logic
+
+  func toggle() {
+    guard !animating else { return }
+
+    animating = true
+    expanding = !expanding
+
+    self.topConstraint?.constant = expanding ? 1 : view.bounds.size.height
+
+    UIView.animateWithDuration(0.5, delay: 0,
+                               usingSpringWithDamping: 0.7,
+                               initialSpringVelocity: 0.5,
+                               options: [],
+                               animations:
+    {
+      self.view.superview?.layoutIfNeeded()
+    }, completion: { finished in
+      self.animating = false
+    })
   }
 
   // MARK: - UITableViewDataSource
@@ -35,7 +67,15 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
   }
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    fatalError()
+    let cell = tableView.dequeueReusableCellWithIdentifier(String(AlbumCell.self), forIndexPath: indexPath)
+                as! AlbumCell
+
+    let item = items[indexPath.row]
+
+    cell.albumTitleLabel.text = item.localizedTitle
+    cell.itemCountLabel.text = "\(item.estimatedAssetCount)"
+
+    return cell
   }
 
   // MARK: - UITableViewDelegate
@@ -44,6 +84,8 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
   func makeTableView() -> UITableView {
     let tableView = UITableView()
+    tableView.tableFooterView = UIView()
+
     tableView.dataSource = self
     tableView.delegate = self
 

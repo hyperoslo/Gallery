@@ -9,6 +9,7 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
 
   var items: [PHAsset] = []
   var selectedItems: [PHAsset] = []
+  var albums: [PHAssetCollection] = []
 
   // MARK: - Life cycle
 
@@ -17,12 +18,14 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
 
     setup()
 
-    gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: "Cell")
+    gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
 
     LibraryAssets.fetch { assets in
       self.items = assets
       self.gridView.collectionView.reloadData()
     }
+
+    dropdownController.items = LibraryAssets.fetchAlbums()
   }
 
   // MARK: - Setup
@@ -31,10 +34,23 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
     view.addSubview(gridView)
     gridView.translatesAutoresizingMaskIntoConstraints = false
 
+    addChildViewController(dropdownController)
+    gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
+    dropdownController.didMoveToParentViewController(self)
+
     constrain(gridView) {
       gridView in
 
       gridView.edges == gridView.superview!.edges
+    }
+
+    constrain(dropdownController.view, gridView.topView) {
+      dropdown, topView in
+
+      dropdown.left == dropdown.superview!.left
+      dropdown.right == dropdown.superview!.right
+      dropdown.height == dropdown.superview!.height - 40
+      self.dropdownController.topConstraint = (dropdown.top == topView.bottom + self.view.frame.size.height ~ 999 )
     }
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
@@ -56,7 +72,8 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
   }
 
   func arrowButtonTouched(button: ArrowButton) {
-    button.toggle()
+    dropdownController.toggle()
+    button.toggle(dropdownController.expanding)
   }
 
   // MARK: - UICollectionViewDataSource
@@ -67,7 +84,8 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
 
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ImageCell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(ImageCell.self), forIndexPath: indexPath)
+                as! ImageCell
 
     LibraryAssets.resolveAsset(items[indexPath.item]) { image in
       cell.imageView.image = image

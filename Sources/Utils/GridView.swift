@@ -28,7 +28,7 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
-    [topView, collectionView, bottomView].forEach {
+    [collectionView, bottomView, topView].forEach {
       self.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
