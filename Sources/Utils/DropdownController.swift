@@ -80,11 +80,16 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
   // MARK: - UITableViewDelegate
 
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+  }
+
   // MARK: - Controls
 
   func makeTableView() -> UITableView {
     let tableView = UITableView()
     tableView.tableFooterView = UIView()
+    tableView.separatorStyle = .None
 
     tableView.dataSource = self
     tableView.delegate = self
