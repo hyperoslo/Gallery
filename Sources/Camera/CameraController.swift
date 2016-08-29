@@ -102,7 +102,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
     cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) {
       button.enabled = true
 
-      LibraryAssets.fetch { assets in
+      Fetcher.fetch { assets in
         if let first = assets.first {
           self.imageStack.pushAsset(first)
           self.cameraView.stackView.startLoader()

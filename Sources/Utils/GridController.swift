@@ -25,12 +25,12 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
 
     gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
 
-    LibraryAssets.fetch { assets in
+    Fetcher.fetch { assets in
       self.items = assets
       self.gridView.collectionView.reloadData()
     }
 
-    dropdownController.items = LibraryAssets.fetchAlbums()
+    dropdownController.items = Fetcher.fetchAlbums()
     dropdownController.tableView.reloadData()
   }
 
@@ -93,7 +93,7 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(ImageCell.self), forIndexPath: indexPath)
                 as! ImageCell
 
-    LibraryAssets.resolveAsset(items[indexPath.item]) { image in
+    Fetcher.resolveAsset(items[indexPath.item]) { image in
       cell.imageView.image = image
     }
 

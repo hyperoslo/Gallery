@@ -1,7 +1,7 @@
 import UIKit
 import Photos
 
-struct LibraryAssets {
+struct Fetcher {
 
   public static func fetch(completion: (assets: [PHAsset]) -> Void) {
     let fetchOptions = PHFetchOptions()

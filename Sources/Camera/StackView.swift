@@ -118,7 +118,7 @@ class StackView: UIControl {
 
     for (index, view) in imageViews.enumerate() {
       if index <= photos.count - 1 {
-        LibraryAssets.resolveAsset(photos[index], size: CGSize(width: Dimensions.imageSize, height: Dimensions.imageSize)) { image in
+        Fetcher.resolveAsset(photos[index], size: CGSize(width: Dimensions.imageSize, height: Dimensions.imageSize)) { image in
           view.image = image
         }
         view.alpha = 1
