@@ -8,11 +8,17 @@ protocol DropdownControllerDelegate: class {
 
 class DropdownController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-  var albums: [Album] = []
   lazy var tableView: UITableView = self.makeTableView()
 
   var animating: Bool = false
   var expanding: Bool = false
+  var selectedIndex: Int = 0
+
+  var albums: [Album] = [] {
+    didSet {
+      selectedIndex = 0
+    }
+  }
 
   var topConstraint: NSLayoutConstraint?
   weak var delegate: DropdownControllerDelegate?
@@ -79,6 +85,9 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
     cell.albumTitleLabel.text = album.collection.localizedTitle
     cell.itemCountLabel.text = "\(album.items.count)"
+
+    cell.accessoryType = (selectedIndex == indexPath.row) ? .Checkmark : .None
+
     album.fetchThumbnail {
       cell.albumImageView.image = $0
     }
@@ -93,6 +102,9 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
     let album = albums[indexPath.row]
     delegate?.dropdownController(self, didSelect: album)
+
+    selectedIndex = indexPath.row
+    tableView.reloadData()
   }
 
   // MARK: - Controls

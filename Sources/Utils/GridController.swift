@@ -165,7 +165,9 @@ class GridController: UIViewController,
 
   func dropdownController(dropdownController: DropdownController, didSelect album: Album) {
     select(album: album)
+
     dropdownController.toggle()
+    gridView.arrowButton.toggle(dropdownController.expanding)
   }
 
   // MARK: - Controls
