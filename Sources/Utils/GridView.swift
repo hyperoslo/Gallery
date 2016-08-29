@@ -114,7 +114,7 @@ class GridView: UIView {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .Custom)
-    button.setImage(BundleAsset.image("gallery_close")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+    button.setImage(Bundle.image("gallery_close")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button

@@ -166,16 +166,16 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .Custom)
-    button.setImage(BundleAsset.image("gallery_close"), forState: .Normal)
+    button.setImage(Bundle.image("gallery_close"), forState: .Normal)
 
     return button
   }
 
   func makeFlashButton() -> TripleButton {
     let states: [TripleButton.State] = [
-      TripleButton.State(title: "OFF", image: BundleAsset.image("gallery_camera_flash_off")!),
-      TripleButton.State(title: "ON", image: BundleAsset.image("gallery_camera_flash_on")!),
-      TripleButton.State(title: "AUTO", image: BundleAsset.image("gallery_camera_flash_auto")!)
+      TripleButton.State(title: "OFF", image: Bundle.image("gallery_camera_flash_off")!),
+      TripleButton.State(title: "ON", image: Bundle.image("gallery_camera_flash_on")!),
+      TripleButton.State(title: "AUTO", image: Bundle.image("gallery_camera_flash_auto")!)
     ]
 
     let button = TripleButton(states: states)
@@ -185,7 +185,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeRotateButton() -> UIButton {
     let button = UIButton(type: .Custom)
-    button.setImage(BundleAsset.image("gallery_camera_rotate"), forState: .Normal)
+    button.setImage(Bundle.image("gallery_camera_rotate"), forState: .Normal)
 
     return button
   }
@@ -221,7 +221,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeFocusImageView() -> UIImageView {
     let view = UIImageView()
     view.frame.size = CGSize(width: 110, height: 110)
-    view.image = BundleAsset.image("gallery_camera_focus")
+    view.image = Bundle.image("gallery_camera_focus")
     view.backgroundColor = .clearColor()
     view.alpha = 0
 

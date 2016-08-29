@@ -58,7 +58,7 @@ class AlbumCell: UITableViewCell {
 
   func makeAlbumImageView() -> UIImageView {
     let imageView = UIImageView()
-    imageView.image = BundleAsset.image("gallery_placeholder")
+    imageView.image = Bundle.image("gallery_placeholder")
 
     Utils.addShadow(imageView)
 

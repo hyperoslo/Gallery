@@ -65,7 +65,7 @@ class ArrowButton: UIButton {
 
   func makeArrow() -> UIImageView {
     let arrow = UIImageView()
-    arrow.image = BundleAsset.image("gallery_title_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
+    arrow.image = Bundle.image("gallery_title_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
     arrow.tintColor = Config.Grid.ArrowButton.tintColor
 
     return arrow
