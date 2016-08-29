@@ -43,6 +43,11 @@ class ArrowButton: UIButton {
 
   // MARK: - Logic
 
+  func updateText(text: String) {
+    label.text = text
+    invalidateIntrinsicContentSize()
+  }
+
   func toggle(expanding: Bool) {
     let transform = expanding
       ? CGAffineTransformMakeRotation(CGFloat(M_PI)) : CGAffineTransformIdentity

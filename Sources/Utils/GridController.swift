@@ -27,11 +27,6 @@ class GridController: UIViewController,
 
     gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
 
-    Fetcher.fetch { assets in
-      self.items = assets
-      self.gridView.collectionView.reloadData()
-    }
-
     library.reload()
     dropdownController.albums = library.albums
     dropdownController.tableView.reloadData()
@@ -92,7 +87,7 @@ class GridController: UIViewController,
   // MARK: - Logic
 
   func select(album album: Album) {
-    gridView.arrowButton.label.text = album.collection.localizedTitle
+    gridView.arrowButton.updateText(album.collection.localizedTitle ?? "Album")
 
     items = album.items
     gridView.collectionView.reloadData()
