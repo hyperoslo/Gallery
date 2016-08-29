@@ -59,12 +59,7 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
     self.topConstraint?.constant = expanding ? 1 : view.bounds.size.height
 
-    UIView.animateWithDuration(0.5, delay: 0,
-                               usingSpringWithDamping: 0.7,
-                               initialSpringVelocity: 0.5,
-                               options: [],
-                               animations:
-    {
+    UIView.animateWithDuration(0.25, delay: 0, options: .CurveEaseInOut, animations: {
       self.view.superview?.layoutIfNeeded()
     }, completion: { finished in
       self.animating = false
