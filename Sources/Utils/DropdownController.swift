@@ -4,7 +4,7 @@ import Photos
 
 class DropdownController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-  var items: [PHAssetCollection] = []
+  var albums: [Album] = []
   lazy var tableView: UITableView = self.makeTableView()
 
   var animating: Bool = false
@@ -63,17 +63,17 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
   // MARK: - UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return items.count
+    return albums.count
   }
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(String(AlbumCell.self), forIndexPath: indexPath)
                 as! AlbumCell
 
-    let item = items[indexPath.row]
+    let album = albums[indexPath.row]
 
-    cell.albumTitleLabel.text = item.localizedTitle
-    cell.itemCountLabel.text = "\(item.estimatedAssetCount)"
+    cell.albumTitleLabel.text = album.collection.localizedTitle
+    cell.itemCountLabel.text = "\(album.items.count)"
 
     return cell
   }

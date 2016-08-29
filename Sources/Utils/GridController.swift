@@ -9,7 +9,7 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
 
   var items: [PHAsset] = []
   var selectedItems: [PHAsset] = []
-  var albums: [PHAssetCollection] = []
+  let library: Library = Library(type: .Image)
 
   struct Dimension {
     static let columnCount: CGFloat = 4
@@ -30,7 +30,8 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
       self.gridView.collectionView.reloadData()
     }
 
-    dropdownController.items = Fetcher.fetchAlbums()
+    library.reload()
+    dropdownController.albums = library.albums
     dropdownController.tableView.reloadData()
   }
 
