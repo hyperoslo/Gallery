@@ -2,7 +2,9 @@ import UIKit
 import Cartography
 import Photos
 
-class GridController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class GridController: UIViewController,
+  UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,
+  DropdownControllerDelegate {
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
@@ -33,6 +35,10 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
     library.reload()
     dropdownController.albums = library.albums
     dropdownController.tableView.reloadData()
+
+    if let album = library.albums.first {
+      select(album: album)
+    }
   }
 
   // MARK: - Setup
@@ -81,6 +87,15 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
   func arrowButtonTouched(button: ArrowButton) {
     dropdownController.toggle()
     button.toggle(dropdownController.expanding)
+  }
+
+  // MARK: - Logic
+
+  func select(album album: Album) {
+    gridView.arrowButton.label.text = album.collection.localizedTitle
+
+    items = album.items
+    gridView.collectionView.reloadData()
   }
 
   // MARK: - UICollectionViewDataSource
@@ -151,10 +166,18 @@ class GridController: UIViewController, UICollectionViewDataSource, UICollection
     }
   }
 
+  // MARK: - DropdownControllerDelegate
+
+  func dropdownController(dropdownController: DropdownController, didSelect album: Album) {
+    select(album: album)
+    dropdownController.toggle()
+  }
+
   // MARK: - Controls
 
   func makeDropdownController() -> DropdownController {
     let controller = DropdownController()
+    controller.delegate = self
 
     return controller
   }

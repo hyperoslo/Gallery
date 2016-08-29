@@ -2,6 +2,10 @@ import UIKit
 import Cartography
 import Photos
 
+protocol DropdownControllerDelegate: class {
+  func dropdownController(dropdownController: DropdownController, didSelect album: Album)
+}
+
 class DropdownController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
   var albums: [Album] = []
@@ -11,6 +15,7 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
   var expanding: Bool = false
 
   var topConstraint: NSLayoutConstraint?
+  weak var delegate: DropdownControllerDelegate?
 
   // MARK: - Initialization
 
@@ -85,6 +90,9 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+    let album = albums[indexPath.row]
+    delegate?.dropdownController(self, didSelect: album)
   }
 
   // MARK: - Controls
