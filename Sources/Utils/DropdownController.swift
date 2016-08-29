@@ -77,16 +77,9 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
                 as! AlbumCell
 
     let album = albums[indexPath.row]
-
-    cell.albumTitleLabel.text = album.collection.localizedTitle
-    cell.itemCountLabel.text = "\(album.items.count)"
-
+    cell.configure(album)
     cell.accessoryType = (selectedIndex == indexPath.row) ? .Checkmark : .None
-
-    album.fetchThumbnail {
-      cell.albumImageView.image = $0
-    }
-
+    
     return cell
   }
 

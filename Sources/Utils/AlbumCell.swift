@@ -20,6 +20,18 @@ class AlbumCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Config
+
+  func configure(album: Album) {
+    albumTitleLabel.text = album.collection.localizedTitle
+    itemCountLabel.text = "\(album.items.count)"
+
+
+    album.fetchThumbnail {
+      self.albumImageView.image = $0
+    }
+  }
+
   // MARK: - Setup
 
   func setup() {

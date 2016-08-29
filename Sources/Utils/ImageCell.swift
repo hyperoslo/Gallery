@@ -1,5 +1,6 @@
 import UIKit
 import Cartography
+import Photos
 
 class ImageCell: UICollectionViewCell {
 
@@ -24,6 +25,14 @@ class ImageCell: UICollectionViewCell {
   override var highlighted: Bool {
     didSet {
       overlay.hidden = !highlighted
+    }
+  }
+
+  // MARK: - Config
+
+  func configure(asset: PHAsset) {
+    Fetcher.resolveAsset(asset) { image in
+      self.imageView.image = image
     }
   }
 

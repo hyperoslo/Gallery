@@ -103,11 +103,9 @@ class GridController: UIViewController,
 
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(ImageCell.self), forIndexPath: indexPath)
                 as! ImageCell
+    let item = items[indexPath.item]
 
-    Fetcher.resolveAsset(items[indexPath.item]) { image in
-      cell.imageView.image = image
-    }
-
+    cell.configure(item)
     configureFrameView(cell, indexPath: indexPath)
 
     return cell
