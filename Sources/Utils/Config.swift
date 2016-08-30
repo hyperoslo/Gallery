@@ -30,10 +30,6 @@ public struct Config {
       public static var tintColor: UIColor = UIColor(red: 110/255, green: 117/255, blue: 131/255, alpha: 1)
     }
 
-    public struct BottomContainer {
-      public static var backgroundColor: UIColor = UIColor(red: 3/255, green: 15/255, blue: 29/255, alpha: 0.7)
-    }
-
     public struct FrameView {
       public static var borderColor: UIColor = UIColor(red: 0, green: 239/255, blue: 155/255, alpha: 1)
     }

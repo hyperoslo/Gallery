@@ -3,7 +3,6 @@ import Photos
 
 class VideosLibrary {
 
-  let title = "ALL VIDEOS"
   var items: [PHAsset] = []
   var fetchResults: PHFetchResult?
 

@@ -45,6 +45,9 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
     gridView.collectionView.registerClass(VideoCell.self, forCellWithReuseIdentifier: String(VideoCell.self))
+
+    gridView.arrowButton.updateText("ALL VIDEOS")
+    gridView.arrowButton.arrow.hidden = true
   }
 
   // MARK: - Action

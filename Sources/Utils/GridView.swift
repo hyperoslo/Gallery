@@ -8,6 +8,7 @@ class GridView: UIView {
 
   lazy var topView: UIView = self.makeTopView()
   lazy var bottomView: UIView = self.makeBottomView()
+  lazy var bottomBlurView: UIVisualEffectView = self.makeBottomBlurView()
   lazy var arrowButton: ArrowButton = self.makeArrowButton()
   lazy var collectionView: UICollectionView = self.makeCollectionView()
   lazy var closeButton: UIButton = self.makeCloseButton()
@@ -38,13 +39,13 @@ class GridView: UIView {
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    [doneButton].forEach {
+    [bottomBlurView, doneButton].forEach {
       self.bottomView.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(topView, collectionView, bottomView) {
-      topView, collectionView, bottomView in
+    constrain(topView, collectionView, bottomView, bottomBlurView) {
+      topView, collectionView, bottomView, bottomBlurView in
 
       topView.left == topView.superview!.left
       topView.top == topView.superview!.top
@@ -60,6 +61,8 @@ class GridView: UIView {
       bottomView.right == bottomView.superview!.right
       bottomView.bottom == bottomView.superview!.bottom
       bottomView.height == 80
+
+      bottomBlurView.edges == bottomBlurView.superview!.edges
     }
 
     constrain(closeButton, arrowButton) {
@@ -93,7 +96,12 @@ class GridView: UIView {
 
   func makeBottomView() -> UIView {
     let view = UIView()
-    view.backgroundColor = Config.Camera.BottomContainer.backgroundColor
+
+    return view
+  }
+
+  func makeBottomBlurView() -> UIVisualEffectView {
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
 
     return view
   }
