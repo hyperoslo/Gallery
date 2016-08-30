@@ -18,7 +18,7 @@ class Album {
     items = []
 
     itemsFetchResult.enumerateObjectsUsingBlock { asset, _, _ in
-      if let asset = asset as? PHAsset {
+      if let asset = asset as? PHAsset where asset.mediaType == .Image {
         self.items.append(Image(asset: asset))
       }
     }
