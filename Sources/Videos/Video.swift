@@ -28,7 +28,8 @@ class Video: Equatable {
     let id = PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: nil) {
       asset, mix, _ in
 
-      print(asset)
+      self.duration = asset?.duration.seconds ?? 0
+      completion(self.duration)
     }
 
     durationRequestID = Int(id)

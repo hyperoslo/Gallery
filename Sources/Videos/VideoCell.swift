@@ -13,10 +13,8 @@ class VideoCell: ImageCell {
   func configure(video: Video) {
     super.configure(video.asset)
 
-    durationLabel.text = "2:00"
-
     video.fetchDuration { duration in
-      
+      self.durationLabel.text = "\(Utils.format(duration))"
     }
   }
 

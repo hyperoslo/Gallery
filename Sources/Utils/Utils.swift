@@ -45,4 +45,17 @@ struct Utils {
 
     return options
   }
+
+  static func format(duration: NSTimeInterval) -> String {
+    let formatter = NSDateComponentsFormatter()
+    formatter.zeroFormattingBehavior = .Pad
+
+    if duration >= 3600 {
+      formatter.allowedUnits = [.Hour, .Minute, .Second]
+    } else {
+      formatter.allowedUnits = [.Minute, .Second]
+    }
+
+    return formatter.stringFromTimeInterval(duration) ?? ""
+  }
 }
