@@ -7,6 +7,7 @@ class ImagesController: UIViewController,
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
+  lazy var stackView: StackView = self.makeStackView()
 
   var items: [Image] = []
   var selectedItems: [Image] = []
@@ -43,6 +44,9 @@ class ImagesController: UIViewController,
     gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
     dropdownController.didMoveToParentViewController(self)
 
+    gridView.bottomView.addSubview(stackView)
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+
     constrain(gridView) {
       gridView in
 
@@ -56,6 +60,15 @@ class ImagesController: UIViewController,
       dropdown.right == dropdown.superview!.right
       dropdown.height == dropdown.superview!.height - 40
       self.dropdownController.topConstraint = (dropdown.top == topView.bottom + self.view.frame.size.height ~ 999 )
+    }
+
+    constrain(stackView, gridView.bottomView) {
+      stackView, bottomView in
+
+      stackView.centerY == stackView.superview!.centerY
+      stackView.left == stackView.superview!.left + 40
+      stackView.width == 60
+      stackView.height == 60
     }
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
@@ -179,6 +192,12 @@ class ImagesController: UIViewController,
   func makeGridView() -> GridView {
     let view = GridView()
     
+    return view
+  }
+
+  func makeStackView() -> StackView {
+    let view = StackView()
+
     return view
   }
 }
