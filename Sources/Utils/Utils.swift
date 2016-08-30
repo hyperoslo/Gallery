@@ -39,6 +39,12 @@ struct Utils {
     view.layer.shadowRadius = 1
   }
 
+  static func addRoundBorder(view: UIView) {
+    view.layer.borderWidth = 1
+    view.layer.borderColor = Config.Grid.FrameView.borderColor.CGColor
+    view.layer.cornerRadius = 3
+  }
+
   static func fetchOptions() -> PHFetchOptions {
     var options = PHFetchOptions()
     options.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]

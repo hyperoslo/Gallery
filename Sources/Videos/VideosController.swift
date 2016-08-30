@@ -5,9 +5,20 @@ import Photos
 class VideosController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   lazy var gridView: GridView = self.makeGridView()
+  lazy var videoBox: VideoBox = self.makeVideoBox()
+  lazy var infoLabel: UILabel = self.makeInfoLabel()
 
   var items: [Video] = []
-  var selectedItem: Video?
+  var selectedItem: Video? = nil {
+    didSet {
+      if let selectedItem = selectedItem {
+        videoBox.imageView.loadImage(selectedItem.asset)
+      } else {
+        videoBox.imageView.image = nil
+      }
+    }
+  }
+
   let library = VideosLibrary()
 
   // MARK: - Life cycle
@@ -33,10 +44,28 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
     view.addSubview(gridView)
     gridView.translatesAutoresizingMaskIntoConstraints = false
 
+    [videoBox, infoLabel].forEach {
+      self.gridView.bottomView.addSubview($0)
+      $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+
     constrain(gridView) {
       gridView in
 
       gridView.edges == gridView.superview!.edges
+    }
+
+    constrain(videoBox, infoLabel) {
+      videoBox, infoLabel in
+
+      videoBox.width == 44
+      videoBox.height == 44
+      videoBox.centerY == videoBox.superview!.centerY
+      videoBox.left == videoBox.superview!.left + 16
+
+      infoLabel.centerY == infoLabel.superview!.centerY
+      infoLabel.left == videoBox.right + 11
+      infoLabel.right == infoLabel.superview!.right - 50
     }
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
@@ -118,9 +147,27 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
     }
   }
 
+  // MARK: - Controls
+
   func makeGridView() -> GridView {
     let view = GridView()
     
     return view
+  }
+
+  func makeVideoBox() -> VideoBox {
+    let videoBox = VideoBox()
+
+    return videoBox
+  }
+
+  func makeInfoLabel() -> UILabel {
+    let label = UILabel()
+    label.textColor = UIColor.whiteColor()
+    label.font = UIFont.systemFontOfSize(12)
+
+    label.text = "FIRST 15 SECONDS"
+
+    return label
   }
 }
