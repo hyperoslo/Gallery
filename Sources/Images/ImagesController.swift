@@ -12,8 +12,6 @@ class ImagesController: UIViewController,
   var selectedItems: [PHAsset] = []
   let library = ImagesLibrary()
 
-
-
   // MARK: - Life cycle
 
   override func viewDidLoad() {

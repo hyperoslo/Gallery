@@ -89,13 +89,13 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
   }
 
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    selectedItem = items[indexPath.item]
+    let item = items[indexPath.item]
 
-    configureFrameViews()
-  }
-
-  func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-    selectedItem = nil
+    if let selectedItem = selectedItem where selectedItem == item {
+      self.selectedItem = nil
+    } else {
+      selectedItem = item
+    }
 
     configureFrameViews()
   }
