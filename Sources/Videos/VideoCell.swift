@@ -10,8 +10,8 @@ class VideoCell: ImageCell {
 
   // MARK: - Config
 
-  override func configure(asset: PHAsset) {
-    super.configure(asset)
+  func configure(video: Video) {
+    super.configure(video.asset)
 
     durationLabel.text = "2:00"
   }

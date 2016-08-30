@@ -3,7 +3,7 @@ import Photos
 
 class VideosLibrary {
 
-  var items: [PHAsset] = []
+  var items: [Video] = []
   var fetchResults: PHFetchResult?
 
   // MARK: - Initialization
@@ -20,7 +20,7 @@ class VideosLibrary {
     items = []
     fetchResults?.enumerateObjectsUsingBlock { asset, _, _ in
       if let asset = asset as? PHAsset {
-        self.items.append(asset)
+        self.items.append(Video(asset: asset))
       }
     }
   }

@@ -5,7 +5,7 @@ class Album {
 
   let collection: PHAssetCollection
   let itemsFetchResult: PHFetchResult
-  var items: [PHAsset] = []
+  var items: [Image] = []
 
   // MARK: - Initialization
 
@@ -19,7 +19,7 @@ class Album {
 
     itemsFetchResult.enumerateObjectsUsingBlock { asset, _, _ in
       if let asset = asset as? PHAsset {
-        self.items.append(asset)
+        self.items.append(Image(asset: asset))
       }
     }
   }

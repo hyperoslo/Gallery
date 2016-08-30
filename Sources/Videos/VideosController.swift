@@ -6,8 +6,8 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
 
   lazy var gridView: GridView = self.makeGridView()
 
-  var items: [PHAsset] = []
-  var selectedItem: PHAsset?
+  var items: [Video] = []
+  var selectedItem: Video?
   let library = VideosLibrary()
 
   // MARK: - Life cycle

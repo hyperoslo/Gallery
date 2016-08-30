@@ -1,7 +1,7 @@
 import UIKit
 import Photos
 
-class Image {
+class Image: Equatable {
 
   let asset: PHAsset
 
@@ -9,3 +9,8 @@ class Image {
     self.asset = asset
   }
 }
+
+func ==(lhs: Image, rhs: Image) -> Bool {
+  return lhs.asset == rhs.asset
+}
+

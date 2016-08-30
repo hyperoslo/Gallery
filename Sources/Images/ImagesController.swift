@@ -8,8 +8,8 @@ class ImagesController: UIViewController,
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
 
-  var items: [PHAsset] = []
-  var selectedItems: [PHAsset] = []
+  var items: [Image] = []
+  var selectedItems: [Image] = []
   let library = ImagesLibrary()
 
   // MARK: - Life cycle

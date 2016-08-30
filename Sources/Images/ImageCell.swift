@@ -34,6 +34,10 @@ class ImageCell: UICollectionViewCell {
     imageView.loadImage(asset)
   }
 
+  func configure(image: Image) {
+    configure(image.asset)
+  }
+
   // MARK: - Setup
 
   func setup() {
