@@ -2,7 +2,8 @@ import UIKit
 import Cartography
 import Photos
 
-class VideosController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class VideosController: UIViewController, UICollectionViewDataSource,
+  UICollectionViewDelegateFlowLayout, VideoBoxDelegate {
 
   lazy var gridView: GridView = self.makeGridView()
   lazy var videoBox: VideoBox = self.makeVideoBox()
@@ -147,6 +148,12 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
     }
   }
 
+  // MARK: - VideoBoxDelegate
+
+  func videoBoxDidTap(videoBox: VideoBox) {
+
+  }
+
   // MARK: - Controls
 
   func makeGridView() -> GridView {
@@ -157,6 +164,7 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
 
   func makeVideoBox() -> VideoBox {
     let videoBox = VideoBox()
+    videoBox.delegate = self
 
     return videoBox
   }
