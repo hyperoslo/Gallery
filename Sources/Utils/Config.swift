@@ -37,5 +37,10 @@ public struct Config {
     public struct FrameView {
       public static var borderColor: UIColor = UIColor(red: 0, green: 239/255, blue: 155/255, alpha: 1)
     }
+
+    struct Dimension {
+      static let columnCount: CGFloat = 4
+      static let cellSpacing: CGFloat = 2
+    }
   }
 }
