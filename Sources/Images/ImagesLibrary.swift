@@ -1,17 +1,15 @@
 import UIKit
 import Photos
 
-class Library {
-
-  let type: PHAssetMediaType
+class ImagesLibrary {
 
   var albums: [Album] = []
   var albumsFetchResults: [PHFetchResult] = []
 
   // MARK: - Initialization
 
-  init(type: PHAssetMediaType) {
-    self.type = type
+  init() {
+
   }
 
   // MARK: - Logic

@@ -10,12 +10,9 @@ class ImagesController: UIViewController,
 
   var items: [PHAsset] = []
   var selectedItems: [PHAsset] = []
-  let library: Library = Library(type: .Image)
+  let library = ImagesLibrary()
 
-  struct Dimension {
-    static let columnCount: CGFloat = 4
-    static let cellSpacing: CGFloat = 2
-  }
+
 
   // MARK: - Life cycle
 
@@ -70,6 +67,7 @@ class ImagesController: UIViewController,
     gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
     gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), forControlEvents: .TouchUpInside)
 
+    gridView.collectionView.allowsMultipleSelection = true
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
   }
@@ -120,8 +118,8 @@ class ImagesController: UIViewController,
 
   func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
 
-    let size = (collectionView.bounds.size.width - (Dimension.columnCount - 1) * Dimension.cellSpacing)
-      / Dimension.columnCount
+    let size = (collectionView.bounds.size.width - (Config.Grid.Dimension.columnCount - 1) * Config.Grid.Dimension.cellSpacing)
+      / Config.Grid.Dimension.columnCount
     return CGSize(width: size, height: size)
   }
 

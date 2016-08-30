@@ -136,7 +136,6 @@ class GridView: UIView {
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
     view.backgroundColor = UIColor.whiteColor()
-    view.allowsMultipleSelection = true
 
     return view
   }

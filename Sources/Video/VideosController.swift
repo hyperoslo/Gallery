@@ -7,13 +7,8 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
   lazy var gridView: GridView = self.makeGridView()
 
   var items: [PHAsset] = []
-  var selectedItems: [PHAsset] = []
-  let library: Library = Library(type: .Image)
-
-  struct Dimension {
-    static let columnCount: CGFloat = 4
-    static let cellSpacing: CGFloat = 2
-  }
+  var selectedItem: PHAsset?
+  let library = VideosLibrary()
 
   // MARK: - Life cycle
 
@@ -75,6 +70,7 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
     let item = items[indexPath.item]
 
     cell.configure(item)
+    cell.frameView.label.hidden = true
     configureFrameView(cell, indexPath: indexPath)
 
     return cell
@@ -84,27 +80,19 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
 
   func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
 
-    let size = (collectionView.bounds.size.width - (Dimension.columnCount - 1) * Dimension.cellSpacing)
-      / Dimension.columnCount
+    let size = (collectionView.bounds.size.width - (Config.Grid.Dimension.columnCount - 1) * Config.Grid.Dimension.cellSpacing)
+      / Config.Grid.Dimension.columnCount
     return CGSize(width: size, height: size)
   }
 
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
-
-    if !selectedItems.contains(item) {
-      selectedItems.append(item)
-    }
+    selectedItem = items[indexPath.item]
 
     configureFrameViews()
   }
 
   func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
-
-    if let index = selectedItems.indexOf(item) {
-      selectedItems.removeAtIndex(index)
-    }
+    selectedItem = nil
 
     configureFrameViews()
   }
@@ -120,9 +108,8 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
   func configureFrameView(cell: VideoCell, indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if let index = selectedItems.indexOf(item) {
+    if let selectedItem = selectedItem where selectedItem == item {
       cell.frameView.hidden = false
-      cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.hidden = true
     }
