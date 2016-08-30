@@ -21,11 +21,8 @@ class ImagesController: UIViewController,
 
     setup()
 
-    gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
-
     library.reload()
     dropdownController.albums = library.albums
-    dropdownController.tableView.reloadData()
 
     if let album = library.albums.first {
       select(album: album)
@@ -70,6 +67,7 @@ class ImagesController: UIViewController,
     gridView.collectionView.allowsMultipleSelection = true
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
+    gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
   }
 
   // MARK: - Action

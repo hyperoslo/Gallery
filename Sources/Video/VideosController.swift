@@ -17,9 +17,8 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
 
     setup()
 
-    gridView.collectionView.registerClass(VideoCell.self, forCellWithReuseIdentifier: String(VideoCell.self))
-
     library.reload()
+    items = library.items
   }
 
   override func viewDidAppear(animated: Bool) {
@@ -45,6 +44,7 @@ class VideosController: UIViewController, UICollectionViewDataSource, UICollecti
 
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
+    gridView.collectionView.registerClass(VideoCell.self, forCellWithReuseIdentifier: String(VideoCell.self))
   }
 
   // MARK: - Action
