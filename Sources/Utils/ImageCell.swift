@@ -31,9 +31,7 @@ class ImageCell: UICollectionViewCell {
   // MARK: - Config
 
   func configure(asset: PHAsset) {
-    Fetcher.resolveAsset(asset) { image in
-      self.imageView.image = image
-    }
+    imageView.loadImage(asset)
   }
 
   // MARK: - Setup

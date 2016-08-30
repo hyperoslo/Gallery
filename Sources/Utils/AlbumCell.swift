@@ -26,9 +26,8 @@ class AlbumCell: UITableViewCell {
     albumTitleLabel.text = album.collection.localizedTitle
     itemCountLabel.text = "\(album.items.count)"
 
-
-    album.fetchThumbnail {
-      self.albumImageView.image = $0
+    if let item = album.items.first {
+      albumImageView.loadImage(item)
     }
   }
 

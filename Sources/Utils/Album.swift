@@ -23,14 +23,4 @@ class Album {
       }
     }
   }
-
-  func fetchThumbnail(completion: (UIImage? -> Void)) {
-    guard let item = items.first
-    else {
-      completion(nil)
-      return
-    }
-
-    Fetcher.resolveAsset(item, size: CGSize(width: 60, height: 60), completion: completion)
-  }
 }
