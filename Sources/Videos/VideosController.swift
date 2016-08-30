@@ -155,10 +155,15 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     selectedItem?.fetchPlayerItem { item in
       guard let item = item else { return }
 
-      let controller = AVPlayerViewController()
-      controller.player = AVPlayer(playerItem: item)
+      Dispatch.main {
+        let controller = AVPlayerViewController()
+        let player = AVPlayer(playerItem: item)
+        controller.player = player
 
-      self.presentViewController(controller, animated: true, completion: nil)
+        self.presentViewController(controller, animated: true) {
+          player.play()
+        }
+      }
     }
   }
 
