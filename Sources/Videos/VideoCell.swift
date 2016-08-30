@@ -14,6 +14,10 @@ class VideoCell: ImageCell {
     super.configure(video.asset)
 
     durationLabel.text = "2:00"
+
+    video.fetchDuration { duration in
+      
+    }
   }
 
   // MARK: - Setup
