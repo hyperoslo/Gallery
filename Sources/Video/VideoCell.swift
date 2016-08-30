@@ -8,6 +8,14 @@ class VideoCell: ImageCell {
   lazy var durationLabel: UILabel = self.makeDurationLabel()
   lazy var bottomOverlay: UIView = self.makeBottomOverlay()
 
+  // MARK: - Config
+
+  override func configure(asset: PHAsset) {
+    super.configure(asset)
+
+    durationLabel.text = "2:00"
+  }
+
   // MARK: - Setup
 
   override func setup() {
@@ -31,8 +39,8 @@ class VideoCell: ImageCell {
       cameraImageView.width == 12
       cameraImageView.height == 6
 
-      durationLabel.right == durationLabel.superview!.right
-      durationLabel.bottom == durationLabel.superview!.bottom - 5
+      durationLabel.right == durationLabel.superview!.right - 4
+      durationLabel.bottom == durationLabel.superview!.bottom - 2
     }
   }
 
