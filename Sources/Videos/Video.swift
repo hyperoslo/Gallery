@@ -34,6 +34,14 @@ class Video: Equatable {
 
     durationRequestID = Int(id)
   }
+
+  func fetchPlayerItem(completion: AVPlayerItem? -> Void) {
+    PHImageManager.defaultManager().requestPlayerItemForVideo(asset, options: nil) {
+      item, _ in
+
+      completion(item)
+    }
+  }
 }
 
 // MARK: - Equatable

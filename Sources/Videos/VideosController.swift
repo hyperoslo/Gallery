@@ -1,6 +1,7 @@
 import UIKit
 import Cartography
 import Photos
+import AVKit
 
 class VideosController: UIViewController, UICollectionViewDataSource,
   UICollectionViewDelegateFlowLayout, VideoBoxDelegate {
@@ -151,7 +152,14 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   // MARK: - VideoBoxDelegate
 
   func videoBoxDidTap(videoBox: VideoBox) {
+    selectedItem?.fetchPlayerItem { item in
+      guard let item = item else { return }
 
+      let controller = AVPlayerViewController()
+      controller.player = AVPlayer(playerItem: item)
+
+      self.presentViewController(controller, animated: true, completion: nil)
+    }
   }
 
   // MARK: - Controls
