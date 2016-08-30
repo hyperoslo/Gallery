@@ -5,7 +5,7 @@ import Photos
 class ImageCell: UICollectionViewCell {
 
   lazy var imageView: UIImageView = self.makeImageView()
-  lazy var overlay: UIView = self.makeOverlay()
+  lazy var highlightOverlay: UIView = self.makeHighlightOverlay()
   lazy var frameView: FrameView = self.makeFrameView()
 
   // MARK: - Initialization
@@ -24,7 +24,7 @@ class ImageCell: UICollectionViewCell {
 
   override var highlighted: Bool {
     didSet {
-      overlay.hidden = !highlighted
+      highlightOverlay.hidden = !highlighted
     }
   }
 
@@ -39,17 +39,17 @@ class ImageCell: UICollectionViewCell {
   // MARK: - Setup
 
   func setup() {
-    [imageView, frameView, overlay].forEach {
+    [imageView, frameView, highlightOverlay].forEach {
       self.contentView.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(imageView, frameView, overlay) {
-      imageView, frameView, overlay in
+    constrain(imageView, frameView, highlightOverlay) {
+      imageView, frameView, highlightOverlay in
 
       imageView.edges == imageView.superview!.edges
       frameView.edges == frameView.superview!.edges
-      overlay.edges == overlay.superview!.edges
+      highlightOverlay.edges == highlightOverlay.superview!.edges
     }
   }
 
@@ -63,7 +63,7 @@ class ImageCell: UICollectionViewCell {
     return imageView
   }
 
-  func makeOverlay() -> UIView {
+  func makeHighlightOverlay() -> UIView {
     let view = UIView()
     view.userInteractionEnabled = false
     view.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.3)
