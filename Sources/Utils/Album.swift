@@ -11,7 +11,7 @@ class Album {
 
   init(collection: PHAssetCollection) {
     self.collection = collection
-    self.itemsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+    self.itemsFetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: Utils.fetchOptions())
   }
 
   func reload() {

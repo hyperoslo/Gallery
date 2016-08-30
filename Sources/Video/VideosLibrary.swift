@@ -15,7 +15,7 @@ class VideosLibrary {
   // MARK: - Logic
 
   func reload() {
-    fetchResults = PHAsset.fetchAssetsWithMediaType(.Video, options: nil)
+    fetchResults = PHAsset.fetchAssetsWithMediaType(.Video, options: Utils.fetchOptions())
 
     items = []
     fetchResults?.enumerateObjectsUsingBlock { asset, _, _ in

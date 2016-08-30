@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import Photos
 
 struct Utils {
 
@@ -36,5 +37,12 @@ struct Utils {
     view.layer.shadowOpacity = 0.5
     view.layer.shadowOffset = CGSize(width: 0, height: 1)
     view.layer.shadowRadius = 1
+  }
+
+  static func fetchOptions() -> PHFetchOptions {
+    var options = PHFetchOptions()
+    options.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+
+    return options
   }
 }
