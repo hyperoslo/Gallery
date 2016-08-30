@@ -33,6 +33,12 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
     setup()
   }
 
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    tableView.reloadData()
+  }
+
   // MARK: - Setup
 
   func setup() {

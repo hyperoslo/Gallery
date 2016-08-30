@@ -20,6 +20,12 @@ extension UIViewController {
 extension UIImageView {
 
   func loadImage(asset: PHAsset) {
+    guard frame.size != CGSize.zero
+      else {
+      image = Bundle.image("gallery_placeholder")
+      return
+    }
+
     if tag == 0 {
       image = Bundle.image("gallery_placeholder")
     } else {

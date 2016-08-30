@@ -36,6 +36,12 @@ class GridController: UIViewController,
     }
   }
 
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    gridView.collectionView.reloadData()
+  }
+
   // MARK: - Setup
 
   func setup() {
