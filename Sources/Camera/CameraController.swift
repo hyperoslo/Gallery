@@ -7,7 +7,9 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   var locationManager: LocationManager?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
+
   let imageStack = ImageStack()
+  var cart: Cart!
 
   // MARK: - Life cycle
 
@@ -127,6 +129,8 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   func makeCameraView() -> CameraView {
     let cameraView = CameraView()
     cameraView.delegate = self
+
+    cart.add(delegate: cameraView.stackView)
 
     return cameraView
   }

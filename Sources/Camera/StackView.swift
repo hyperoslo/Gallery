@@ -1,7 +1,7 @@
 import UIKit
 import Photos
 
-class StackView: UIControl {
+class StackView: UIControl, CartDelegate {
 
   lazy var indicator: UIActivityIndicatorView = self.makeIndicator()
   lazy var imageViews: [UIImageView] = self.makeImageViews()
@@ -167,6 +167,20 @@ class StackView: UIControl {
                                                      selector: #selector(imageStackDidChangeContent(_:)),
                                                      name: ImageStack.Notifications.stackDidReload,
                                                      object: nil)
+  }
+
+  // MARK: - CartDelegate
+
+  func cart(cart: Cart, didAdd image: Image) {
+
+  }
+
+  func cart(cart: Cart, didRemove image: Image) {
+
+  }
+
+  func cartDidReload(cart: Cart) {
+
   }
 
   // MARK: - Controls

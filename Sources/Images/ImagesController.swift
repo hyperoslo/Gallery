@@ -10,7 +10,7 @@ class ImagesController: UIViewController,
   lazy var stackView: StackView = self.makeStackView()
 
   var items: [Image] = []
-  var selectedItems: [Image] = []
+  var cart: Cart!
   let library = ImagesLibrary()
 
   // MARK: - Life cycle
@@ -135,8 +135,8 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if !selectedItems.contains(item) {
-      selectedItems.append(item)
+    if cart.images.contains(item) {
+      cart.add(item)
     }
 
     configureFrameViews()
@@ -145,10 +145,7 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if let index = selectedItems.indexOf(item) {
-      selectedItems.removeAtIndex(index)
-    }
-
+    cart.remove(item)
     configureFrameViews()
   }
 
@@ -163,12 +160,7 @@ class ImagesController: UIViewController,
   func configureFrameView(cell: ImageCell, indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if let index = selectedItems.indexOf(item) {
-      cell.frameView.hidden = false
-    } else {
-      cell.frameView.hidden = true
-    }
-
+    cell.frameView.hidden = !cart.images.contains(item)
     cell.frameView.label.hidden = true
   }
 
@@ -198,6 +190,7 @@ class ImagesController: UIViewController,
 
   func makeStackView() -> StackView {
     let view = StackView()
+    cart.add(delegate: stackView)
 
     return view
   }

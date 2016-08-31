@@ -20,7 +20,7 @@ class Cart {
 
   // MARK: - Delegate
 
-  func add(delegate: CartDelegate) {
+  func add(delegate delegate: CartDelegate) {
     delegates.addObject(delegate)
   }
 
