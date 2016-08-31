@@ -10,6 +10,7 @@ protocol CartDelegate: class {
 class Cart {
 
   var images: [Image] = []
+  var delegates = NSHashTable.weakObjectsHashTable()
 
   // MARK: - Initialization
 
@@ -17,19 +18,37 @@ class Cart {
 
   }
 
+  // MARK: - Delegate
+
+  func add(delegate: CartDelegate) {
+    delegates.addObject(delegate)
+  }
+
   // MARK: - Logic
 
   func add(image: Image) {
     images.append(image)
+
+    for case let delegate as CartDelegate in delegates.allObjects {
+      delegate.cart(self, didAdd: image)
+    }
   }
 
   func remove(image: Image) {
-    if let index = images.indexOf(image) {
-      images.removeAtIndex(index)
+    guard let index = images.indexOf(image) else { return }
+
+    images.removeAtIndex(index)
+
+    for case let delegate as CartDelegate in delegates.allObjects {
+      delegate.cart(self, didRemove: image)
     }
   }
 
   func reload(images: [Image]) {
     self.images = images
+
+    for case let delegate as CartDelegate in delegates.allObjects {
+      delegate.cartDidReload(self)
+    }
   }
 }
