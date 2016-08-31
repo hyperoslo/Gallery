@@ -61,7 +61,6 @@ class ShutterButton: UIButton {
     let label = UILabel()
     label.textColor = Config.Camera.ShutterButton.numberColor
     label.font = UIFont.boldSystemFontOfSize(16)
-    label.text = "0"
 
     return label
   }

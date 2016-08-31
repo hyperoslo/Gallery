@@ -41,6 +41,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   // MARK: - Setup
 
   func setup() {
+    shutterButton.numberLabel.hidden = true
+
     addGestureRecognizer(tapGR)
 
     [closeButton, flashButton, rotateButton, bottomContainer].forEach {
