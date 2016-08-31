@@ -43,6 +43,7 @@ struct Utils {
     view.layer.borderWidth = 1
     view.layer.borderColor = Config.Grid.FrameView.borderColor.CGColor
     view.layer.cornerRadius = 3
+    view.clipsToBounds = true
   }
 
   static func fetchOptions() -> PHFetchOptions {
