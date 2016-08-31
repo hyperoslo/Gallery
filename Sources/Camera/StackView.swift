@@ -19,7 +19,6 @@ class StackView: UIControl, CartDelegate {
     super.init(frame: frame)
 
     setup()
-    subscribe()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -90,17 +89,21 @@ class StackView: UIControl, CartDelegate {
       animateImageView(emptyView)
     }
 
+    /*
     if let sender = notification.object as? ImageStack {
       renderViews(sender.assets)
       indicator.stopAnimating()
     }
+     */
   }
 
   func imageStackDidChangeContent(notification: NSNotification) {
+    /*
     if let sender = notification.object as? ImageStack {
       renderViews(sender.assets)
       indicator.stopAnimating()
     }
+     */
   }
 
   func renderViews(assets: [PHAsset]) {
@@ -150,37 +153,18 @@ class StackView: UIControl, CartDelegate {
     }
   }
 
-  // MARK: - Notification
-
-  func subscribe() {
-    NSNotificationCenter.defaultCenter().addObserver(self,
-                                                     selector: #selector(imageDidPush(_:)),
-                                                     name: ImageStack.Notifications.imageDidPush,
-                                                     object: nil)
-
-    NSNotificationCenter.defaultCenter().addObserver(self,
-                                                     selector: #selector(imageStackDidChangeContent(_:)),
-                                                     name: ImageStack.Notifications.imageDidDrop,
-                                                     object: nil)
-    
-    NSNotificationCenter.defaultCenter().addObserver(self,
-                                                     selector: #selector(imageStackDidChangeContent(_:)),
-                                                     name: ImageStack.Notifications.stackDidReload,
-                                                     object: nil)
-  }
-
   // MARK: - CartDelegate
 
   func cart(cart: Cart, didAdd image: Image) {
-
+    renderViews(cart.images.map { $0.asset })
   }
 
   func cart(cart: Cart, didRemove image: Image) {
-
+    renderViews(cart.images.map { $0.asset })
   }
 
   func cartDidReload(cart: Cart) {
-
+    renderViews(cart.images.map { $0.asset })
   }
 
   // MARK: - Controls

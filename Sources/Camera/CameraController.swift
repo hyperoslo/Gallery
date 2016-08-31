@@ -8,7 +8,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
 
-  let imageStack = ImageStack()
   var cart: Cart!
 
   // MARK: - Life cycle
@@ -37,6 +36,8 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   // MARK: - Setup
 
   func setup() {
+    cart.add(delegate: cameraView.stackView)
+
     view.addSubview(cameraView)
 
     cameraView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,7 +107,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
 
       Fetcher.fetch { assets in
         if let first = assets.first {
-          self.imageStack.pushAsset(first)
           self.cameraView.stackView.startLoader()
         }
       }
@@ -129,8 +129,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   func makeCameraView() -> CameraView {
     let cameraView = CameraView()
     cameraView.delegate = self
-
-    cart.add(delegate: cameraView.stackView)
 
     return cameraView
   }

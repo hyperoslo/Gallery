@@ -37,6 +37,8 @@ class ImagesController: UIViewController,
   // MARK: - Setup
 
   func setup() {
+    cart.add(delegate: stackView)
+
     view.addSubview(gridView)
     gridView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -135,7 +137,7 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if cart.images.contains(item) {
+    if !cart.images.contains(item) {
       cart.add(item)
     }
 
@@ -190,7 +192,6 @@ class ImagesController: UIViewController,
 
   func makeStackView() -> StackView {
     let view = StackView()
-    cart.add(delegate: stackView)
 
     return view
   }
