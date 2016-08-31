@@ -2,18 +2,34 @@ PODS:
   - Cartography (0.6.0)
   - Gallery (0.1.0):
     - Cartography
+  - Hue (1.1.1)
+  - Lightbox (1.0.0):
+    - Hue
+    - Sugar
+  - Sugar (1.2.0)
 
 DEPENDENCIES:
   - Gallery (from `../../`)
+  - Lightbox (from `https://github.com/hyperoslo/Lightbox.git`)
 
 EXTERNAL SOURCES:
   Gallery:
     :path: "../../"
+  Lightbox:
+    :git: https://github.com/hyperoslo/Lightbox.git
+
+CHECKOUT OPTIONS:
+  Lightbox:
+    :commit: 0495a8c5473623c411ddf21d551b1ddc3b3f0578
+    :git: https://github.com/hyperoslo/Lightbox.git
 
 SPEC CHECKSUMS:
   Cartography: 70af183a248547694a8cfaa6b989cb7e04589985
-  Gallery: 4edcb3aa10435583597416030988b957371fc56b
+  Gallery: f2ea284fc9569b03886c9d052c1e2b9e58cf006b
+  Hue: 931aeeadcb29ce5de5b97589aa936be4638a1501
+  Lightbox: 6deb5fc2c51f353212631470c4c689bc5120598c
+  Sugar: 556b623f0f8846cf08de7302701892f11d567419
 
-PODFILE CHECKSUM: 4fa8ad0618da426878d529d7f6b1249cfb933302
+PODFILE CHECKSUM: ca5ebfaf5b3d2d0d2916dcc96ba18ae8326c7603
 
 COCOAPODS: 1.0.1
