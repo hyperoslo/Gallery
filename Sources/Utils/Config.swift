@@ -18,6 +18,10 @@ public struct Config {
     public struct BottomContainer {
       public static var backgroundColor: UIColor = UIColor(red: 3/255, green: 15/255, blue: 29/255, alpha: 0.7)
     }
+
+    public struct StackView {
+      public static let imageCount: Int = 4
+    }
   }
 
   public struct Grid {

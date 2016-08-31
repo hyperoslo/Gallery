@@ -5,13 +5,12 @@ class StackView: UIControl, CartDelegate {
 
   lazy var indicator: UIActivityIndicatorView = self.makeIndicator()
   lazy var imageViews: [UIImageView] = self.makeImageViews()
+  lazy var countLabel: UILabel = self.makeCountLabel()
   lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
 
   struct Dimensions {
     static let imageSize: CGFloat = 58
   }
-  
-  let imageCount = 4
 
   // MARK: - Initialization
 
@@ -25,10 +24,6 @@ class StackView: UIControl, CartDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  deinit {
-    NSNotificationCenter.defaultCenter().removeObserver(self)
-  }
-
   // MARK: - Setup
 
   func setup() {
@@ -37,7 +32,9 @@ class StackView: UIControl, CartDelegate {
       addSubview($0)
     }
 
-    addSubview(indicator)
+    [countLabel, indicator].forEach {
+      self.addSubview($0)
+    }
 
     imageViews.first?.alpha = 1
   }
@@ -47,18 +44,15 @@ class StackView: UIControl, CartDelegate {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    let step: CGFloat = -3.0
+    let step: CGFloat = 3.0
     let scale: CGFloat = 0.8
-    let viewSize = CGSize(width: frame.width * scale,
+    let imageViewSize = CGSize(width: frame.width * scale,
                           height: frame.height * scale)
 
-    let offset = -step * CGFloat(imageViews.count)
-    var origin = CGPoint(x: offset, y: offset)
-
-    for view in imageViews {
-      origin.x += step
-      origin.y += step
-      view.frame = CGRect(origin: origin, size: viewSize)
+    for (index, imageView) in imageViews.enumerate() {
+      let origin = CGPoint(x: CGFloat(index) * step,
+                           y: CGFloat(imageViews.count - index) * step)
+      imageView.frame = CGRect(origin: origin, size: imageViewSize)
     }
   }
 
@@ -177,18 +171,24 @@ class StackView: UIControl, CartDelegate {
   }
 
   func makeImageViews() -> [UIImageView] {
-    return Array(0..<imageCount).map { _ in
+    return Array(0..<Config.Camera.StackView.imageCount).map { _ in
       let imageView = UIImageView()
 
-      imageView.layer.cornerRadius = 3
-      imageView.layer.borderColor = UIColor.whiteColor().CGColor
-      imageView.layer.borderWidth = 1
       imageView.contentMode = .ScaleAspectFill
-      imageView.clipsToBounds = true
       imageView.alpha = 0
+      Utils.addRoundBorder(imageView)
 
       return imageView
     }
+  }
+
+  func makeCountLabel() -> UILabel {
+    let label = UILabel()
+    label.textColor = UIColor.whiteColor()
+    label.font = UIFont.systemFontOfSize(20)
+    label.hidden = true
+
+    return label
   }
 
   func makeTapGR() -> UITapGestureRecognizer {

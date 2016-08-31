@@ -67,10 +67,10 @@ class ImagesController: UIViewController,
     constrain(stackView, gridView.bottomView) {
       stackView, bottomView in
 
-      stackView.centerY == stackView.superview!.centerY
-      stackView.left == stackView.superview!.left + 40
-      stackView.width == 60
-      stackView.height == 60
+      stackView.centerY == stackView.superview!.centerY - 4
+      stackView.left == stackView.superview!.left + 38
+      stackView.width == 58
+      stackView.height == 58
     }
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)

@@ -60,8 +60,8 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     constrain(videoBox, infoLabel) {
       videoBox, infoLabel in
 
-      videoBox.width == 44
-      videoBox.height == 44
+      videoBox.width == 48
+      videoBox.height == 48
       videoBox.centerY == videoBox.superview!.centerY
       videoBox.left == videoBox.superview!.left + 16
 
