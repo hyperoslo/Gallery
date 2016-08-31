@@ -8,10 +8,6 @@ class StackView: UIControl, CartDelegate {
   lazy var countLabel: UILabel = self.makeCountLabel()
   lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
 
-  struct Dimensions {
-    static let imageSize: CGFloat = 58
-  }
-
   // MARK: - Initialization
 
   override init(frame: CGRect) {
@@ -35,8 +31,6 @@ class StackView: UIControl, CartDelegate {
     [countLabel, indicator].forEach {
       self.addSubview($0)
     }
-
-    imageViews.first?.alpha = 1
   }
 
   // MARK: - Layout
@@ -64,10 +58,11 @@ class StackView: UIControl, CartDelegate {
 
   // MARK: - Logic
 
-  func startLoader() {
-    if let firstVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last {
-      indicator.frame.origin.x = firstVisibleView.center.x
-      indicator.frame.origin.y = firstVisibleView.center.y
+  func startLoading() {
+    if let topVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last {
+      indicator.center = topVisibleView.center
+    } else if let first = imageViews.first {
+      indicator.center = first.center
     }
 
     indicator.startAnimating()
@@ -76,80 +71,51 @@ class StackView: UIControl, CartDelegate {
     }
   }
 
-  func imageDidPush(notification: NSNotification) {
-    let emptyView = imageViews.filter { $0.image == nil }.first
-
-    if let emptyView = emptyView {
-      animateImageView(emptyView)
-    }
-
-    /*
-    if let sender = notification.object as? ImageStack {
-      renderViews(sender.assets)
-      indicator.stopAnimating()
-    }
-     */
-  }
-
-  func imageStackDidChangeContent(notification: NSNotification) {
-    /*
-    if let sender = notification.object as? ImageStack {
-      renderViews(sender.assets)
-      indicator.stopAnimating()
-    }
-     */
+  func stopLoading() {
+    indicator.stopAnimating()
+    indicator.alpha = 0
   }
 
   func renderViews(assets: [PHAsset]) {
-    if let firstView = imageViews.first where assets.isEmpty {
-      imageViews.forEach{
-        $0.image = nil
-        $0.alpha = 0
-      }
-
-      firstView.alpha = 1
-      return
-    }
-
-    let photos = Array(assets.suffix(4))
+    let photos = Array(assets.suffix(Config.Camera.StackView.imageCount))
 
     for (index, view) in imageViews.enumerate() {
-      if index <= photos.count - 1 {
-        Fetcher.resolveAsset(photos[index], size: CGSize(width: Dimensions.imageSize, height: Dimensions.imageSize)) { image in
-          view.image = image
-        }
+      if index < photos.count {
+        view.loadImage(photos[index])
         view.alpha = 1
       } else {
         view.image = nil
         view.alpha = 0
       }
-
-      if index == photos.count {
-        UIView.animateWithDuration(0.3) {
-          self.indicator.frame.origin = CGPoint(x: view.center.x + 3, y: view.center.x + 3)
-        }
-      }
     }
   }
 
-  private func animateImageView(imageView: UIImageView) {
+  private func animate(imageView imageView: UIImageView) {
     imageView.transform = CGAffineTransformMakeScale(0, 0)
 
-    UIView.animateWithDuration(0.3, animations: {
-      imageView.transform = CGAffineTransformMakeScale(1.05, 1.05)
-    }) { _ in
-      UIView.animateWithDuration(0.2, animations: { () -> Void in
-        self.indicator.alpha = 0.0
+    UIView.animateKeyframesWithDuration(0.5, delay: 0, options: [], animations: {
+      UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0.6) {
+        imageView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+      }
+
+      UIView.addKeyframeWithRelativeStartTime(0.6, relativeDuration: 0.4) {
         imageView.transform = CGAffineTransformIdentity
-        }, completion: { _ in
-          self.indicator.stopAnimating()
-      })
-    }
+      }
+
+    }, completion: { finished in
+      
+    })
   }
 
   // MARK: - CartDelegate
 
   func cart(cart: Cart, didAdd image: Image) {
+    let emptyView = imageViews.filter { $0.image == nil }.first
+
+    if let emptyView = emptyView {
+      animate(imageView: emptyView)
+    }
+
     renderViews(cart.images.map { $0.asset })
   }
 

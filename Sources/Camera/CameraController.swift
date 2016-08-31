@@ -102,14 +102,10 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
       }
     })
 
+    self.cameraView.stackView.startLoading()
     cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) {
       button.enabled = true
-
-      Fetcher.fetch { assets in
-        if let first = assets.first {
-          self.cameraView.stackView.startLoader()
-        }
-      }
+      self.cameraView.stackView.stopLoading()
     }
   }
 
