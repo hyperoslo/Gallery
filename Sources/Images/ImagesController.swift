@@ -165,10 +165,11 @@ class ImagesController: UIViewController,
 
     if let index = selectedItems.indexOf(item) {
       cell.frameView.hidden = false
-      cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.hidden = true
     }
+
+    cell.frameView.label.hidden = true
   }
 
   // MARK: - DropdownControllerDelegate
