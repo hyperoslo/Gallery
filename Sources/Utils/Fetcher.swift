@@ -70,4 +70,8 @@ struct Fetcher {
 
     return items
   }
+
+  static func fetchAsset(localIdentifer: String) -> PHAsset? {
+    return PHAsset.fetchAssetsWithLocalIdentifiers([localIdentifer], options: nil).firstObject as? PHAsset
+  }
 }

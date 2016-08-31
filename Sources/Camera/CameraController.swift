@@ -103,9 +103,13 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
     })
 
     self.cameraView.stackView.startLoading()
-    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) {
+    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { asset in
       button.enabled = true
       self.cameraView.stackView.stopLoading()
+
+      if let asset = asset {
+        self.cart.add(Image(asset: asset))
+      }
     }
   }
 

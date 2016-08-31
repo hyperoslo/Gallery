@@ -1,6 +1,7 @@
 import Foundation
 import AVFoundation
 import PhotosUI
+import Photos
 
 protocol CameraManDelegate: class {
   func cameraManNotAvailable(cameraMan: CameraMan)
@@ -148,7 +149,7 @@ class CameraMan {
     }
   }
 
-  func takePhoto(previewLayer: AVCaptureVideoPreviewLayer, location: CLLocation?, completion: (() -> Void)? = nil) {
+  func takePhoto(previewLayer: AVCaptureVideoPreviewLayer, location: CLLocation?, completion: ((PHAsset?) -> Void)) {
     guard let connection = stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo) else { return }
 
     connection.videoOrientation = Utils.videoOrientation()
@@ -161,8 +162,8 @@ class CameraMan {
           let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer),
           image = UIImage(data: imageData)
           else {
-            dispatch_async(dispatch_get_main_queue()) {
-              completion?()
+            Dispatch.main {
+              completion(nil)
             }
             return
         }
@@ -172,15 +173,23 @@ class CameraMan {
     }
   }
 
-  func savePhoto(image: UIImage, location: CLLocation?, completion: (() -> Void)? = nil) {
+  func savePhoto(image: UIImage, location: CLLocation?, completion: ((PHAsset?) -> Void)) {
+    var localIdentifier: String?
+
     PHPhotoLibrary.sharedPhotoLibrary().performChanges({
       let request = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+      localIdentifier = request.placeholderForCreatedAsset?.localIdentifier
+
       request.creationDate = NSDate()
       request.location = location
-      }, completionHandler: { _ in
-        dispatch_async(dispatch_get_main_queue()) {
-          completion?()
+    }, completionHandler: { _ in
+      Dispatch.main {
+        if let localIdentifier = localIdentifier {
+          completion(Fetcher.fetchAsset(localIdentifier))
+        } else {
+          completion(nil)
         }
+      }
     })
   }
 
