@@ -17,6 +17,13 @@ extension UIViewController {
   }
 }
 
+extension UIScrollView {
+
+  func scrollToTop() {
+    setContentOffset(CGPoint.zero, animated: false)
+  }
+}
+
 extension UIImageView {
 
   func loadImage(asset: PHAsset) {

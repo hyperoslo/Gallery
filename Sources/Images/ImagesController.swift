@@ -102,6 +102,7 @@ class ImagesController: UIViewController,
 
     items = album.items
     gridView.collectionView.reloadData()
+    gridView.collectionView.scrollToTop()
   }
 
   // MARK: - UICollectionViewDataSource
