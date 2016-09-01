@@ -8,12 +8,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
 
-  var cart: Cart! {
-    didSet {
-      cart.add(delegate: self)
-    }
-  }
-
   // MARK: - Life cycle
 
   override func viewDidLoad() {
@@ -110,7 +104,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
       self.cameraView.stackView.stopLoading()
 
       if let asset = asset {
-        self.cart.add(Image(asset: asset))
+        Cart.shared.add(Image(asset: asset))
       }
     }
   }
