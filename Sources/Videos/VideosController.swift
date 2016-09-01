@@ -78,6 +78,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   // MARK: - UICollectionViewDataSource
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    gridView.emptyView.hidden = !items.isEmpty
     return items.count
   }
 
