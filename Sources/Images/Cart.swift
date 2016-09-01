@@ -31,6 +31,8 @@ class Cart {
   // MARK: - Logic
 
   func add(image: Image) {
+    guard images.contains(image) else { return }
+    
     images.append(image)
 
     for case let delegate as CartDelegate in delegates.allObjects {
