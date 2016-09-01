@@ -55,7 +55,7 @@ public struct Config {
     public struct Text {
       public static var regular: UIFont = UIFont.systemFontOfSize(1)
       public static var bold: UIFont = UIFont.boldSystemFontOfSize(1)
-      public static var semiBold: UIFont = UIFont.boldSystemFontOfSize(1)
+      public static var semibold: UIFont = UIFont.boldSystemFontOfSize(1)
     }
   }
 }

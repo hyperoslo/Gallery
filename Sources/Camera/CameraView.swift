@@ -212,6 +212,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeDoneButton() -> UIButton {
     let button = UIButton(type: .System)
     button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+    button.setTitleColor(UIColor.lightGrayColor(), forState: .Disabled)
     button.titleLabel?.font = Config.Font.Text.regular.fontWithSize(16)
     button.setTitle("Done", forState: .Normal)
     button.enabled = false
