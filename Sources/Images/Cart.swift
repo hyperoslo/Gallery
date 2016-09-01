@@ -12,6 +12,7 @@ class Cart {
   static let shared = Cart()
 
   var images: [Image] = []
+  private var lightBoxUIImages: [UIImage] = []
   var video: Video?
   var delegates = NSHashTable.weakObjectsHashTable()
 
@@ -66,10 +67,24 @@ class Cart {
   // MARK: - UIImages
 
   func UIImages() -> [UIImage] {
-    return Fetcher.fetchImages(images.map({ $0.asset }))
+    lightBoxUIImages = Fetcher.fetchImages(images.map({ $0.asset }))
+    return lightBoxUIImages
   }
 
-  func reload(images: [UIImage]) {
-    
+  func reload(UIImages: [UIImage]) {
+    var changedImages: [Image] = []
+
+    lightBoxUIImages.filter {
+      return UIImages.contains($0)
+    }.flatMap {
+      return lightBoxUIImages.indexOf($0)
+    }.forEach { index in
+      if index < images.count {
+        changedImages.append(images[index])
+      }
+    }
+
+    lightBoxUIImages = []
+    reload(changedImages)
   }
 }
