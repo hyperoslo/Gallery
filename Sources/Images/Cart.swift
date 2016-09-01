@@ -62,4 +62,10 @@ class Cart {
     images.removeAll()
     delegates.removeAllObjects()
   }
+
+  // MARK: - UIImages
+
+  func UIImages() -> [UIImage] {
+    return Fetcher.fetchImages(images.map({ $0.asset }))
+  }
 }

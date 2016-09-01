@@ -84,11 +84,11 @@ class ImagesController: UIViewController,
   // MARK: - Action
 
   func closeButtonTouched(button: UIButton) {
-    EventBus.shared.close?()
+    EventHub.shared.close?()
   }
 
   func doneButtonTouched(button: UIButton) {
-    EventBus.shared.doneWithImages?()
+    EventHub.shared.doneWithImages?()
   }
 
   func arrowButtonTouched(button: ArrowButton) {
@@ -97,7 +97,7 @@ class ImagesController: UIViewController,
   }
 
   func stackViewTouched(stackView: StackView) {
-    EventBus.shared.stackViewTouched?()
+    EventHub.shared.stackViewTouched?()
   }
 
   // MARK: - Logic

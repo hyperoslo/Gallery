@@ -1,10 +1,10 @@
 import Foundation
 
-class EventBus {
+class EventHub {
 
   typealias Action = () -> Void
 
-  static let shared = EventBus()
+  static let shared = EventHub()
 
   // MARK: Initialization
 

@@ -2,7 +2,7 @@ import UIKit
 import Gallery
 import Lightbox
 
-class ViewController: UIViewController, LightboxControllerDismissalDelegate {
+class ViewController: UIViewController, LightboxControllerDismissalDelegate, GalleryControllerDelegate {
 
   var button: UIButton!
 
@@ -25,19 +25,35 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate {
   }
 
   func buttonTouched(button: UIButton) {
-    let photos = GalleryController()
-    presentViewController(photos, animated: true, completion: nil)
-  }
+    let gallery = GalleryController()
+    gallery.delegate = self
 
-  func showLightbox(images: [UIImage]) {
-    let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
-    presentViewController(lightbox, animated: true, completion: nil)
+    presentViewController(gallery, animated: true, completion: nil)
   }
 
   // MARK: - LightboxControllerDismissalDelegate
 
   func lightboxControllerWillDismiss(controller: LightboxController) {
     
+  }
+
+  // MARK: - GalleryControllerDelegate
+
+  func galleryControllerDidCancel(controller: GalleryController) {
+    controller.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  func galleryController(controller: GalleryController, didSelect video: Video) {
+    controller.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  func galleryController(controller: GalleryController, didSelect images: [UIImage]) {
+    controller.dismissViewControllerAnimated(true, completion: nil)
+  }
+
+  func galleryController(controller: GalleryController, requestLightbox images: [UIImage]) {
+    let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
+    presentViewController(lightbox, animated: true, completion: nil)
   }
 }
 

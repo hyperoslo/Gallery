@@ -28,47 +28,20 @@ struct Fetcher {
     }
   }
 
-  public static func resolveAsset(asset: PHAsset, size: CGSize = CGSize(width: 720, height: 1280), completion: (image: UIImage?) -> Void) {
-    let imageManager = PHImageManager.defaultManager()
-    let requestOptions = PHImageRequestOptions()
-
-    imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: requestOptions) { image, info in
-      if let info = info where info["PHImageFileUTIKey"] == nil {
-        Dispatch.main {
-          completion(image: image)
-        }
-      }
-    }
-  }
-
-  public static func resolveAssets(assets: [PHAsset], size: CGSize = CGSize(width: 720, height: 1280)) -> [UIImage] {
-    let imageManager = PHImageManager.defaultManager()
-    let requestOptions = PHImageRequestOptions()
-    requestOptions.synchronous = true
+  static func fetchImages(assets: [PHAsset], size: CGSize = UIScreen.mainScreen().bounds.size) -> [UIImage] {
+    let options = PHImageRequestOptions()
+    options.synchronous = true
 
     var images = [UIImage]()
     for asset in assets {
-      imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: requestOptions) { image, info in
+      PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: options) { image, _ in
         if let image = image {
           images.append(image)
         }
       }
     }
-    
+
     return images
-  }
-
-  static func fetchAlbums() -> [PHAssetCollection] {
-    let result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .Any, options: nil)
-
-    var items: [PHAssetCollection] = []
-    result.enumerateObjectsUsingBlock { item, index, stop in
-      if let item = item as? PHAssetCollection {
-        items.append(item)
-      }
-    }
-
-    return items
   }
 
   static func fetchAsset(localIdentifer: String) -> PHAsset? {

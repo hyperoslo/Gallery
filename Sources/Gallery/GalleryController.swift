@@ -3,9 +3,9 @@ import Cartography
 
 public protocol GalleryControllerDelegate: class {
 
-  func galleryController(controller: GalleryController, didSelect images: [Image])
+  func galleryController(controller: GalleryController, didSelect images: [UIImage])
   func galleryController(controller: GalleryController, didSelect video: Video)
-  func galleryController(controller: GalleryController, requestLightbox images: [Image])
+  func galleryController(controller: GalleryController, requestLightbox images: [UIImage])
   func galleryControllerDidCancel(controller: GalleryController)
 }
 
@@ -68,27 +68,27 @@ public class GalleryController: UIViewController {
   func setup() {
     addChildController(pagesController)
 
-    EventBus.shared.close = { [weak self] in
+    EventHub.shared.close = { [weak self] in
       if let strongSelf = self {
         strongSelf.delegate?.galleryControllerDidCancel(strongSelf)
       }
     }
 
-    EventBus.shared.doneWithImages = { [weak self] in
+    EventHub.shared.doneWithImages = { [weak self] in
       if let strongSelf = self {
-        strongSelf.delegate?.galleryController(strongSelf, didSelect: Cart.shared.images)
+        strongSelf.delegate?.galleryController(strongSelf, didSelect: Cart.shared.UIImages())
       }
     }
 
-    EventBus.shared.doneWithVideos = { [weak self] in
+    EventHub.shared.doneWithVideos = { [weak self] in
       if let strongSelf = self, video = Cart.shared.video {
         strongSelf.delegate?.galleryController(strongSelf, didSelect: video)
       }
     }
 
-    EventBus.shared.stackViewTouched = { [weak self] in
+    EventHub.shared.stackViewTouched = { [weak self] in
       if let strongSelf = self {
-        strongSelf.delegate?.galleryController(strongSelf, requestLightbox: Cart.shared.images)
+        strongSelf.delegate?.galleryController(strongSelf, requestLightbox: Cart.shared.UIImages())
       }
     }
   }
