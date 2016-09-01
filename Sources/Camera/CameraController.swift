@@ -143,6 +143,8 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
 
   func cart(cart: Cart, didAdd image: Image) {
     cameraView.stackView.reload(cart.images, added: true)
+
+    
   }
 
   func cart(cart: Cart, didRemove image: Image) {

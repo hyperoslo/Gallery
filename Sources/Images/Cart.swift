@@ -9,12 +9,14 @@ protocol CartDelegate: class {
 
 class Cart {
 
+  static let shared = Cart()
+
   var images: [Image] = []
   var delegates = NSHashTable.weakObjectsHashTable()
 
   // MARK: - Initialization
 
-  init() {
+  private init() {
 
   }
 

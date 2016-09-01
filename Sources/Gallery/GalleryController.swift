@@ -9,8 +9,6 @@ public class GalleryController: UIViewController {
 
   lazy var pagesController: PagesController = self.makePagesController()
 
-  let cart = Cart()
-
   // MARK: - Life cycle
 
   public override func viewDidLoad() {
@@ -29,7 +27,7 @@ public class GalleryController: UIViewController {
   func makeImagesController() -> ImagesController {
     let controller = ImagesController()
     controller.title = "Images"
-    controller.cart = cart
+    Cart.shared.add(delegate: controller)
 
     return controller
   }
@@ -37,7 +35,7 @@ public class GalleryController: UIViewController {
   func makeCameraController() -> CameraController {
     let controller = CameraController()
     controller.title = "Camera"
-    controller.cart = cart
+    Cart.shared.add(delegate: controller)
 
     return controller
   }

@@ -10,12 +10,6 @@ class ImagesController: UIViewController,
   lazy var stackView: StackView = self.makeStackView()
 
   var items: [Image] = []
-  var cart: Cart! {
-    didSet {
-      cart.add(delegate: self)
-    }
-  }
-
   let library = ImagesLibrary()
 
   // MARK: - Life cycle
@@ -140,8 +134,8 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if !cart.images.contains(item) {
-      cart.add(item)
+    if !Cart.shared.images.contains(item) {
+      Cart.shared.add(item)
     }
 
     configureFrameViews()
@@ -150,7 +144,7 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    cart.remove(item)
+    Cart.shared.remove(item)
     configureFrameViews()
   }
 
@@ -165,7 +159,7 @@ class ImagesController: UIViewController,
   func configureFrameView(cell: ImageCell, indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    cell.frameView.hidden = !cart.images.contains(item)
+    cell.frameView.hidden = !Cart.shared.images.contains(item)
     cell.frameView.label.hidden = true
   }
 
