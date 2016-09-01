@@ -53,4 +53,11 @@ class Cart {
       delegate.cartDidReload(self)
     }
   }
+
+  // MARK: - Reset
+
+  func reset() {
+    images.removeAll()
+    delegates.removeAllObjects()
+  }
 }
