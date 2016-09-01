@@ -13,6 +13,7 @@ class GridView: UIView {
   lazy var collectionView: UICollectionView = self.makeCollectionView()
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
+  lazy var emptyView: UIView = self.makeEmptyView()
 
   // MARK: - Initialization
 
@@ -29,7 +30,7 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
-    [collectionView, bottomView, topView].forEach {
+    [collectionView, bottomView, topView, emptyView].forEach {
       self.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -44,8 +45,8 @@ class GridView: UIView {
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(topView, collectionView, bottomView, bottomBlurView) {
-      topView, collectionView, bottomView, bottomBlurView in
+    constrain(topView, collectionView, bottomView, emptyView) {
+      topView, collectionView, bottomView, emptyView in
 
       topView.left == topView.superview!.left
       topView.top == topView.superview!.top
@@ -61,6 +62,12 @@ class GridView: UIView {
       bottomView.right == bottomView.superview!.right
       bottomView.bottom == bottomView.superview!.bottom
       bottomView.height == 80
+
+      emptyView.edges == collectionView.edges
+    }
+
+    constrain(bottomBlurView) {
+      bottomBlurView in
 
       bottomBlurView.edges == bottomBlurView.superview!.edges
     }
@@ -148,6 +155,13 @@ class GridView: UIView {
     view.backgroundColor = UIColor.whiteColor()
     view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
     view.scrollIndicatorInsets = view.contentInset
+
+    return view
+  }
+
+  func makeEmptyView() -> EmptyView {
+    let view = EmptyView()
+    view.hidden = true
 
     return view
   }
