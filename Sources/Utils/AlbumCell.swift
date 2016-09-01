@@ -72,7 +72,7 @@ class AlbumCell: UITableViewCell {
     let imageView = UIImageView()
     imageView.image = Bundle.image("gallery_placeholder")
 
-    Utils.addShadow(imageView)
+    imageView.addShadow()
 
     return imageView
   }

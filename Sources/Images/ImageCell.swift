@@ -77,7 +77,7 @@ class ImageCell: UICollectionViewCell {
 
   func makeFrameView() -> FrameView {
     let frameView = FrameView(frame: .zero)
-    frameView.hidden = true
+    frameView.alpha = 0
 
     return frameView
   }

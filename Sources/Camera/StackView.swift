@@ -123,11 +123,11 @@ class StackView: UIControl{
     // Update count label
     if let topVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last where images.count > 1 {
       countLabel.text = "\(images.count)"
-      countLabel.hidden = false
       countLabel.sizeToFit()
       countLabel.center = topVisibleView.center
+      countLabel.fadeIn()
     } else {
-      countLabel.hidden = true
+      countLabel.alpha = 0
     }
   }
   
@@ -146,7 +146,7 @@ class StackView: UIControl{
 
       imageView.contentMode = .ScaleAspectFill
       imageView.alpha = 0
-      Utils.addRoundBorder(imageView)
+      imageView.addRoundBorder()
 
       return imageView
     }
@@ -157,8 +157,8 @@ class StackView: UIControl{
     label.textColor = UIColor.whiteColor()
     label.font = Config.Font.Main.regular.fontWithSize(20)
     label.textAlignment = .Center
-    Utils.addShadow(label)
-    label.hidden = true
+    label.addShadow()
+    label.alpha = 0
 
     return label
   }

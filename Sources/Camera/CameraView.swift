@@ -54,7 +54,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     }
 
     [closeButton, flashButton, rotateButton].forEach {
-      Utils.addShadow($0)
+      $0.addShadow()
     }
 
     rotateOverlayView.addSubview(blurView)

@@ -160,10 +160,10 @@ class ImagesController: UIViewController,
     let item = items[indexPath.item]
 
     if let index = Cart.shared.images.indexOf(item) {
-      cell.frameView.hidden = false
+      cell.frameView.fadeIn()
       cell.frameView.label.text = "\(index + 1)"
     } else {
-      cell.frameView.hidden = true
+      cell.frameView.alpha = 0
     }
   }
 

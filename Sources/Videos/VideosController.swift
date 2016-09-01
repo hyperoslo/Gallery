@@ -135,9 +135,9 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     let item = items[indexPath.item]
 
     if let selectedItem = Cart.shared.video where selectedItem == item {
-      cell.frameView.hidden = false
+      cell.frameView.fadeIn()
     } else {
-      cell.frameView.hidden = true
+      cell.frameView.alpha = 0
     }
   }
 
