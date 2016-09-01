@@ -13,11 +13,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   var items: [Video] = []
   var selectedItem: Video? = nil {
     didSet {
-      if let selectedItem = selectedItem {
-        videoBox.imageView.loadImage(selectedItem.asset)
-      } else {
-        videoBox.imageView.image = nil
-      }
+      refreshView()
     }
   }
 
@@ -38,6 +34,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     super.viewDidAppear(animated)
 
     gridView.collectionView.reloadData()
+    refreshView()
   }
 
   // MARK: - Setup
@@ -165,6 +162,20 @@ class VideosController: UIViewController, UICollectionViewDataSource,
         }
       }
     }
+  }
+
+  // MARK: - View
+
+  func refreshView() {
+    if let selectedItem = selectedItem {
+      videoBox.imageView.loadImage(selectedItem.asset)
+    } else {
+      videoBox.imageView.image = nil
+    }
+
+    gridView.doneButton.enabled = (selectedItem != nil)
+    videoBox.hidden = (selectedItem == nil)
+    infoLabel.hidden = (selectedItem == nil)
   }
 
   // MARK: - Controls
