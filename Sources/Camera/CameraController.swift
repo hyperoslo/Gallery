@@ -2,13 +2,17 @@ import UIKit
 import Cartography
 import AVFoundation
 
-class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate {
+class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate, CartDelegate {
 
   var locationManager: LocationManager?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
 
-  var cart: Cart!
+  var cart: Cart! {
+    didSet {
+      cart.add(delegate: self)
+    }
+  }
 
   // MARK: - Life cycle
 
@@ -36,8 +40,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
   // MARK: - Setup
 
   func setup() {
-    cart.add(delegate: cameraView.stackView)
-
     view.addSubview(cameraView)
 
     cameraView.translatesAutoresizingMaskIntoConstraints = false
@@ -117,22 +119,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
 
   }
 
-  // MARK: - Controls
-
-  func makeCameraMan() -> CameraMan {
-    let man = CameraMan()
-    man.delegate = self
-
-    return man
-  }
-
-  func makeCameraView() -> CameraView {
-    let cameraView = CameraView()
-    cameraView.delegate = self
-
-    return cameraView
-  }
-
   // MARK: - CameraManDelegate
 
   func cameraManDidStart(cameraMan: CameraMan) {
@@ -151,5 +137,35 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate 
 
   func cameraView(cameraView: CameraView, didTouch point: CGPoint) {
     cameraMan.focus(point)
+  }
+
+  // MARK: - CartDelegate
+
+  func cart(cart: Cart, didAdd image: Image) {
+    cameraView.stackView.reload(cart.images, added: true)
+  }
+
+  func cart(cart: Cart, didRemove image: Image) {
+    cameraView.stackView.reload(cart.images)
+  }
+
+  func cartDidReload(cart: Cart) {
+    cameraView.stackView.reload(cart.images)
+  }
+
+  // MARK: - Controls
+
+  func makeCameraMan() -> CameraMan {
+    let man = CameraMan()
+    man.delegate = self
+
+    return man
+  }
+
+  func makeCameraView() -> CameraView {
+    let cameraView = CameraView()
+    cameraView.delegate = self
+
+    return cameraView
   }
 }

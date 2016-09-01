@@ -3,14 +3,19 @@ import Cartography
 import Photos
 
 class ImagesController: UIViewController,
-  UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownControllerDelegate {
+  UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownControllerDelegate, CartDelegate {
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
   lazy var stackView: StackView = self.makeStackView()
 
   var items: [Image] = []
-  var cart: Cart!
+  var cart: Cart! {
+    didSet {
+      cart.add(delegate: self)
+    }
+  }
+
   let library = ImagesLibrary()
 
   // MARK: - Life cycle
@@ -37,8 +42,6 @@ class ImagesController: UIViewController,
   // MARK: - Setup
 
   func setup() {
-    cart.add(delegate: stackView)
-
     view.addSubview(gridView)
     gridView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -173,6 +176,20 @@ class ImagesController: UIViewController,
 
     dropdownController.toggle()
     gridView.arrowButton.toggle(dropdownController.expanding)
+  }
+
+  // MARK: - CartDelegate
+
+  func cart(cart: Cart, didAdd image: Image) {
+    stackView.reload(cart.images, added: true)
+  }
+
+  func cart(cart: Cart, didRemove image: Image) {
+    stackView.reload(cart.images)
+  }
+
+  func cartDidReload(cart: Cart) {
+    stackView.reload(cart.images)
   }
 
   // MARK: - Controls
