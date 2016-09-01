@@ -41,8 +41,6 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   // MARK: - Setup
 
   func setup() {
-    shutterButton.numberLabel.hidden = true
-
     addGestureRecognizer(tapGR)
 
     [closeButton, flashButton, rotateButton, bottomContainer].forEach {
@@ -214,7 +212,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeDoneButton() -> UIButton {
     let button = UIButton(type: .System)
     button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    button.titleLabel?.font = UIFont.systemFontOfSize(16)
+    button.titleLabel?.font = Config.Font.Text.regular.fontWithSize(16)
     button.setTitle("Done", forState: .Normal)
     button.enabled = false
 

@@ -4,7 +4,6 @@ import Cartography
 class ShutterButton: UIButton {
 
   lazy var overlayView: UIView = self.makeOverlayView()
-  lazy var numberLabel: UILabel = self.makeNumberLabel()
   lazy var roundLayer: CAShapeLayer = self.makeRoundLayer()
 
   // MARK: - Initialization
@@ -38,13 +37,6 @@ class ShutterButton: UIButton {
 
     addSubview(overlayView)
     layer.addSublayer(roundLayer)
-
-    addSubview(numberLabel)
-    numberLabel.translatesAutoresizingMaskIntoConstraints = false
-
-    constrain(numberLabel) { numberLabel in
-      numberLabel.center == numberLabel.superview!.center
-    }
   }
 
   // MARK: - Controls
@@ -55,14 +47,6 @@ class ShutterButton: UIButton {
     view.userInteractionEnabled = false
 
     return view
-  }
-
-  func makeNumberLabel() -> UILabel {
-    let label = UILabel()
-    label.textColor = Config.Camera.ShutterButton.numberColor
-    label.font = UIFont.boldSystemFontOfSize(16)
-
-    return label
   }
 
   func makeRoundLayer() -> CAShapeLayer {

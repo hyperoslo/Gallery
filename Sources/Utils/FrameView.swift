@@ -37,7 +37,7 @@ class FrameView: UIView {
 
   func makeLabel() -> UILabel {
     let label = UILabel()
-    label.font = UIFont.systemFontOfSize(40)
+    label.font = Config.Font.Main.regular.fontWithSize(40)
     label.textColor = UIColor.whiteColor()
 
     Utils.addShadow(label)

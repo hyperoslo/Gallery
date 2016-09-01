@@ -57,7 +57,7 @@ class VideoCell: ImageCell {
 
   func makeDurationLabel() -> UILabel {
     let label = UILabel()
-    label.font = UIFont.boldSystemFontOfSize(9)
+    label.font = Config.Font.Text.bold.fontWithSize(9)
     label.textColor = UIColor.whiteColor()
     label.textAlignment = .Right
 

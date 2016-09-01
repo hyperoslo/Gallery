@@ -196,7 +196,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   func makeInfoLabel() -> UILabel {
     let label = UILabel()
     label.textColor = UIColor.whiteColor()
-    label.font = UIFont.systemFontOfSize(12)
+    label.font = Config.Font.Text.regular.fontWithSize(12)
 
     label.text = "FIRST 15 SECONDS"
 
