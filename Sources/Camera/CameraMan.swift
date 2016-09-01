@@ -59,7 +59,7 @@ class CameraMan {
     if session.canAddInput(input) {
       session.addInput(input)
 
-      dispatch_async(dispatch_get_main_queue()) {
+      Dispatch.main {
         self.delegate?.cameraMan(self, didChangeInput: input)
       }
     }
@@ -82,7 +82,7 @@ class CameraMan {
 
   func requestPermission() {
     AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo) { granted in
-      dispatch_async(dispatch_get_main_queue()) {
+      Dispatch.main {
         if granted {
           self.start()
         } else {
@@ -110,10 +110,10 @@ class CameraMan {
       session.addOutput(output)
     }
 
-    dispatch_async(queue) {
+    Dispatch.on(queue) {
       self.session.startRunning()
 
-      dispatch_async(dispatch_get_main_queue()) {
+      Dispatch.main {
         self.delegate?.cameraManDidStart(self)
       }
     }
@@ -130,10 +130,10 @@ class CameraMan {
         return
     }
 
-    dispatch_async(queue) {
+    Dispatch.on(queue) {
       guard let input = (currentInput == self.backCamera) ? self.frontCamera : self.backCamera
         else {
-          dispatch_async(dispatch_get_main_queue()) {
+          Dispatch.main {
             completion?()
           }
           return
@@ -144,7 +144,7 @@ class CameraMan {
         self.addInput(input)
       }
 
-      dispatch_async(dispatch_get_main_queue()) {
+      Dispatch.main {
         completion?()
       }
     }
@@ -155,7 +155,7 @@ class CameraMan {
 
     connection.videoOrientation = Utils.videoOrientation()
 
-    dispatch_async(queue) {
+    Dispatch.on(queue) {
       self.stillImageOutput?.captureStillImageAsynchronouslyFromConnection(connection) {
         buffer, error in
 
@@ -177,7 +177,7 @@ class CameraMan {
   func savePhoto(image: UIImage, location: CLLocation?, completion: ((PHAsset?) -> Void)) {
     var localIdentifier: String?
 
-    dispatch_async(savingQueue) {
+    Dispatch.on(savingQueue) {
       do {
         try PHPhotoLibrary.sharedPhotoLibrary().performChangesAndWait {
           let request = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
@@ -205,7 +205,7 @@ class CameraMan {
   func flash(mode: AVCaptureFlashMode) {
     guard let device = currentInput?.device where device.isFlashModeSupported(mode) else { return }
 
-    dispatch_async(queue) {
+    Dispatch.on(queue) {
       self.lock {
         device.flashMode = mode
       }
@@ -215,7 +215,7 @@ class CameraMan {
   func focus(point: CGPoint) {
     guard let device = currentInput?.device where device.isFocusModeSupported(AVCaptureFocusMode.Locked) else { return }
 
-    dispatch_async(queue) {
+    Dispatch.on(queue) {
       self.lock {
         device.focusPointOfInterest = point
       }

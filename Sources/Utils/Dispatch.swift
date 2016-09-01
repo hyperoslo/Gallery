@@ -2,9 +2,11 @@ import Foundation
 
 struct Dispatch {
 
-  static func main(block: () -> Void) {
-    dispatch_async(dispatch_get_main_queue()) {
-      block()
-    }
+  static func on(queue: dispatch_queue_t, block: dispatch_block_t) {
+    dispatch_async(queue, block)
+  }
+
+  static func main(block: dispatch_block_t) {
+    on(dispatch_get_main_queue(), block: block)
   }
 }

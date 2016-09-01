@@ -22,9 +22,9 @@ struct Fetcher {
         }
       }
 
-      dispatch_async(dispatch_get_main_queue(), {
+      Dispatch.main {
         completion(assets: assets)
-      })
+      }
     }
   }
 
@@ -34,9 +34,9 @@ struct Fetcher {
 
     imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: requestOptions) { image, info in
       if let info = info where info["PHImageFileUTIKey"] == nil {
-        dispatch_async(dispatch_get_main_queue(), {
+        Dispatch.main {
           completion(image: image)
-        })
+        }
       }
     }
   }
