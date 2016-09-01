@@ -21,16 +21,11 @@ class ImagesController: UIViewController,
 
     library.reload()
     dropdownController.albums = library.albums
+    gridView.collectionView.reloadData()
 
     if let album = library.albums.first {
       select(album: album)
     }
-  }
-
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-
-    gridView.collectionView.reloadData()
   }
 
   // MARK: - Setup

@@ -24,13 +24,6 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     items = library.items
   }
 
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-
-    gridView.collectionView.reloadData()
-    refreshView()
-  }
-
   // MARK: - Setup
 
   func setup() {
@@ -184,6 +177,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
 
   func makeVideoBox() -> VideoBox {
     let videoBox = VideoBox()
+    videoBox.hidden = true
     videoBox.delegate = self
 
     return videoBox
@@ -193,8 +187,8 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     let label = UILabel()
     label.textColor = UIColor.whiteColor()
     label.font = Config.Font.Text.regular.fontWithSize(12)
-
     label.text = "FIRST 15 SECONDS"
+    label.hidden = true
 
     return label
   }
