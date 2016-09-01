@@ -52,8 +52,12 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   }
 
   func galleryController(controller: GalleryController, requestLightbox images: [UIImage]) {
+    LightboxConfig.DeleteButton.enabled = true
+    
     let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
-    presentViewController(lightbox, animated: true, completion: nil)
+    lightbox.dismissalDelegate = self
+
+    controller.presentViewController(lightbox, animated: true, completion: nil)
   }
 }
 
