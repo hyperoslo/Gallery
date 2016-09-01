@@ -122,10 +122,10 @@ class StackView: UIControl{
 
     // Update count label
     if let topVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last where images.count > 1 {
-      countLabel.center = topVisibleView.center
       countLabel.text = "\(images.count)"
       countLabel.hidden = false
       countLabel.sizeToFit()
+      countLabel.center = topVisibleView.center
     } else {
       countLabel.hidden = true
     }
