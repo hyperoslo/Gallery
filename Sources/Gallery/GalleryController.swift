@@ -27,7 +27,7 @@ public class GalleryController: UIViewController {
 
   func makeImagesController() -> ImagesController {
     let controller = ImagesController()
-    controller.title = "Images"
+    controller.title = "IMAGES"
     Cart.shared.add(delegate: controller)
 
     return controller
@@ -35,7 +35,7 @@ public class GalleryController: UIViewController {
 
   func makeCameraController() -> CameraController {
     let controller = CameraController()
-    controller.title = "Camera"
+    controller.title = "CAMERA"
     Cart.shared.add(delegate: controller)
 
     return controller
@@ -43,7 +43,7 @@ public class GalleryController: UIViewController {
 
   func makeVideosController() -> VideosController {
     let controller = VideosController()
-    controller.title = "Videos"
+    controller.title = "VIDEOS"
 
     return controller
   }

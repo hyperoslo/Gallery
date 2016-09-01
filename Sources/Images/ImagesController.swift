@@ -98,7 +98,7 @@ class ImagesController: UIViewController,
   // MARK: - Logic
 
   func select(album album: Album) {
-    gridView.arrowButton.updateText(album.collection.localizedTitle ?? "Album")
+    gridView.arrowButton.updateText(album.collection.localizedTitle ?? "Images")
 
     items = album.items
     gridView.collectionView.reloadData()
