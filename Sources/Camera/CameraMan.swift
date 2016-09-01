@@ -14,6 +14,7 @@ class CameraMan {
 
   let session = AVCaptureSession()
   let queue = dispatch_queue_create("no.hyper.Gallery.Camera.SessionQueue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
+  let savingQueue = dispatch_queue_create("no.hyper.Gallery.Camera.SavingQueue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
 
   var backCamera: AVCaptureDeviceInput?
   var frontCamera: AVCaptureDeviceInput?
@@ -176,21 +177,29 @@ class CameraMan {
   func savePhoto(image: UIImage, location: CLLocation?, completion: ((PHAsset?) -> Void)) {
     var localIdentifier: String?
 
-    PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-      let request = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-      localIdentifier = request.placeholderForCreatedAsset?.localIdentifier
+    dispatch_async(savingQueue) {
+      do {
+        try PHPhotoLibrary.sharedPhotoLibrary().performChangesAndWait {
+          let request = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+          localIdentifier = request.placeholderForCreatedAsset?.localIdentifier
 
-      request.creationDate = NSDate()
-      request.location = location
-    }, completionHandler: { success, error in
-      Dispatch.main {
-        if let localIdentifier = localIdentifier where success {
-          completion(Fetcher.fetchAsset(localIdentifier))
-        } else {
+          request.creationDate = NSDate()
+          request.location = location
+        }
+
+        Dispatch.main {
+          if let localIdentifier = localIdentifier {
+            completion(Fetcher.fetchAsset(localIdentifier))
+          } else {
+            completion(nil)
+          }
+        }
+      } catch {
+        Dispatch.main {
           completion(nil)
         }
       }
-    })
+    }
   }
 
   func flash(mode: AVCaptureFlashMode) {
