@@ -133,6 +133,7 @@ class GridView: UIView {
     button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
     button.titleLabel?.font = UIFont.systemFontOfSize(16)
     button.setTitle("Done", forState: .Normal)
+    button.enabled = false
     
     return button
   }

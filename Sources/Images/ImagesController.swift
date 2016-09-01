@@ -176,14 +176,24 @@ class ImagesController: UIViewController,
 
   func cart(cart: Cart, didAdd image: Image) {
     stackView.reload(cart.images, added: true)
+    refreshView()
   }
 
   func cart(cart: Cart, didRemove image: Image) {
     stackView.reload(cart.images)
+    refreshView()
   }
 
   func cartDidReload(cart: Cart) {
     stackView.reload(cart.images)
+    refreshView()
+  }
+
+  // MARK: - View
+
+  func refreshView() {
+    gridView.doneButton.enabled = !Cart.shared.images.isEmpty
+    stackView.hidden = Cart.shared.images.isEmpty
   }
 
   // MARK: - Controls

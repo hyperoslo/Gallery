@@ -143,16 +143,24 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
 
   func cart(cart: Cart, didAdd image: Image) {
     cameraView.stackView.reload(cart.images, added: true)
-
-    
+    refreshView()
   }
 
   func cart(cart: Cart, didRemove image: Image) {
     cameraView.stackView.reload(cart.images)
+    refreshView()
   }
 
   func cartDidReload(cart: Cart) {
     cameraView.stackView.reload(cart.images)
+    refreshView()
+  }
+
+  // MARK: - View
+
+  func refreshView() {
+    cameraView.doneButton.enabled = !Cart.shared.images.isEmpty
+    cameraView.stackView.hidden = Cart.shared.images.isEmpty
   }
 
   // MARK: - Controls
