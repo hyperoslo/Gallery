@@ -110,13 +110,25 @@ class StackView: UIControl{
   // MARK: - Reload
 
   func reload(images: [Image], added: Bool = false) {
+    // Animate empty view
     if added {
       if let emptyView = imageViews.filter({ $0.image == nil }).first {
         animate(imageView: emptyView)
       }
     }
 
+    // Update images into views
     renderViews(images.map { $0.asset })
+
+    // Update count label
+    if let topVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last where images.count > 1 {
+      countLabel.center = topVisibleView.center
+      countLabel.text = "\(images.count)"
+      countLabel.hidden = false
+      countLabel.sizeToFit()
+    } else {
+      countLabel.hidden = true
+    }
   }
   
   // MARK: - Controls
@@ -144,6 +156,8 @@ class StackView: UIControl{
     let label = UILabel()
     label.textColor = UIColor.whiteColor()
     label.font = UIFont.systemFontOfSize(20)
+    label.textAlignment = .Center
+    Utils.addShadow(label)
     label.hidden = true
 
     return label
