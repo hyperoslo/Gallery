@@ -73,6 +73,7 @@ class ImagesController: UIViewController,
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
     gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
     gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), forControlEvents: .TouchUpInside)
+    stackView.addTarget(self, action: #selector(stackViewTouched(_:)), forControlEvents: .TouchUpInside)
 
     gridView.collectionView.allowsMultipleSelection = true
     gridView.collectionView.dataSource = self
@@ -83,16 +84,20 @@ class ImagesController: UIViewController,
   // MARK: - Action
 
   func closeButtonTouched(button: UIButton) {
-    dismissViewControllerAnimated(true, completion: nil)
+    EventBus.shared.close?()
   }
 
   func doneButtonTouched(button: UIButton) {
-
+    EventBus.shared.doneWithImages?()
   }
 
   func arrowButtonTouched(button: ArrowButton) {
     dropdownController.toggle()
     button.toggle(dropdownController.expanding)
+  }
+
+  func stackViewTouched(stackView: StackView) {
+    EventBus.shared.stackViewTouched?()
   }
 
   // MARK: - Logic

@@ -75,11 +75,11 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   // MARK: - Action
 
   func closeButtonTouched(button: UIButton) {
-    dismissViewControllerAnimated(true, completion: nil)
+    EventBus.shared.close?()
   }
 
   func doneButtonTouched(button: UIButton) {
-
+    EventBus.shared.doneWithVideos?()
   }
 
   // MARK: - UICollectionViewDataSource

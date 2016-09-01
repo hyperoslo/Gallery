@@ -3,10 +3,10 @@ import Cartography
 
 public protocol GalleryControllerDelegate: class {
 
-  func galleryController(galleryController: GalleryController, didSelect images: [Image])
-  func galleryController(galleryController: GalleryController, didSelect video: Video)
-  func galleryController(galleryController: GalleryController, requestLightbox images: [Image])
-  func galleryControllerDidCancel(galleryController: GalleryController)
+  func galleryController(controller: GalleryController, didSelect images: [Image])
+  func galleryController(controller: GalleryController, didSelect video: Video)
+  func galleryController(controller: GalleryController, requestLightbox images: [Image])
+  func galleryControllerDidCancel(controller: GalleryController)
 }
 
 public class GalleryController: UIViewController {
@@ -67,5 +67,29 @@ public class GalleryController: UIViewController {
 
   func setup() {
     addChildController(pagesController)
+
+    EventBus.shared.close = { [weak self] in
+      if let strongSelf = self {
+        strongSelf.delegate?.galleryControllerDidCancel(strongSelf)
+      }
+    }
+
+    EventBus.shared.doneWithImages = { [weak self] in
+      if let strongSelf = self {
+        strongSelf.delegate?.galleryController(strongSelf, didSelect: Cart.shared.images)
+      }
+    }
+
+    EventBus.shared.doneWithVideos = { [weak self] in
+      if let strongSelf = self, video = Cart.shared.video {
+        strongSelf.delegate?.galleryController(strongSelf, didSelect: video)
+      }
+    }
+
+    EventBus.shared.stackViewTouched = { [weak self] in
+      if let strongSelf = self {
+        strongSelf.delegate?.galleryController(strongSelf, requestLightbox: Cart.shared.images)
+      }
+    }
   }
 }

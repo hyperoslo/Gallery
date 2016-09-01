@@ -59,7 +59,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   // MARK: - Action
 
   func closeButtonTouched(button: UIButton) {
-    dismissViewControllerAnimated(true, completion: nil)
+    EventBus.shared.close?()
   }
 
   func flashButtonTouched(button: UIButton) {
@@ -83,7 +83,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   }
 
   func stackViewTouched(stackView: StackView) {
-
+    EventBus.shared.stackViewTouched?()
   }
 
   func shutterButtonTouched(button: ShutterButton) {
@@ -110,7 +110,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   }
 
   func doneButtonTouched(button: UIButton) {
-
+    EventBus.shared.doneWithImages?()
   }
 
   // MARK: - CameraManDelegate
