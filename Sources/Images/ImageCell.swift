@@ -31,6 +31,7 @@ class ImageCell: UICollectionViewCell {
   // MARK: - Config
 
   func configure(asset: PHAsset) {
+    imageView.layoutIfNeeded()
     imageView.loadImage(asset)
   }
 

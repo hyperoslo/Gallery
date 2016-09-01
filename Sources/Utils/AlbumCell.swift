@@ -27,6 +27,7 @@ class AlbumCell: UITableViewCell {
     itemCountLabel.text = "\(album.items.count)"
 
     if let item = album.items.first {
+      albumImageView.layoutIfNeeded()
       albumImageView.loadImage(item.asset)
     }
   }
