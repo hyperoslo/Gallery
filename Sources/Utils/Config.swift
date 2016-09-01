@@ -47,15 +47,15 @@ public struct Config {
   public struct Font {
 
     public struct Main {
-      public static var light: UIFont = UIFont.systemFontOfSize(0)
-      public static var regular: UIFont = UIFont.systemFontOfSize(0)
-      public static var bold: UIFont = UIFont.boldSystemFontOfSize(0)
+      public static var light: UIFont = UIFont.systemFontOfSize(1)
+      public static var regular: UIFont = UIFont.systemFontOfSize(1)
+      public static var bold: UIFont = UIFont.boldSystemFontOfSize(1)
     }
 
     public struct Text {
-      public static var regular: UIFont = UIFont.systemFontOfSize(0)
-      public static var bold: UIFont = UIFont.boldSystemFontOfSize(0)
-      public static var semiBold: UIFont = UIFont.boldSystemFontOfSize(0)
+      public static var regular: UIFont = UIFont.systemFontOfSize(1)
+      public static var bold: UIFont = UIFont.boldSystemFontOfSize(1)
+      public static var semiBold: UIFont = UIFont.boldSystemFontOfSize(1)
     }
   }
 }
