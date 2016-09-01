@@ -1,6 +1,14 @@
 import UIKit
 import Cartography
 
+public protocol GalleryControllerDelegate: class {
+
+  func galleryController(galleryController: GalleryController, didSelect images: [Image])
+  func galleryController(galleryController: GalleryController, didSelect video: Video)
+  func galleryController(galleryController: GalleryController, requestLightbox images: [Image])
+  func galleryControllerDidCancel(galleryController: GalleryController)
+}
+
 public class GalleryController: UIViewController {
 
   lazy var imagesController: ImagesController = self.makeImagesController()
@@ -8,6 +16,7 @@ public class GalleryController: UIViewController {
   lazy var videosController: VideosController = self.makeVideosController()
 
   lazy var pagesController: PagesController = self.makePagesController()
+  public weak var delegate: GalleryControllerDelegate?
 
   // MARK: - Life cycle
 

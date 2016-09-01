@@ -1,7 +1,7 @@
 import UIKit
 import Photos
 
-class Video: Equatable {
+public class Video: Equatable {
 
   let asset: PHAsset
 
@@ -46,6 +46,6 @@ class Video: Equatable {
 
 // MARK: - Equatable
 
-func ==(lhs: Video, rhs: Video) -> Bool {
+public func ==(lhs: Video, rhs: Video) -> Bool {
   return lhs.asset == rhs.asset
 }
