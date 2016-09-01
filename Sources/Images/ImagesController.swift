@@ -140,10 +140,7 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if !Cart.shared.images.contains(item) {
-      Cart.shared.add(item)
-    }
-
+    Cart.shared.add(item)
     configureFrameViews()
   }
 
@@ -165,8 +162,12 @@ class ImagesController: UIViewController,
   func configureFrameView(cell: ImageCell, indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    cell.frameView.hidden = !Cart.shared.images.contains(item)
-    cell.frameView.label.hidden = true
+    if let index = Cart.shared.images.indexOf(item) {
+      cell.frameView.hidden = false
+      cell.frameView.label.text = "\(index + 1)"
+    } else {
+      cell.frameView.hidden = true
+    }
   }
 
   // MARK: - DropdownControllerDelegate
