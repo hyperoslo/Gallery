@@ -182,9 +182,9 @@ class CameraMan {
 
       request.creationDate = NSDate()
       request.location = location
-    }, completionHandler: { _ in
+    }, completionHandler: { success, error in
       Dispatch.main {
-        if let localIdentifier = localIdentifier {
+        if let localIdentifier = localIdentifier where success {
           completion(Fetcher.fetchAsset(localIdentifier))
         } else {
           completion(nil)
