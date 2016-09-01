@@ -32,20 +32,6 @@ struct Utils {
     }
   }
 
-  static func addShadow(view: UIView) {
-    view.layer.shadowColor = UIColor.blackColor().CGColor
-    view.layer.shadowOpacity = 0.5
-    view.layer.shadowOffset = CGSize(width: 0, height: 1)
-    view.layer.shadowRadius = 1
-  }
-
-  static func addRoundBorder(view: UIView) {
-    view.layer.borderWidth = 1
-    view.layer.borderColor = Config.Grid.FrameView.borderColor.CGColor
-    view.layer.cornerRadius = 3
-    view.clipsToBounds = true
-  }
-
   static func fetchOptions() -> PHFetchOptions {
     var options = PHFetchOptions()
     options.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
