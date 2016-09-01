@@ -32,6 +32,12 @@ public class GalleryController: UIViewController {
     return true
   }
 
+  // MARK: - Logic
+
+  public func reload(images: [UIImage]) {
+    Cart.shared.reload(images)
+  }
+
   // MARK: - Child view controller
 
   func makeImagesController() -> ImagesController {

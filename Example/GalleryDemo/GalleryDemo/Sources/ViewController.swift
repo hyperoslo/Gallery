@@ -5,6 +5,7 @@ import Lightbox
 class ViewController: UIViewController, LightboxControllerDismissalDelegate, GalleryControllerDelegate {
 
   var button: UIButton!
+  var gallery: GalleryController!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -25,7 +26,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   }
 
   func buttonTouched(button: UIButton) {
-    let gallery = GalleryController()
+    gallery = GalleryController()
     gallery.delegate = self
 
     presentViewController(gallery, animated: true, completion: nil)
@@ -34,7 +35,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   // MARK: - LightboxControllerDismissalDelegate
 
   func lightboxControllerWillDismiss(controller: LightboxController) {
-    
+    gallery.reload(controller.images.flatMap({ $0.image }))
   }
 
   // MARK: - GalleryControllerDelegate
@@ -53,7 +54,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
   func galleryController(controller: GalleryController, requestLightbox images: [UIImage]) {
     LightboxConfig.DeleteButton.enabled = true
-    
+
     let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
     lightbox.dismissalDelegate = self
 

@@ -68,4 +68,8 @@ class Cart {
   func UIImages() -> [UIImage] {
     return Fetcher.fetchImages(images.map({ $0.asset }))
   }
+
+  func reload(images: [UIImage]) {
+    
+  }
 }
