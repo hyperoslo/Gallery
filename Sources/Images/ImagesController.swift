@@ -75,7 +75,6 @@ class ImagesController: UIViewController,
     gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), forControlEvents: .TouchUpInside)
     stackView.addTarget(self, action: #selector(stackViewTouched(_:)), forControlEvents: .TouchUpInside)
 
-    gridView.collectionView.allowsMultipleSelection = true
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
     gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
@@ -140,14 +139,12 @@ class ImagesController: UIViewController,
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    Cart.shared.add(item)
-    configureFrameViews()
-  }
+    if Cart.shared.images.contains(item) {
+      Cart.shared.remove(item)
+    } else {
+      Cart.shared.add(item)
+    }
 
-  func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
-
-    Cart.shared.remove(item)
     configureFrameViews()
   }
 
