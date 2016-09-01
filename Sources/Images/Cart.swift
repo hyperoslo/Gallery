@@ -12,6 +12,7 @@ class Cart {
   static let shared = Cart()
 
   var images: [Image] = []
+  var video: Video?
   var delegates = NSHashTable.weakObjectsHashTable()
 
   // MARK: - Initialization
@@ -57,6 +58,7 @@ class Cart {
   // MARK: - Reset
 
   func reset() {
+    video = nil
     images.removeAll()
     delegates.removeAllObjects()
   }

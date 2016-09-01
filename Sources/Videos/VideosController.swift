@@ -11,12 +11,6 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   lazy var infoLabel: UILabel = self.makeInfoLabel()
 
   var items: [Video] = []
-  var selectedItem: Video? = nil {
-    didSet {
-      refreshView()
-    }
-  }
-
   let library = VideosLibrary()
 
   // MARK: - Life cycle
@@ -119,12 +113,13 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if let selectedItem = selectedItem where selectedItem == item {
-      self.selectedItem = nil
+    if let selectedItem = Cart.shared.video where selectedItem == item {
+      Cart.shared.video = nil
     } else {
-      selectedItem = item
+      Cart.shared.video = item
     }
 
+    refreshView()
     configureFrameViews()
   }
 
@@ -139,7 +134,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   func configureFrameView(cell: VideoCell, indexPath: NSIndexPath) {
     let item = items[indexPath.item]
 
-    if let selectedItem = selectedItem where selectedItem == item {
+    if let selectedItem = Cart.shared.video where selectedItem == item {
       cell.frameView.hidden = false
     } else {
       cell.frameView.hidden = true
@@ -149,7 +144,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   // MARK: - VideoBoxDelegate
 
   func videoBoxDidTap(videoBox: VideoBox) {
-    selectedItem?.fetchPlayerItem { item in
+    Cart.shared.video?.fetchPlayerItem { item in
       guard let item = item else { return }
 
       Dispatch.main {
@@ -167,15 +162,16 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   // MARK: - View
 
   func refreshView() {
-    if let selectedItem = selectedItem {
+    if let selectedItem = Cart.shared.video {
       videoBox.imageView.loadImage(selectedItem.asset)
     } else {
       videoBox.imageView.image = nil
     }
 
-    gridView.doneButton.enabled = (selectedItem != nil)
-    videoBox.hidden = (selectedItem == nil)
-    infoLabel.hidden = (selectedItem == nil)
+    let hasVideoSelected = (Cart.shared.video != nil)
+    gridView.doneButton.enabled = hasVideoSelected
+    videoBox.hidden = !hasVideoSelected
+    infoLabel.hidden = !hasVideoSelected
   }
 
   // MARK: - Controls

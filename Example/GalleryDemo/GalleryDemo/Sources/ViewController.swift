@@ -1,7 +1,8 @@
 import UIKit
 import Gallery
+import Lightbox
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, LightboxControllerDismissalDelegate {
 
   var button: UIButton!
 
@@ -26,6 +27,17 @@ class ViewController: UIViewController {
   func buttonTouched(button: UIButton) {
     let photos = GalleryController()
     presentViewController(photos, animated: true, completion: nil)
+  }
+
+  func showLightbox(images: [UIImage]) {
+    let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
+    presentViewController(lightbox, animated: true, completion: nil)
+  }
+
+  // MARK: - LightboxControllerDismissalDelegate
+
+  func lightboxControllerWillDismiss(controller: LightboxController) {
+    
   }
 }
 
