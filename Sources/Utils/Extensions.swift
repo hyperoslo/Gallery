@@ -44,3 +44,14 @@ extension UIImageView {
     tag = Int(id)
   }
 }
+
+extension Array {
+
+  mutating func moveToFirst(index: Int) {
+    guard index != 0 && index < count else { return }
+
+    let item = self[index]
+    removeAtIndex(index)
+    insert(item, atIndex: 0)
+  }
+}

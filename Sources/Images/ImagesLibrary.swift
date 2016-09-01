@@ -37,12 +37,8 @@ class ImagesLibrary {
     }
 
     // Move Camera Roll first
-    if let index = albums.indexOf({ $0.collection.assetCollectionSubtype == . SmartAlbumUserLibrary })
-      where index != 0 {
-
-      let album = albums[index]
-      albums.removeAtIndex(index)
-      albums.insert(album, atIndex: 0)
+    if let index = albums.indexOf({ $0.collection.assetCollectionSubtype == . SmartAlbumUserLibrary }) {
+      albums.moveToFirst(index)
     }
   }
 }
