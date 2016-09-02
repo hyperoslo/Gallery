@@ -42,6 +42,12 @@ public class Video: Equatable {
       completion(item)
     }
   }
+
+  func fetchAVAsset(completion: (AVAsset?) -> Void){
+    PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: nil) { avAsset, _, _ in
+      completion(avAsset)
+    }
+  }
 }
 
 // MARK: - Equatable

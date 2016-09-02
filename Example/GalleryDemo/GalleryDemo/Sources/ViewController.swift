@@ -1,6 +1,7 @@
 import UIKit
 import Gallery
 import Lightbox
+import AVFoundation
 
 class ViewController: UIViewController, LightboxControllerDismissalDelegate, GalleryControllerDelegate {
 
@@ -44,11 +45,12 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     controller.dismissViewControllerAnimated(true, completion: nil)
   }
 
-  func galleryController(controller: GalleryController, didSelect video: Video) {
+  func galleryController(controller: GalleryController, didSelectVideo video: AVAsset) {
+    print(video)
     controller.dismissViewControllerAnimated(true, completion: nil)
   }
 
-  func galleryController(controller: GalleryController, didSelect images: [UIImage]) {
+  func galleryController(controller: GalleryController, didSelectImages images: [UIImage]) {
     controller.dismissViewControllerAnimated(true, completion: nil)
   }
 
