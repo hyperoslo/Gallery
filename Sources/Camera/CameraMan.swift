@@ -27,7 +27,11 @@ class CameraMan {
   // MARK: - Setup
 
   func setup() {
-    checkPermission()
+    if Permission.Camera.hasPermission {
+      self.start()
+    } else {
+      self.delegate?.cameraManNotAvailable(self)
+    }
   }
 
   func setupDevices() {
@@ -61,33 +65,6 @@ class CameraMan {
 
       Dispatch.main {
         self.delegate?.cameraMan(self, didChangeInput: input)
-      }
-    }
-  }
-
-  // MARK: - Permission
-
-  func checkPermission() {
-    let status = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
-
-    switch status {
-    case .Authorized:
-      start()
-    case .NotDetermined:
-      requestPermission()
-    default:
-      delegate?.cameraManNotAvailable(self)
-    }
-  }
-
-  func requestPermission() {
-    AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo) { granted in
-      Dispatch.main {
-        if granted {
-          self.start()
-        } else {
-          self.delegate?.cameraManNotAvailable(self)
-        }
       }
     }
   }

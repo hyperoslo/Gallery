@@ -19,6 +19,12 @@ class PermissionController: UIViewController {
     setup()
   }
 
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    requestPermission()
+  }
+
   // MARK: - Setup
 
   func setup() {
