@@ -1,9 +1,15 @@
 import UIKit
 import Cartography
 
+protocol PermissionControllerDelegate: class {
+  func permissionControllerDidFinish(controller: PermissionController)
+}
+
 class PermissionController: UIViewController {
 
   lazy var permissionView: PermissionView = self.makePermissionView()
+
+  weak var delegate: PermissionControllerDelegate?
 
   // MARK: - Life cycle
 

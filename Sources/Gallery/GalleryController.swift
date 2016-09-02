@@ -38,6 +38,14 @@ public class GalleryController: UIViewController {
     Cart.shared.reload(images)
   }
 
+  func showMain() {
+
+  }
+
+  func showPermission() {
+    
+  }
+
   // MARK: - Child view controller
 
   func makeImagesController() -> ImagesController {
