@@ -109,7 +109,7 @@ class ImagesController: UIViewController,
     gridView.arrowButton.updateText(album.collection.localizedTitle ?? "Images")
     items = album.items
     gridView.collectionView.reloadData()
-    gridView.collectionView.scrollToTop()
+    gridView.collectionView.g_scrollToTop()
   }
 
   func refreshSelectedAlbum() {
@@ -171,7 +171,7 @@ class ImagesController: UIViewController,
     let item = items[indexPath.item]
 
     if let index = Cart.shared.images.indexOf(item) {
-      cell.frameView.fadeIn()
+      cell.frameView.g_fadeIn()
       cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.alpha = 0

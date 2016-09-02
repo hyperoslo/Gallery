@@ -137,7 +137,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     let item = items[indexPath.item]
 
     if let selectedItem = Cart.shared.video where selectedItem == item {
-      cell.frameView.fadeIn()
+      cell.frameView.g_fadeIn()
     } else {
       cell.frameView.alpha = 0
     }
@@ -165,7 +165,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
 
   func refreshView() {
     if let selectedItem = Cart.shared.video {
-      videoBox.imageView.loadImage(selectedItem.asset)
+      videoBox.imageView.g_loadImage(selectedItem.asset)
     } else {
       videoBox.imageView.image = nil
     }

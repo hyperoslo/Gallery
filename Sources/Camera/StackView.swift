@@ -81,7 +81,7 @@ class StackView: UIControl{
 
     for (index, view) in imageViews.enumerate() {
       if index < photos.count {
-        view.loadImage(photos[index])
+        view.g_loadImage(photos[index])
         view.alpha = 1
       } else {
         view.image = nil
@@ -125,7 +125,7 @@ class StackView: UIControl{
       countLabel.text = "\(images.count)"
       countLabel.sizeToFit()
       countLabel.center = topVisibleView.center
-      countLabel.fadeIn()
+      countLabel.g_fadeIn()
     } else {
       countLabel.alpha = 0
     }
@@ -146,7 +146,7 @@ class StackView: UIControl{
 
       imageView.contentMode = .ScaleAspectFill
       imageView.alpha = 0
-      imageView.addRoundBorder()
+      imageView.g_addRoundBorder()
 
       return imageView
     }
@@ -157,7 +157,7 @@ class StackView: UIControl{
     label.textColor = UIColor.whiteColor()
     label.font = Config.Font.Main.regular.fontWithSize(20)
     label.textAlignment = .Center
-    label.addShadow()
+    label.g_addShadow()
     label.alpha = 0
 
     return label

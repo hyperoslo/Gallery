@@ -34,7 +34,7 @@ class VideoBox: UIView {
 
   func setup() {
     backgroundColor = UIColor.clearColor()
-    imageView.addRoundBorder()
+    imageView.g_addRoundBorder()
 
     let gr = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
     addGestureRecognizer(gr)

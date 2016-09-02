@@ -40,7 +40,7 @@ class FrameView: UIView {
     label.font = Config.Font.Main.regular.fontWithSize(40)
     label.textColor = UIColor.whiteColor()
 
-    label.addShadow()
+    label.g_addShadow()
 
     return label
   }

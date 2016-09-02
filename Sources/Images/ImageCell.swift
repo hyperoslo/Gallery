@@ -32,7 +32,7 @@ class ImageCell: UICollectionViewCell {
 
   func configure(asset: PHAsset) {
     imageView.layoutIfNeeded()
-    imageView.loadImage(asset)
+    imageView.g_loadImage(asset)
   }
 
   func configure(image: Image) {

@@ -28,7 +28,7 @@ class AlbumCell: UITableViewCell {
 
     if let item = album.items.first {
       albumImageView.layoutIfNeeded()
-      albumImageView.loadImage(item.asset)
+      albumImageView.g_loadImage(item.asset)
     }
   }
 
@@ -72,7 +72,7 @@ class AlbumCell: UITableViewCell {
     let imageView = UIImageView()
     imageView.image = Bundle.image("gallery_placeholder")
 
-    imageView.addShadow()
+    imageView.g_addShadow()
 
     return imageView
   }

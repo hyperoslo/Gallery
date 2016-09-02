@@ -4,7 +4,7 @@ import Photos
 
 extension UIViewController {
 
-  func addChildController(controller: UIViewController) {
+  func g_addChildController(controller: UIViewController) {
     addChildViewController(controller)
     view.addSubview(controller.view)
     controller.didMoveToParentViewController(self)
@@ -16,7 +16,7 @@ extension UIViewController {
     }
   }
 
-  func removeFromParentController() {
+  func g_removeFromParentController() {
     willMoveToParentViewController(nil)
     view.removeFromSuperview()
     removeFromParentViewController()
@@ -25,21 +25,21 @@ extension UIViewController {
 
 extension UIView {
 
-  func addShadow() {
+  func g_addShadow() {
     layer.shadowColor = UIColor.blackColor().CGColor
     layer.shadowOpacity = 0.5
     layer.shadowOffset = CGSize(width: 0, height: 1)
     layer.shadowRadius = 1
   }
 
-  func addRoundBorder() {
+  func g_addRoundBorder() {
     layer.borderWidth = 1
     layer.borderColor = Config.Grid.FrameView.borderColor.CGColor
     layer.cornerRadius = 3
     clipsToBounds = true
   }
 
-  func fadeIn() {
+  func g_fadeIn() {
     UIView.animateWithDuration(0.1) {
       self.alpha = 1.0
     }
@@ -48,14 +48,14 @@ extension UIView {
 
 extension UIScrollView {
 
-  func scrollToTop() {
+  func g_scrollToTop() {
     setContentOffset(CGPoint.zero, animated: false)
   }
 }
 
 extension UIImageView {
 
-  func loadImage(asset: PHAsset) {
+  func g_loadImage(asset: PHAsset) {
     guard frame.size != CGSize.zero
       else {
       image = Bundle.image("gallery_placeholder")
@@ -83,7 +83,7 @@ extension UIImageView {
 
 extension Array {
 
-  mutating func moveToFirst(index: Int) {
+  mutating func g_moveToFirst(index: Int) {
     guard index != 0 && index < count else { return }
 
     let item = self[index]

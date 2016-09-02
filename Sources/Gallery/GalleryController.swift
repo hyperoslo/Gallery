@@ -49,11 +49,11 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
   }
 
   func showMain() {
-    addChildController(pagesController)
+    g_addChildController(pagesController)
   }
 
   func showPermissionView() {
-    addChildController(permissionController)
+    g_addChildController(permissionController)
   }
 
   // MARK: - Child view controller
@@ -127,7 +127,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
 
   func permissionControllerDidFinish(controller: PermissionController) {
     showMain()
-    permissionController.removeFromParentController()
+    permissionController.g_removeFromParentController()
   }
 
   // MARK: PagesControllerDelegate
