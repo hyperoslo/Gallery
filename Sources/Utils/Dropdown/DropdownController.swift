@@ -3,7 +3,7 @@ import Cartography
 import Photos
 
 protocol DropdownControllerDelegate: class {
-  func dropdownController(dropdownController: DropdownController, didSelect album: Album)
+  func dropdownController(controller: DropdownController, didSelect album: Album)
 }
 
 class DropdownController: UIViewController, UITableViewDataSource, UITableViewDelegate {

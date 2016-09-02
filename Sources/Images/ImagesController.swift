@@ -11,6 +11,7 @@ class ImagesController: UIViewController,
 
   var items: [Image] = []
   let library = ImagesLibrary()
+  var selectedAlbum: Album?
 
   // MARK: - Life cycle
 
@@ -21,17 +22,11 @@ class ImagesController: UIViewController,
 
     library.reload()
     dropdownController.albums = library.albums
-    gridView.collectionView.reloadData()
 
     if let album = library.albums.first {
-      select(album: album)
+      selectedAlbum = album
+      show(album: album)
     }
-  }
-
-  override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
-
-    
   }
 
   // MARK: - Setup
@@ -102,12 +97,18 @@ class ImagesController: UIViewController,
 
   // MARK: - Logic
 
-  func select(album album: Album) {
+  func show(album album: Album) {
     gridView.arrowButton.updateText(album.collection.localizedTitle ?? "Images")
-
     items = album.items
     gridView.collectionView.reloadData()
     gridView.collectionView.scrollToTop()
+  }
+
+  func refreshSelectedAlbum() {
+    if let selectedAlbum = selectedAlbum {
+      selectedAlbum.reload()
+      show(album: selectedAlbum)
+    }
   }
 
   // MARK: - UICollectionViewDataSource
@@ -171,18 +172,23 @@ class ImagesController: UIViewController,
 
   // MARK: - DropdownControllerDelegate
 
-  func dropdownController(dropdownController: DropdownController, didSelect album: Album) {
-    select(album: album)
+  func dropdownController(controller: DropdownController, didSelect album: Album) {
+    selectedAlbum = album
+    show(album: album)
 
     dropdownController.toggle()
-    gridView.arrowButton.toggle(dropdownController.expanding)
+    gridView.arrowButton.toggle(controller.expanding)
   }
 
   // MARK: - CartDelegate
 
-  func cart(cart: Cart, didAdd image: Image) {
+  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
     stackView.reload(cart.images, added: true)
     refreshView()
+
+    if newlyTaken {
+      refreshSelectedAlbum()
+    }
   }
 
   func cart(cart: Cart, didRemove image: Image) {
@@ -193,6 +199,7 @@ class ImagesController: UIViewController,
   func cartDidReload(cart: Cart) {
     stackView.reload(cart.images)
     refreshView()
+    refreshSelectedAlbum()
   }
 
   // MARK: - View
