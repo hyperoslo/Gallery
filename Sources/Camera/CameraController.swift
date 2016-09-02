@@ -7,6 +7,7 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   var locationManager: LocationManager?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
+  let once = Once()
 
   // MARK: - Life cycle
 
@@ -15,14 +16,20 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
 
     setup()
     setupLocation()
-
-    cameraMan.setup()
   }
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
 
     locationManager?.start()
+  }
+
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    once.run {
+      cameraMan.setup()
+    }
   }
 
   override func viewWillDisappear(animated: Bool) {

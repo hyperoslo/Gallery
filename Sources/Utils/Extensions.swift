@@ -40,7 +40,7 @@ extension UIView {
   }
 
   func fadeIn() {
-    UIView.animateWithDuration(0.25) {
+    UIView.animateWithDuration(0.1) {
       self.alpha = 1.0
     }
   }

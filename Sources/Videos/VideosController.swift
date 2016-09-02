@@ -12,6 +12,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
 
   var items: [Video] = []
   let library = VideosLibrary()
+  let once = Once()
 
   // MARK: - Life cycle
 
@@ -19,9 +20,16 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     super.viewDidLoad()
 
     setup()
+  }
 
-    library.reload()
-    items = library.items
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+    once.run {
+      library.reload()
+      items = library.items
+      gridView.collectionView.reloadData()
+    }
   }
 
   // MARK: - Setup

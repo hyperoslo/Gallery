@@ -12,6 +12,7 @@ class ImagesController: UIViewController,
   var items: [Image] = []
   let library = ImagesLibrary()
   var selectedAlbum: Album?
+  let once = Once()
 
   // MARK: - Life cycle
 
@@ -19,13 +20,20 @@ class ImagesController: UIViewController,
     super.viewDidLoad()
 
     setup()
+  }
 
-    library.reload()
-    dropdownController.albums = library.albums
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
 
-    if let album = library.albums.first {
-      selectedAlbum = album
-      show(album: album)
+    once.run {
+      library.reload()
+      dropdownController.albums = library.albums
+      dropdownController.tableView.reloadData()
+
+      if let album = library.albums.first {
+        selectedAlbum = album
+        show(album: album)
+      }
     }
   }
 
