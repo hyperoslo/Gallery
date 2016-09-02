@@ -15,6 +15,12 @@ extension UIViewController {
       view.edges == view.superview!.edges
     }
   }
+
+  func removeFromParentController() {
+    willMoveToParentViewController(nil)
+    view.removeFromSuperview()
+    removeFromParentViewController()
+  }
 }
 
 extension UIView {

@@ -37,6 +37,24 @@ class PermissionController: UIViewController {
     }
   }
 
+  // MARK: - Logic
+
+  func requestPermission() {
+    Permission.Photos.request {
+      self.check()
+    }
+
+    Permission.Camera.request {
+      self.check()
+    }
+  }
+
+  func check() {
+    if Permission.hasPermissions {
+      delegate?.permissionControllerDidFinish(self)
+    }
+  }
+
   // MARK: - Action
 
   func settingButtonTouched(button: UIButton) {
