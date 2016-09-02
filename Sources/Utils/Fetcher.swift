@@ -28,7 +28,8 @@ struct Fetcher {
     }
   }
 
-  static func fetchImages(assets: [PHAsset], size: CGSize = UIScreen.mainScreen().bounds.size) -> [UIImage] {
+  // TODO: Why not use screen size?
+  static func fetchImages(assets: [PHAsset], size: CGSize = CGSize(width: 720, height: 1280)) -> [UIImage] {
     let options = PHImageRequestOptions()
     options.synchronous = true
 
