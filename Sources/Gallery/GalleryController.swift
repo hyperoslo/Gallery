@@ -122,6 +122,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   func permissionControllerDidFinish(controller: PermissionController) {
     showMain()
-//    permissionController.removeFromParentController()
+    permissionController.removeFromParentController()
   }
 }

@@ -57,7 +57,9 @@ class PermissionController: UIViewController {
 
   func check() {
     if Permission.hasPermissions {
-      delegate?.permissionControllerDidFinish(self)
+      Dispatch.main {
+        self.delegate?.permissionControllerDidFinish(self)
+      }
     }
   }
 
