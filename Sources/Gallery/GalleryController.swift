@@ -9,11 +9,15 @@ public protocol GalleryControllerDelegate: class {
   func galleryControllerDidCancel(controller: GalleryController)
 }
 
-public class GalleryController: UIViewController, PermissionControllerDelegate {
+public class GalleryController: UIViewController, PermissionControllerDelegate, PagesControllerDelegate {
 
   lazy var imagesController: ImagesController = self.makeImagesController()
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
+
+  enum Page: Int {
+    case Images, Camera, Videos
+  }
 
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
@@ -79,6 +83,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   func makePagesController() -> PagesController {
     let controller = PagesController(controllers: [imagesController, cameraController, videosController])
+    controller.delegate = self
 
     return controller
   }
@@ -123,5 +128,20 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   func permissionControllerDidFinish(controller: PermissionController) {
     showMain()
     permissionController.removeFromParentController()
+  }
+
+  // MARK: PagesControllerDelegate
+
+  func pagesController(controller: PagesController, didSelect index: Int) {
+    guard let page = Page(rawValue: index) else { return }
+
+    switch page {
+    case .Images:
+      imagesController.viewWillAppear(false)
+    case .Camera:
+      break
+    case .Videos:
+      break
+    }
   }
 }

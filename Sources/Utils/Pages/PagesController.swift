@@ -1,6 +1,10 @@
 import UIKit
 import Cartography
 
+protocol PagesControllerDelegate: class {
+  func pagesController(controller: PagesController, didSelect index: Int)
+}
+
 class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDelegate {
 
   let controllers: [UIViewController]
@@ -8,6 +12,9 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   lazy var scrollView: UIScrollView = self.makeScrollView()
   lazy var scrollViewContentView: UIView = UIView()
   lazy var pageIndicator: PageIndicator = self.makePageIndicator()
+
+  var selectedIndex: Int = 0
+  weak var delegate: PagesControllerDelegate?
 
   // MARK: - Initialization
 
@@ -109,6 +116,7 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   func pageIndicator(pageIndicator: PageIndicator, didSelect index: Int) {
     let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
     scrollView.setContentOffset(point, animated: false)
+    notify(index)
   }
 
   // MARK: - UIScrollViewDelegate
@@ -116,5 +124,15 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   func scrollViewDidScroll(scrollView: UIScrollView) {
     let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
     pageIndicator.select(index: index)
+    notify(index)
+  }
+
+  // MARK: - Index
+
+  func notify(index: Int) {
+    guard selectedIndex != index else { return }
+
+    selectedIndex = index
+    delegate?.pagesController(self, didSelect: index)
   }
 }

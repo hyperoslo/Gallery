@@ -28,6 +28,12 @@ class ImagesController: UIViewController,
     }
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+    
+  }
+
   // MARK: - Setup
 
   func setup() {
