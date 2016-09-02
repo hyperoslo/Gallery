@@ -9,13 +9,14 @@ public protocol GalleryControllerDelegate: class {
   func galleryControllerDidCancel(controller: GalleryController)
 }
 
-public class GalleryController: UIViewController {
+public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   lazy var imagesController: ImagesController = self.makeImagesController()
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
 
   lazy var pagesController: PagesController = self.makePagesController()
+  lazy var permissionController: PermissionController = self.makePermissionController()
   public weak var delegate: GalleryControllerDelegate?
 
   // MARK: - Life cycle
@@ -24,6 +25,9 @@ public class GalleryController: UIViewController {
     super.viewDidLoad()
 
     Cart.shared.reset()
+
+    showPermission()
+
     Permission.request()
     setup()
   }
@@ -39,11 +43,11 @@ public class GalleryController: UIViewController {
   }
 
   func showMain() {
-
+    addChildController(pagesController)
   }
 
   func showPermission() {
-    
+    addChildController(permissionController)
   }
 
   // MARK: - Child view controller
@@ -77,11 +81,16 @@ public class GalleryController: UIViewController {
     return controller
   }
 
+  func makePermissionController() -> PermissionController {
+    let controller = PermissionController()
+    controller.delegate = self
+
+    return controller
+  }
+
   // MARK: - Setup
 
   func setup() {
-    addChildController(pagesController)
-
     EventHub.shared.close = { [weak self] in
       if let strongSelf = self {
         strongSelf.delegate?.galleryControllerDidCancel(strongSelf)
@@ -105,5 +114,11 @@ public class GalleryController: UIViewController {
         strongSelf.delegate?.galleryController(strongSelf, requestLightbox: Cart.shared.UIImages())
       }
     }
+  }
+
+  // MARK: - PermissionControllerDelegate
+
+  func permissionControllerDidFinish(controller: PermissionController) {
+    showMain()
   }
 }

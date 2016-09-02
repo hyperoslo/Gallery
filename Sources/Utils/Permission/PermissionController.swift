@@ -28,7 +28,7 @@ class PermissionController: UIViewController {
     permissionView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)),
                                          forControlEvents: .TouchUpInside)
     permissionView.settingButton.addTarget(self, action: #selector(settingButtonTouched(_:)),
-                                           forControlEvents: .TouchUpOutside)
+                                           forControlEvents: .TouchUpInside)
 
     constrain(permissionView) {
       permissionView in
