@@ -35,7 +35,7 @@ public class Video: Equatable {
     durationRequestID = Int(id)
   }
 
-  func fetchPlayerItem(completion: AVPlayerItem? -> Void) {
+  public func fetchPlayerItem(completion: AVPlayerItem? -> Void) {
     PHImageManager.defaultManager().requestPlayerItemForVideo(asset, options: nil) {
       item, _ in
 
@@ -43,9 +43,17 @@ public class Video: Equatable {
     }
   }
 
-  func fetchAVAsset(completion: (AVAsset?) -> Void){
+  public func fetchAVAsset(completion: (AVAsset?) -> Void){
     PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: nil) { avAsset, _, _ in
       completion(avAsset)
+    }
+  }
+
+  public func fetchThumbnail(size: CGSize = CGSize(width: 100, height: 100), completion: (UIImage?) -> Void) {
+    PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size,
+                                                         contentMode: .AspectFill, options: nil)
+    { image, _ in
+      completion(image)
     }
   }
 }

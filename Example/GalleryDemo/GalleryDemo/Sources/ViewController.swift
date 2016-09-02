@@ -45,7 +45,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     controller.dismissViewControllerAnimated(true, completion: nil)
   }
 
-  func galleryController(controller: GalleryController, didSelectVideo video: AVAsset) {
+  func galleryController(controller: GalleryController, didSelectVideo video: Video) {
     print(video)
     controller.dismissViewControllerAnimated(true, completion: nil)
   }

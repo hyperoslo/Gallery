@@ -5,7 +5,7 @@ import AVFoundation
 public protocol GalleryControllerDelegate: class {
 
   func galleryController(controller: GalleryController, didSelectImages images: [UIImage])
-  func galleryController(controller: GalleryController, didSelectVideo video: AVAsset)
+  func galleryController(controller: GalleryController, didSelectVideo video: Video)
   func galleryController(controller: GalleryController, requestLightbox images: [UIImage])
   func galleryControllerDidCancel(controller: GalleryController)
 }
@@ -112,14 +112,8 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
     }
 
     EventHub.shared.doneWithVideos = { [weak self] in
-      if let strongSelf = self {
-        Cart.shared.video?.fetchAVAsset { avAsset in
-          if let avAsset = avAsset {
-            Dispatch.main {
-              strongSelf.delegate?.galleryController(strongSelf, didSelectVideo: avAsset)
-            }
-          }
-        }
+      if let strongSelf = self, video = Cart.shared.video {
+        strongSelf.delegate?.galleryController(strongSelf, didSelectVideo: video)
       }
     }
 
