@@ -43,15 +43,18 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
   func galleryControllerDidCancel(controller: GalleryController) {
     controller.dismissViewControllerAnimated(true, completion: nil)
+    gallery = nil
   }
 
   func galleryController(controller: GalleryController, didSelectVideo video: Video) {
     print(video)
     controller.dismissViewControllerAnimated(true, completion: nil)
+    gallery = nil
   }
 
   func galleryController(controller: GalleryController, didSelectImages images: [UIImage]) {
     controller.dismissViewControllerAnimated(true, completion: nil)
+    gallery = nil
   }
 
   func galleryController(controller: GalleryController, requestLightbox images: [UIImage]) {
