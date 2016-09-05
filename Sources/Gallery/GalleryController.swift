@@ -29,7 +29,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    Cart.shared.reset()
     setup()
 
     if Permission.hasPermissions {
@@ -37,6 +36,10 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
     } else {
       showPermissionView()
     }
+  }
+
+  deinit {
+    Cart.shared.reset()
   }
 
   public override func prefersStatusBarHidden() -> Bool {
