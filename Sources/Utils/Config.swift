@@ -58,4 +58,14 @@ public struct Config {
       public static var semibold: UIFont = UIFont.boldSystemFontOfSize(1)
     }
   }
+
+  public struct VideoEditor {
+
+    public static var maxiumumDuration: NSTimeInterval = 15
+    public static var quality: CGFloat = 1.0
+
+    public static var ratio: CGFloat = 16/9
+    public static var portraitWidth: CGFloat = 360
+    public static var landscapeWidth: CGFloat = 640
+  }
 }

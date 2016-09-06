@@ -47,9 +47,13 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   }
 
   func galleryController(controller: GalleryController, didSelectVideo video: Video) {
-    print(video)
     controller.dismissViewControllerAnimated(true, completion: nil)
     gallery = nil
+
+    let editor = VideoEditor()
+    editor.edit(video) { result in
+
+    }
   }
 
   func galleryController(controller: GalleryController, didSelectImages images: [UIImage]) {
