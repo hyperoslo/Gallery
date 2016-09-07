@@ -39,7 +39,7 @@ public class VideoEditor {
     let export = AVAssetExportSession(asset: avAsset, presetName: Info.presetName(avAsset))
     export?.timeRange = Info.timeRange()
     export?.outputURL = outputURL
-    export?.outputFileType = AVFileTypeMPEG4
+    export?.outputFileType = Info.file().type
 
     let composition = AVVideoComposition(propertiesOfAsset: avAsset)
     export?.videoComposition = composition
@@ -94,10 +94,14 @@ public class VideoEditor {
       return CMTimeRange(start: start, duration: end)
     }
 
+    static func file() -> (type: String, pathExtension: String) {
+      return (type: AVFileTypeMPEG4, pathExtension: "mp4")
+    }
+
     static func outputURL() -> NSURL? {
       return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         .URLByAppendingPathComponent(NSUUID().UUIDString)
-        .URLByAppendingPathExtension("mp4")
+        .URLByAppendingPathExtension(file().pathExtension)
     }
   }
 }
