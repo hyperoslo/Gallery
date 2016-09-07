@@ -52,7 +52,9 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
     let editor = VideoEditor()
     editor.edit(video) { newVideo in
-      print(newVideo)
+      dispatch_async(dispatch_get_main_queue()) {
+        print(newVideo)
+      }
     }
   }
 
