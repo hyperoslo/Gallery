@@ -61,11 +61,10 @@ public struct Config {
 
   public struct VideoEditor {
 
-    public static var maximumDuration: NSTimeInterval = 5
+    public static var maximumDuration: NSTimeInterval = 15
     public static var quality: CGFloat = 1.0
 
-    public static var ratio: CGFloat = 16/9
-    public static var portraitWidth: CGFloat = 360
-    public static var landscapeWidth: CGFloat = 640
+    public static var portraitSize: CGSize = CGSize(width: 360, height: 640)
+    public static var landscapeSize: CGSize = CGSize(width: 640, height: 360)
   }
 }

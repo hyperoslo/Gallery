@@ -41,6 +41,7 @@ public class VideoEditor {
     export?.outputURL = outputURL
     export?.outputFileType = Info.file().type
     export?.videoComposition = Info.composition(avAsset)
+    export?.shouldOptimizeForNetworkUse = true
 
     var localIdentifier: String?
     export?.exportAsynchronouslyWithCompletionHandler {
@@ -48,8 +49,6 @@ public class VideoEditor {
         let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
         localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
       }, completionHandler: { succeeded, info in
-        print(export?.status)
-        print(export?.error)
         if let localIdentifier = localIdentifier
           where succeeded && export?.status == AVAssetExportSessionStatus.Completed {
           completion(localIdentifier)
@@ -64,30 +63,35 @@ public class VideoEditor {
 // MARK: - Info
 
 private struct Info {
-  
-  static func composition(avAsset: AVAsset) -> AVVideoComposition {
-    let layer = AVMutableVideoCompositionLayerInstruction()
-    let transform = CGAffineTransformMakeScale(0.5, 0.5)
+
+  static func composition(avAsset: AVAsset) -> AVVideoComposition? {
+    guard let track = avAsset.tracksWithMediaType(AVMediaTypeVideo).first else { return nil }
+
+    let cropInfo = Info.cropInfo(avAsset)
+
+    let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
+    let transform = CGAffineTransformMakeScale(cropInfo.scale, cropInfo.scale)
     layer.setTransform(transform, atTime: kCMTimeZero)
 
     let instruction = AVMutableVideoCompositionInstruction()
     instruction.layerInstructions = [layer]
+    instruction.timeRange = Info.timeRange(avAsset)
 
     let composition = AVMutableVideoComposition(propertiesOfAsset: avAsset)
     composition.instructions = [instruction]
-    composition.frameDuration = CMTime(seconds: 1, preferredTimescale: CMTimeScale(avAsset.g_frameRate))
+    composition.renderSize = cropInfo.size
 
     return composition
   }
 
-  static func cropSize(isPortrait: Bool) -> CGSize {
-    if isPortrait {
-      return CGSize(width: Config.VideoEditor.portraitWidth,
-                    height: Config.VideoEditor.portraitWidth * Config.VideoEditor.ratio)
-    } else {
-      return CGSize(width: Config.VideoEditor.landscapeWidth,
-                    height: Config.VideoEditor.landscapeWidth / Config.VideoEditor.ratio)
-    }
+  static func cropInfo(avAsset: AVAsset) -> (size: CGSize, scale: CGFloat) {
+    var desiredSize = avAsset.g_isPortrait ? Config.VideoEditor.portraitSize : Config.VideoEditor.landscapeSize
+    let avAssetSize = avAsset.g_size
+
+    let ratio = min(desiredSize.width / avAssetSize.width, desiredSize.height / avAssetSize.height)
+    let size = CGSize(width: avAssetSize.width*ratio, height: avAssetSize.height*ratio)
+
+    return (size: size, scale: ratio)
   }
 
   static func presetName(avAsset: AVAsset) -> String {
@@ -101,7 +105,7 @@ private struct Info {
   }
 
   static func preferredPresetName() -> String {
-    return AVAssetExportPresetLowQuality
+    return AVAssetExportPresetHighestQuality
   }
 
   static func timeRange(avAsset: AVAsset) -> CMTimeRange {
