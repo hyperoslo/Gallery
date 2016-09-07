@@ -109,7 +109,7 @@ private struct Info {
   }
 
   static func timeRange(avAsset: AVAsset) -> CMTimeRange {
-    var end = kCMTimePositiveInfinity
+    var end = avAsset.duration
 
     if Config.VideoEditor.maximumDuration < avAsset.duration.seconds {
       end = CMTime(seconds: Config.VideoEditor.maximumDuration, preferredTimescale: 1000)
