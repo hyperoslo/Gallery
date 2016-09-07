@@ -105,7 +105,7 @@ private struct Info {
   }
 
   static func preferredPresetName() -> String {
-    return AVAssetExportPresetHighestQuality
+    return AVAssetExportPresetMediumQuality
   }
 
   static func timeRange(avAsset: AVAsset) -> CMTimeRange {

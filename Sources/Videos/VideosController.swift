@@ -196,7 +196,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     let label = UILabel()
     label.textColor = UIColor.whiteColor()
     label.font = Config.Font.Text.regular.fontWithSize(12)
-    label.text = "FIRST 15 SECONDS"
+    label.text = "FIRST \(Config.VideoEditor.maximumDuration) SECONDS"
     label.hidden = true
 
     return label
