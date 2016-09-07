@@ -37,7 +37,7 @@ public class VideoEditor {
     }
 
     let export = AVAssetExportSession(asset: avAsset, presetName: Info.presetName(avAsset))
-    export?.timeRange = Info.timeRange()
+    export?.timeRange = Info.timeRange(avAsset)
     export?.outputURL = outputURL
     export?.outputFileType = Info.file().type
 
@@ -87,11 +87,14 @@ public class VideoEditor {
       return AVAssetExportPresetLowQuality
     }
 
-    static func timeRange() -> CMTimeRange {
-      let start = CMTime(seconds: 0, preferredTimescale: 1000)
-      let end = CMTime(seconds: Config.VideoEditor.maximumDuration, preferredTimescale: 1000)
+    static func timeRange(avAsset: AVAsset) -> CMTimeRange {
+      var end = kCMTimePositiveInfinity
 
-      return CMTimeRange(start: start, duration: end)
+      if Config.VideoEditor.maximumDuration < avAsset.duration.seconds {
+        end = CMTime(seconds: Config.VideoEditor.maximumDuration, preferredTimescale: 1000)
+      }
+
+      return CMTimeRange(start: kCMTimeZero, duration: end)
     }
 
     static func file() -> (type: String, pathExtension: String) {

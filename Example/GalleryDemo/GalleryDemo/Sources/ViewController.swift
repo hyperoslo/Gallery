@@ -51,8 +51,8 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     gallery = nil
 
     let editor = VideoEditor()
-    editor.edit(video) { result in
-
+    editor.edit(video) { newVideo in
+      print(newVideo)
     }
   }
 
