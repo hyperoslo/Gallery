@@ -61,7 +61,7 @@ public struct Config {
 
   public struct VideoEditor {
 
-    public static var maxiumumDuration: NSTimeInterval = 15
+    public static var maximumDuration: NSTimeInterval = 5
     public static var quality: CGFloat = 1.0
 
     public static var ratio: CGFloat = 16/9
