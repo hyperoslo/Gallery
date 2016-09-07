@@ -12,15 +12,25 @@ public class VideoEditor {
 
   // MARK: - Edit
   
-  public func edit(video: Video, completion: (Video) -> Void) {
+  public func edit(video: Video, completion: (Video?) -> Void) {
     video.fetchAVAsset { avAsset in
-      self.crop(avAsset!) { _ in
+      guard let avAsset = avAsset else {
+        completion(nil)
+        return
+      }
 
+      self.crop(avAsset) { localIdentifier in
+        if let localIdentifier = localIdentifier,
+          phAsset = Fetcher.fetchAsset(localIdentifier) {
+          completion(Video(asset: phAsset))
+        } else {
+          completion(nil)
+        }
       }
     }
   }
 
-  func crop(avAsset: AVAsset, completion: AVAsset? -> Void) {
+  func crop(avAsset: AVAsset, completion: String? -> Void) {
     guard let outputURL = Info.outputURL() else {
       completion(nil)
       return
@@ -34,12 +44,18 @@ public class VideoEditor {
     let composition = AVVideoComposition(propertiesOfAsset: avAsset)
     export?.videoComposition = composition
 
+    var localIdentifier: String?
     export?.exportAsynchronouslyWithCompletionHandler {
       PHPhotoLibrary.sharedPhotoLibrary().performChanges({
         let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
-      }, completionHandler: { success, info in
-        print(success)
-        print(info)
+        localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
+      }, completionHandler: { succeeded, info in
+        if let localIdentifier = localIdentifier
+          where succeeded && export?.status == AVAssetExportSessionStatus.Completed {
+          completion(localIdentifier)
+        } else {
+          completion(nil)
+        }
       })
     }
   }
@@ -68,7 +84,7 @@ public class VideoEditor {
     }
 
     static func preferredPresetName() -> String {
-      return AVAssetExportPresetMediumQuality
+      return AVAssetExportPresetLowQuality
     }
 
     static func timeRange() -> CMTimeRange {
@@ -79,7 +95,9 @@ public class VideoEditor {
     }
 
     static func outputURL() -> NSURL? {
-      return NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(NSUUID().UUIDString)
+      return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        .URLByAppendingPathComponent(NSUUID().UUIDString)
+        .URLByAppendingPathExtension("mp4")
     }
   }
 }
