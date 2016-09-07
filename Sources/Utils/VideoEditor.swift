@@ -40,9 +40,7 @@ public class VideoEditor {
     export?.timeRange = Info.timeRange(avAsset)
     export?.outputURL = outputURL
     export?.outputFileType = Info.file().type
-
-    let composition = AVVideoComposition(propertiesOfAsset: avAsset)
-    export?.videoComposition = composition
+    export?.videoComposition = Info.composition(avAsset)
 
     var localIdentifier: String?
     export?.exportAsynchronouslyWithCompletionHandler {
@@ -50,6 +48,8 @@ public class VideoEditor {
         let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
         localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
       }, completionHandler: { succeeded, info in
+        print(export?.status)
+        print(export?.error)
         if let localIdentifier = localIdentifier
           where succeeded && export?.status == AVAssetExportSessionStatus.Completed {
           completion(localIdentifier)
@@ -59,52 +59,69 @@ public class VideoEditor {
       })
     }
   }
+}
 
-  // MARK: - Info 
+// MARK: - Info
 
-  struct Info {
-    static func cropSize(isPortrait: Bool) -> CGSize {
-      if isPortrait {
-        return CGSize(width: Config.VideoEditor.portraitWidth,
-                      height: Config.VideoEditor.portraitWidth * Config.VideoEditor.ratio)
-      } else {
-        return CGSize(width: Config.VideoEditor.landscapeWidth,
-                      height: Config.VideoEditor.landscapeWidth / Config.VideoEditor.ratio)
-      }
-    }
+private struct Info {
+  
+  static func composition(avAsset: AVAsset) -> AVVideoComposition {
+    let layer = AVMutableVideoCompositionLayerInstruction()
+    let transform = CGAffineTransformMakeScale(0.5, 0.5)
+    layer.setTransform(transform, atTime: kCMTimeZero)
 
-    static func presetName(avAsset: AVAsset) -> String {
-      let availablePresets = AVAssetExportSession.exportPresetsCompatibleWithAsset(avAsset)
+    let instruction = AVMutableVideoCompositionInstruction()
+    instruction.layerInstructions = [layer]
 
-      if availablePresets.contains(preferredPresetName()) {
-        return preferredPresetName()
-      } else {
-        return availablePresets.first ?? AVAssetExportPresetMediumQuality
-      }
-    }
+    let composition = AVMutableVideoComposition(propertiesOfAsset: avAsset)
+    composition.instructions = [instruction]
+    composition.frameDuration = CMTime(seconds: 1, preferredTimescale: CMTimeScale(avAsset.g_frameRate))
 
-    static func preferredPresetName() -> String {
-      return AVAssetExportPresetLowQuality
-    }
+    return composition
+  }
 
-    static func timeRange(avAsset: AVAsset) -> CMTimeRange {
-      var end = kCMTimePositiveInfinity
-
-      if Config.VideoEditor.maximumDuration < avAsset.duration.seconds {
-        end = CMTime(seconds: Config.VideoEditor.maximumDuration, preferredTimescale: 1000)
-      }
-
-      return CMTimeRange(start: kCMTimeZero, duration: end)
-    }
-
-    static func file() -> (type: String, pathExtension: String) {
-      return (type: AVFileTypeMPEG4, pathExtension: "mp4")
-    }
-
-    static func outputURL() -> NSURL? {
-      return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        .URLByAppendingPathComponent(NSUUID().UUIDString)
-        .URLByAppendingPathExtension(file().pathExtension)
+  static func cropSize(isPortrait: Bool) -> CGSize {
+    if isPortrait {
+      return CGSize(width: Config.VideoEditor.portraitWidth,
+                    height: Config.VideoEditor.portraitWidth * Config.VideoEditor.ratio)
+    } else {
+      return CGSize(width: Config.VideoEditor.landscapeWidth,
+                    height: Config.VideoEditor.landscapeWidth / Config.VideoEditor.ratio)
     }
   }
+
+  static func presetName(avAsset: AVAsset) -> String {
+    let availablePresets = AVAssetExportSession.exportPresetsCompatibleWithAsset(avAsset)
+
+    if availablePresets.contains(preferredPresetName()) {
+      return preferredPresetName()
+    } else {
+      return availablePresets.first ?? AVAssetExportPresetMediumQuality
+    }
+  }
+
+  static func preferredPresetName() -> String {
+    return AVAssetExportPresetLowQuality
+  }
+
+  static func timeRange(avAsset: AVAsset) -> CMTimeRange {
+    var end = kCMTimePositiveInfinity
+
+    if Config.VideoEditor.maximumDuration < avAsset.duration.seconds {
+      end = CMTime(seconds: Config.VideoEditor.maximumDuration, preferredTimescale: 1000)
+    }
+
+    return CMTimeRange(start: kCMTimeZero, duration: end)
+  }
+
+  static func file() -> (type: String, pathExtension: String) {
+    return (type: AVFileTypeMPEG4, pathExtension: "mp4")
+  }
+
+  static func outputURL() -> NSURL? {
+    return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+      .URLByAppendingPathComponent(NSUUID().UUIDString)
+      .URLByAppendingPathExtension(file().pathExtension)
+  }
 }
+

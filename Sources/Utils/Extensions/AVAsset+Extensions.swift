@@ -22,4 +22,8 @@ extension AVAsset {
       return 0
     }
   }
+
+  var g_frameRate: Float {
+    return tracksWithMediaType(AVMediaTypeVideo).first?.nominalFrameRate ?? 30
+  }
 }
