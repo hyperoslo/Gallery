@@ -51,9 +51,11 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     gallery = nil
 
     let editor = VideoEditor()
-    editor.edit(video) { newVideo in
+
+    editor.edit(video) { (result: (newVideo: Video, tempPath: NSURL)?) in
       dispatch_async(dispatch_get_main_queue()) {
-        print(newVideo)
+        print(result?.newVideo)
+        print(result?.tempPath)
       }
     }
   }

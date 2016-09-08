@@ -12,17 +12,17 @@ public class VideoEditor {
 
   // MARK: - Edit
   
-  public func edit(video: Video, completion: (Video?) -> Void) {
+  public func edit(video: Video, completion: (video: Video, tempPath: NSURL)? -> Void) {
     video.fetchAVAsset { avAsset in
       guard let avAsset = avAsset else {
         completion(nil)
         return
       }
 
-      self.crop(avAsset) { localIdentifier in
-        if let localIdentifier = localIdentifier,
-          phAsset = Fetcher.fetchAsset(localIdentifier) {
-          completion(Video(asset: phAsset))
+      self.crop(avAsset) { (result: (localIdentifier: String, tempPath: NSURL)?) in
+        if let result = result,
+          phAsset = Fetcher.fetchAsset(result.localIdentifier) {
+          completion((video: Video(asset: phAsset), tempPath: result.tempPath))
         } else {
           completion(nil)
         }
@@ -30,7 +30,7 @@ public class VideoEditor {
     }
   }
 
-  func crop(avAsset: AVAsset, completion: String? -> Void) {
+  func crop(avAsset: AVAsset, completion: (localIdentifier: String, tempPath: NSURL)? -> Void) {
     guard let outputURL = Info.outputURL() else {
       completion(nil)
       return
@@ -51,7 +51,7 @@ public class VideoEditor {
       }, completionHandler: { succeeded, info in
         if let localIdentifier = localIdentifier
           where succeeded && export?.status == AVAssetExportSessionStatus.Completed {
-          completion(localIdentifier)
+          completion((localIdentifier: localIdentifier, tempPath: outputURL))
         } else {
           completion(nil)
         }
