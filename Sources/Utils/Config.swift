@@ -61,6 +61,7 @@ public struct Config {
 
   public struct VideoEditor {
 
+    public static var savesEditedVideoToLibrary: Bool = false
     public static var maximumDuration: NSTimeInterval = 15
     public static var portraitSize: CGSize = CGSize(width: 360, height: 640)
     public static var landscapeSize: CGSize = CGSize(width: 640, height: 360)
