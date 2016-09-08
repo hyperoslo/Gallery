@@ -12,6 +12,8 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     super.viewDidLoad()
     view.backgroundColor = UIColor.whiteColor()
 
+    Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
+
     button = UIButton(type: .System)
     button.frame.size = CGSize(width: 200, height: 50)
     button.setTitle("Open Gallery", forState: .Normal)
@@ -52,10 +54,13 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
     let editor = VideoEditor()
 
-    editor.edit(video) { (result: (newVideo: Video, tempPath: NSURL)?) in
+    editor.edit(video) { (editedVideo: Video?, tempPath: NSURL?) in
       dispatch_async(dispatch_get_main_queue()) {
-        print(result?.newVideo)
-        print(result?.tempPath)
+        print(editedVideo)
+        if let tempPath = tempPath {
+          let data = NSData(contentsOfURL: tempPath)
+          print(data?.length)
+        }
       }
     }
   }
