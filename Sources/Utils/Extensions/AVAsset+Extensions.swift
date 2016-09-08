@@ -1,3 +1,4 @@
+import UIKit
 import AVFoundation
 
 extension AVAsset {
@@ -25,5 +26,22 @@ extension AVAsset {
 
   var g_frameRate: Float {
     return tracksWithMediaType(AVMediaTypeVideo).first?.nominalFrameRate ?? 30
+  }
+
+  var g_orientation: UIInterfaceOrientation {
+    guard let transform = tracksWithMediaType(AVMediaTypeVideo).first?.preferredTransform else {
+      return .Portrait
+    }
+
+    switch (transform.tx, transform.ty) {
+    case (0, 0):
+      return .LandscapeRight
+    case (g_size.width, g_size.height):
+      return .LandscapeLeft
+    case (0, g_size.width):
+      return .PortraitUpsideDown
+    default:
+      return .Portrait
+    }
   }
 }
