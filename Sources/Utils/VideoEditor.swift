@@ -12,25 +12,44 @@ public class VideoEditor {
 
   // MARK: - Edit
   
-  public func edit(video: Video, completion: (video: Video, tempPath: NSURL)? -> Void) {
+  public func edit(video: Video, completion: (video: Video?, tempPath: NSURL?) -> Void) {
     video.fetchAVAsset { avAsset in
       guard let avAsset = avAsset else {
-        completion(nil)
+        completion(video: nil, tempPath: nil)
         return
       }
 
-      self.crop(avAsset) { (result: (localIdentifier: String, tempPath: NSURL)?) in
-        if let result = result,
-          phAsset = Fetcher.fetchAsset(result.localIdentifier) {
-          completion((video: Video(asset: phAsset), tempPath: result.tempPath))
-        } else {
-          completion(nil)
+      self.crop(avAsset) { (outputURL: NSURL?) in
+        guard let outputURL = outputURL else {
+          completion(video: nil, tempPath: nil)
+          return
         }
+
+        self.handle(outputURL, completion: completion)
       }
     }
   }
 
-  func crop(avAsset: AVAsset, completion: (localIdentifier: String, tempPath: NSURL)? -> Void) {
+  func handle(outputURL: NSURL, completion: (video: Video?, tempPath: NSURL?) -> Void) {
+    guard Config.VideoEditor.savesEditedVideoToLibrary else {
+      completion(video: nil, tempPath: outputURL)
+      return
+    }
+
+    var localIdentifier: String?
+    PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+      let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
+      localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
+    }, completionHandler: { succeeded, info in
+      if let localIdentifier = localIdentifier, asset = Fetcher.fetchAsset(localIdentifier) {
+        completion(video: Video(asset: asset), tempPath: outputURL)
+      } else {
+        completion(video: nil, tempPath: outputURL)
+      }
+    })
+  }
+
+  func crop(avAsset: AVAsset, completion: (NSURL?) -> Void) {
     guard let outputURL = Info.outputURL() else {
       completion(nil)
       return
@@ -45,17 +64,11 @@ public class VideoEditor {
 
     var localIdentifier: String?
     export?.exportAsynchronouslyWithCompletionHandler {
-      PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-        let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
-        localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
-      }, completionHandler: { succeeded, info in
-        if let localIdentifier = localIdentifier
-          where succeeded && export?.status == AVAssetExportSessionStatus.Completed {
-          completion((localIdentifier: localIdentifier, tempPath: outputURL))
-        } else {
-          completion(nil)
-        }
-      })
+      if export?.status == AVAssetExportSessionStatus.Completed {
+        completion(outputURL)
+      } else {
+        completion(nil)
+      }
     }
   }
 }
