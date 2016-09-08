@@ -83,8 +83,7 @@ private struct Info {
     let cropInfo = Info.cropInfo(avAsset)
 
     let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-    let transform = CGAffineTransformMakeScale(cropInfo.scale, cropInfo.scale)
-    layer.setTransform(transform, atTime: kCMTimeZero)
+    layer.setTransform(Info.transform(avAsset, scale: cropInfo.scale), atTime: kCMTimeZero)
 
     let instruction = AVMutableVideoCompositionInstruction()
     instruction.layerInstructions = [layer]
@@ -105,6 +104,31 @@ private struct Info {
     let size = CGSize(width: avAssetSize.width*ratio, height: avAssetSize.height*ratio)
 
     return (size: size, scale: ratio)
+  }
+
+  static func transform(avAsset: AVAsset, scale: CGFloat) -> CGAffineTransform {
+    let offset: CGPoint
+    let angle: Double
+
+    switch avAsset.g_orientation {
+    case .LandscapeLeft:
+      offset = CGPoint(x: avAsset.g_size.width, y: avAsset.g_size.height)
+      angle = M_PI
+    case .LandscapeRight:
+      offset = CGPoint.zero
+      angle = 0
+    case .PortraitUpsideDown:
+      offset = CGPoint(x: 0, y: avAsset.g_size.width)
+      angle = -M_PI_2
+    default:
+      offset = CGPoint(x: avAsset.g_size.height, y: 0)
+      angle = M_PI_2
+    }
+
+    let translation = CGAffineTransformMakeTranslation(offset.x, offset.y)
+    let rotation = CGAffineTransformRotate(translation, CGFloat(angle))
+
+    return CGAffineTransformScale(rotation, scale, scale)
   }
 
   static func presetName(avAsset: AVAsset) -> String {
