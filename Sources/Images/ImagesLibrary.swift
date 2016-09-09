@@ -14,7 +14,16 @@ class ImagesLibrary {
 
   // MARK: - Logic
 
-  func reload() {
+  func reload(completion: () -> Void) {
+    Dispatch.background {
+      self.reloadSync()
+      Dispatch.main {
+        completion()
+      }
+    }
+  }
+
+  private func reloadSync() {
     let types: [PHAssetCollectionType] = [.SmartAlbum, .Album]
 
     albumsFetchResults = types.map {

@@ -117,9 +117,10 @@ extension VideosController: PageAware {
 
   func pageDidShow() {
     once.run {
-      library.reload()
-      items = library.items
-      gridView.collectionView.reloadData()
+      library.reload {
+        self.items = self.library.items
+        self.gridView.collectionView.reloadData()
+      }
     }
   }
 }

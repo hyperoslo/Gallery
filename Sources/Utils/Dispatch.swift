@@ -9,4 +9,9 @@ struct Dispatch {
   static func main(block: dispatch_block_t) {
     on(dispatch_get_main_queue(), block: block)
   }
+
+  static func background(block: dispatch_block_t) {
+    let queue = dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
+    on(queue, block: block)
+  }
 }

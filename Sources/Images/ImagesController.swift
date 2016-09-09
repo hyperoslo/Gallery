@@ -138,13 +138,14 @@ extension ImagesController: PageAware {
 
   func pageDidShow() {
     once.run {
-      library.reload()
-      dropdownController.albums = library.albums
-      dropdownController.tableView.reloadData()
+      library.reload {
+        self.dropdownController.albums = self.library.albums
+        self.dropdownController.tableView.reloadData()
 
-      if let album = library.albums.first {
-        selectedAlbum = album
-        show(album: album)
+        if let album = self.library.albums.first {
+          self.selectedAlbum = album
+          self.show(album: album)
+        }
       }
     }
   }
