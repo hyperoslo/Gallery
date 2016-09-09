@@ -16,9 +16,9 @@ extension UIView {
     clipsToBounds = true
   }
 
-  func g_show() {
+  func g_quickFade(visible visible: Bool = true) {
     UIView.animateWithDuration(0.1) {
-      self.alpha = 1.0
+      self.alpha = visible ? 1 : 0
     }
   }
 

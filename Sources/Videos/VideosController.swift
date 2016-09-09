@@ -137,7 +137,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     let item = items[indexPath.item]
 
     if let selectedItem = Cart.shared.video where selectedItem == item {
-      cell.frameView.g_show()
+      cell.frameView.g_quickFade()
     } else {
       cell.frameView.alpha = 0
     }
