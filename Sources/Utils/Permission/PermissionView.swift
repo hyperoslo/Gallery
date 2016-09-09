@@ -3,6 +3,7 @@ import Cartography
 
 class PermissionView: UIView {
 
+  lazy var imageView: UIImageView = self.makeImageView()
   lazy var label: UILabel = self.makeLabel()
   lazy var settingButton: UIButton = self.makeSettingButton()
   lazy var closeButton: UIButton = self.makeCloseButton()
@@ -23,25 +24,27 @@ class PermissionView: UIView {
   // MARK: - Setup
 
   func setup() {
-    [label, settingButton, closeButton].forEach {
+    [label, settingButton, closeButton, imageView].forEach {
       addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(closeButton, label, settingButton) {
-      closeButton, label, settingButton in
+    constrain(closeButton, label, settingButton, imageView) {
+      closeButton, label, settingButton, imageView in
 
       closeButton.top == closeButton.superview!.top
       closeButton.left == closeButton.superview!.left
-      closeButton.width == 44
       closeButton.height == 44
+      closeButton.width == 44
 
-      label.centerY == label.superview!.centerY
+      settingButton.center == settingButton.superview!.center
+
+      label.bottom == settingButton.top - 33
       label.left == label.superview!.left + 50
       label.right == label.superview!.right - 50
 
-      settingButton.top == label.bottom + 30
-      settingButton.centerX == settingButton.superview!.centerX
+      imageView.centerX == imageView.superview!.centerX
+      imageView.bottom == label.top - 12
     }
   }
 
@@ -49,9 +52,9 @@ class PermissionView: UIView {
 
   func makeLabel() -> UILabel {
     let label = UILabel()
-    label.textColor = UIColor.blackColor()
-    label.font = Config.Font.Text.regular.fontWithSize(20)
-    label.text = "Gallery.Permission.Info".g_localize(fallback: "Please enable Photos and Camera")
+    label.textColor = Config.Permission.textColor
+    label.font = Config.Font.Text.regular.fontWithSize(14)
+    label.text = "Gallery.Permission.Info".g_localize(fallback: "Please enable photos and camera")
     label.textAlignment = .Center
     label.numberOfLines = 0
 
@@ -59,8 +62,11 @@ class PermissionView: UIView {
   }
 
   func makeSettingButton() -> UIButton {
-    let button = UIButton(type: .System)
+    let button = UIButton(type: .Custom)
     button.setTitle("Gallery.Permission.Button".g_localize(fallback: "Go to Settings"), forState: .Normal)
+    button.setBackgroundImage(Config.Permission.buttonBackgroundImage, forState: .Normal)
+    button.titleLabel?.font = Config.Font.Main.regular.fontWithSize(16)
+    button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
 
     return button
   }
@@ -71,5 +77,12 @@ class PermissionView: UIView {
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button
+  }
+
+  func makeImageView() -> UIImageView {
+    let view = UIImageView()
+    view.image = Config.Permission.image
+
+    return view
   }
 }
