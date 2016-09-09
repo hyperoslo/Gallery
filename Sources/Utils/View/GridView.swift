@@ -152,8 +152,6 @@ class GridView: UIView {
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
     view.backgroundColor = UIColor.whiteColor()
-    view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
-    view.scrollIndicatorInsets = view.contentInset
 
     return view
   }

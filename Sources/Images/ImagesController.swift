@@ -213,7 +213,9 @@ class ImagesController: UIViewController,
   // MARK: - View
 
   func refreshView() {
-    gridView.bottomView.g_fade(visible: !Cart.shared.images.isEmpty)
+    let hasImages = !Cart.shared.images.isEmpty
+    gridView.bottomView.g_fade(visible: hasImages)
+    gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
   }
 
   // MARK: - Controls

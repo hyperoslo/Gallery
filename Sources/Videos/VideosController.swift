@@ -170,8 +170,9 @@ class VideosController: UIViewController, UICollectionViewDataSource,
       videoBox.imageView.image = nil
     }
 
-    let hasVideoSelected = (Cart.shared.video != nil)
-    gridView.bottomView.g_fade(visible: hasVideoSelected)
+    let hasVideo = (Cart.shared.video != nil)
+    gridView.bottomView.g_fade(visible: hasVideo)
+    gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
   }
 
   // MARK: - Controls
