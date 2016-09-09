@@ -186,7 +186,6 @@ class VideosController: UIViewController, UICollectionViewDataSource,
 
   func makeVideoBox() -> VideoBox {
     let videoBox = VideoBox()
-    videoBox.hidden = true
     videoBox.delegate = self
 
     return videoBox
@@ -197,7 +196,6 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     label.textColor = UIColor.whiteColor()
     label.font = Config.Font.Text.regular.fontWithSize(12)
     label.text = "FIRST \(Int(Config.VideoEditor.maximumDuration)) SECONDS"
-    label.hidden = true
 
     return label
   }
