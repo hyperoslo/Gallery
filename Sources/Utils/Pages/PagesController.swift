@@ -5,7 +5,7 @@ protocol PageAware: class {
   func pageDidShow()
 }
 
-class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDelegate {
+class PagesController: UIViewController {
 
   let controllers: [UIViewController]
 
@@ -121,22 +121,6 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
     }
   }
 
-  // MARK: - PageIndicatorDelegate
-
-  func pageIndicator(pageIndicator: PageIndicator, didSelect index: Int) {
-    let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
-    scrollView.setContentOffset(point, animated: false)
-    updateAndNotify(index)
-  }
-
-  // MARK: - UIScrollViewDelegate
-
-  func scrollViewDidScroll(scrollView: UIScrollView) {
-    let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
-    pageIndicator.select(index: index)
-    updateAndNotify(index)
-  }
-
   // MARK: - Index
 
   func goAndNotify() {
@@ -160,5 +144,24 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
     if let controller = controllers[selectedIndex] as? PageAware {
       controller.pageDidShow()
     }
+  }
+}
+
+extension PagesController: PageIndicatorDelegate {
+
+  func pageIndicator(pageIndicator: PageIndicator, didSelect index: Int) {
+    let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
+    scrollView.setContentOffset(point, animated: false)
+    updateAndNotify(index)
+  }
+
+}
+
+extension PagesController: UIScrollViewDelegate {
+
+  func scrollViewDidScroll(scrollView: UIScrollView) {
+    let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
+    pageIndicator.select(index: index)
+    updateAndNotify(index)
   }
 }

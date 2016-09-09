@@ -6,9 +6,10 @@ protocol DropdownControllerDelegate: class {
   func dropdownController(controller: DropdownController, didSelect album: Album)
 }
 
-class DropdownController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class DropdownController: UIViewController {
 
   lazy var tableView: UITableView = self.makeTableView()
+  lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
   var animating: Bool = false
   var expanding: Bool = false
@@ -36,15 +37,17 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
   // MARK: - Setup
 
   func setup() {
-    view.addSubview(tableView)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.rowHeight = 80
+    [blurView, tableView].forEach {
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      view.addSubview($0)
+    }
 
     tableView.registerClass(AlbumCell.self, forCellReuseIdentifier: String(AlbumCell.self))
 
-    constrain(tableView) {
-      tableView in
+    constrain(blurView, tableView) {
+      blurView, tableView in
 
+      blurView.edges == blurView.superview!.edges
       tableView.edges == tableView.superview!.edges
     }
   }
@@ -66,6 +69,29 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
     })
   }
 
+  // MARK: - Controls
+
+  func makeTableView() -> UITableView {
+    let tableView = UITableView()
+    tableView.tableFooterView = UIView()
+    tableView.separatorStyle = .None
+    tableView.rowHeight = 84
+
+    tableView.dataSource = self
+    tableView.delegate = self
+
+    return tableView
+  }
+
+  func makeBlurView() -> UIVisualEffectView {
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+
+    return view
+  }
+}
+
+extension DropdownController: UITableViewDataSource, UITableViewDelegate {
+
   // MARK: - UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,12 +100,12 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(String(AlbumCell.self), forIndexPath: indexPath)
-                as! AlbumCell
+      as! AlbumCell
 
     let album = albums[indexPath.row]
     cell.configure(album)
     cell.accessoryType = (selectedIndex == indexPath.row) ? .Checkmark : .None
-    
+
     return cell
   }
 
@@ -94,17 +120,5 @@ class DropdownController: UIViewController, UITableViewDataSource, UITableViewDe
     selectedIndex = indexPath.row
     tableView.reloadData()
   }
-
-  // MARK: - Controls
-
-  func makeTableView() -> UITableView {
-    let tableView = UITableView()
-    tableView.tableFooterView = UIView()
-    tableView.separatorStyle = .None
-
-    tableView.dataSource = self
-    tableView.delegate = self
-
-    return tableView
-  }
 }
+
