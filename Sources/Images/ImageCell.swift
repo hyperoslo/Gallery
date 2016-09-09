@@ -69,7 +69,7 @@ class ImageCell: UICollectionViewCell {
   func makeHighlightOverlay() -> UIView {
     let view = UIView()
     view.userInteractionEnabled = false
-    view.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.3)
+    view.backgroundColor = Config.Grid.FrameView.borderColor.colorWithAlphaComponent(0.3)
     view.hidden = true
 
     return view
