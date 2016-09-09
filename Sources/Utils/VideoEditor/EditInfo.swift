@@ -69,7 +69,7 @@ struct EditInfo {
   }
 
   static func preferredPresetName() -> String {
-    return AVAssetExportPresetMediumQuality
+    return Config.VideoEditor.quality
   }
 
   static func timeRange(avAsset: AVAsset) -> CMTimeRange {
