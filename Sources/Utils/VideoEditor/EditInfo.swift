@@ -1,93 +1,19 @@
-import Foundation
+import UIKit
 import AVFoundation
-import Photos
 
-public class VideoEditor {
-
-  // MARK: - Initialization
-
-  public init() {
-
-  }
-
-  // MARK: - Edit
-  
-  public func edit(video: Video, completion: (video: Video?, tempPath: NSURL?) -> Void) {
-    video.fetchAVAsset { avAsset in
-      guard let avAsset = avAsset else {
-        completion(video: nil, tempPath: nil)
-        return
-      }
-
-      self.crop(avAsset) { (outputURL: NSURL?) in
-        guard let outputURL = outputURL else {
-          completion(video: nil, tempPath: nil)
-          return
-        }
-
-        self.handle(outputURL, completion: completion)
-      }
-    }
-  }
-
-  func handle(outputURL: NSURL, completion: (video: Video?, tempPath: NSURL?) -> Void) {
-    guard Config.VideoEditor.savesEditedVideoToLibrary else {
-      completion(video: nil, tempPath: outputURL)
-      return
-    }
-
-    var localIdentifier: String?
-    PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-      let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
-      localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
-    }, completionHandler: { succeeded, info in
-      if let localIdentifier = localIdentifier, asset = Fetcher.fetchAsset(localIdentifier) {
-        completion(video: Video(asset: asset), tempPath: outputURL)
-      } else {
-        completion(video: nil, tempPath: outputURL)
-      }
-    })
-  }
-
-  func crop(avAsset: AVAsset, completion: (NSURL?) -> Void) {
-    guard let outputURL = Info.outputURL() else {
-      completion(nil)
-      return
-    }
-
-    let export = AVAssetExportSession(asset: avAsset, presetName: Info.presetName(avAsset))
-    export?.timeRange = Info.timeRange(avAsset)
-    export?.outputURL = outputURL
-    export?.outputFileType = Info.file().type
-    export?.videoComposition = Info.composition(avAsset)
-    export?.shouldOptimizeForNetworkUse = true
-
-    var localIdentifier: String?
-    export?.exportAsynchronouslyWithCompletionHandler {
-      if export?.status == AVAssetExportSessionStatus.Completed {
-        completion(outputURL)
-      } else {
-        completion(nil)
-      }
-    }
-  }
-}
-
-// MARK: - Info
-
-private struct Info {
+struct EditInfo {
 
   static func composition(avAsset: AVAsset) -> AVVideoComposition? {
     guard let track = avAsset.tracksWithMediaType(AVMediaTypeVideo).first else { return nil }
 
-    let cropInfo = Info.cropInfo(avAsset)
+    let cropInfo = EditInfo.cropInfo(avAsset)
 
     let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-    layer.setTransform(Info.transform(avAsset, scale: cropInfo.scale), atTime: kCMTimeZero)
+    layer.setTransform(EditInfo.transform(avAsset, scale: cropInfo.scale), atTime: kCMTimeZero)
 
     let instruction = AVMutableVideoCompositionInstruction()
     instruction.layerInstructions = [layer]
-    instruction.timeRange = Info.timeRange(avAsset)
+    instruction.timeRange = timeRange(avAsset)
 
     let composition = AVMutableVideoComposition(propertiesOfAsset: avAsset)
     composition.instructions = [instruction]

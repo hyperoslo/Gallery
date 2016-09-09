@@ -13,7 +13,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     super.viewDidLoad()
     view.backgroundColor = UIColor.whiteColor()
 
-    Gallery.Config.VideoEditor.savesEditedVideoToLibrary = false
+    Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
 
     button = UIButton(type: .System)
     button.frame.size = CGSize(width: 200, height: 50)
