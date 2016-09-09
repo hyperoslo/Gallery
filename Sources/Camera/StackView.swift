@@ -125,7 +125,7 @@ class StackView: UIControl{
       countLabel.text = "\(images.count)"
       countLabel.sizeToFit()
       countLabel.center = topVisibleView.center
-      countLabel.g_fadeIn()
+      countLabel.g_show()
     } else {
       countLabel.alpha = 0
     }

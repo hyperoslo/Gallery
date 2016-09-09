@@ -171,7 +171,7 @@ class ImagesController: UIViewController,
     let item = items[indexPath.item]
 
     if let index = Cart.shared.images.indexOf(item) {
-      cell.frameView.g_fadeIn()
+      cell.frameView.g_show()
       cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.alpha = 0
@@ -213,8 +213,7 @@ class ImagesController: UIViewController,
   // MARK: - View
 
   func refreshView() {
-    gridView.doneButton.enabled = !Cart.shared.images.isEmpty
-    stackView.hidden = Cart.shared.images.isEmpty
+    gridView.bottomView.g_fade(visible: !Cart.shared.images.isEmpty)
   }
 
   // MARK: - Controls
@@ -228,6 +227,7 @@ class ImagesController: UIViewController,
   
   func makeGridView() -> GridView {
     let view = GridView()
+    view.bottomView.alpha = 0
     
     return view
   }

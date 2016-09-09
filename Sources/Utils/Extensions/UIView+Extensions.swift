@@ -16,9 +16,15 @@ extension UIView {
     clipsToBounds = true
   }
 
-  func g_fadeIn() {
+  func g_show() {
     UIView.animateWithDuration(0.1) {
       self.alpha = 1.0
+    }
+  }
+
+  func g_fade(visible visible: Bool) {
+    UIView.animateWithDuration(0.25) {
+      self.alpha = visible ? 1 : 0
     }
   }
 }

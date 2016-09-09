@@ -137,7 +137,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     let item = items[indexPath.item]
 
     if let selectedItem = Cart.shared.video where selectedItem == item {
-      cell.frameView.g_fadeIn()
+      cell.frameView.g_show()
     } else {
       cell.frameView.alpha = 0
     }
@@ -171,15 +171,14 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     }
 
     let hasVideoSelected = (Cart.shared.video != nil)
-    gridView.doneButton.enabled = hasVideoSelected
-    videoBox.hidden = !hasVideoSelected
-    infoLabel.hidden = !hasVideoSelected
+    gridView.bottomView.g_fade(visible: hasVideoSelected)
   }
 
   // MARK: - Controls
 
   func makeGridView() -> GridView {
     let view = GridView()
+    view.bottomView.alpha = 0
     
     return view
   }
