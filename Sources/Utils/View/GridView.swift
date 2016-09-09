@@ -31,17 +31,17 @@ class GridView: UIView {
 
   func setup() {
     [collectionView, bottomView, topView, emptyView].forEach {
-      self.addSubview($0)
+      addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
     [closeButton, arrowButton].forEach {
-      self.topView.addSubview($0)
+      topView.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
     [bottomBlurView, doneButton].forEach {
-      self.bottomView.addSubview($0)
+      bottomView.addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
 

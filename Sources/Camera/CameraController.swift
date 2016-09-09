@@ -160,8 +160,8 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   // MARK: - View
 
   func refreshView() {
-    cameraView.doneButton.enabled = !Cart.shared.images.isEmpty
-    cameraView.stackView.hidden = Cart.shared.images.isEmpty
+    let hasImages = !Cart.shared.images.isEmpty
+    cameraView.bottomView.g_fade(visible: hasImages)
   }
 
   // MARK: - Controls
@@ -174,9 +174,9 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
   }
 
   func makeCameraView() -> CameraView {
-    let cameraView = CameraView()
-    cameraView.delegate = self
+    let view = CameraView()
+    view.delegate = self
 
-    return cameraView
+    return view
   }
 }

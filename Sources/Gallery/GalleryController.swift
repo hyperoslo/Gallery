@@ -87,6 +87,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
 
   func makePagesController() -> PagesController {
     let controller = PagesController(controllers: [imagesController, cameraController, videosController])
+    controller.selectedIndex = Page.Camera.rawValue
     controller.delegate = self
 
     return controller

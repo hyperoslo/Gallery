@@ -11,7 +11,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var flashButton: TripleButton = self.makeFlashButton()
   lazy var rotateButton: UIButton = self.makeRotateButton()
-  lazy var bottomContainer: UIView = self.makeBottomContainer()
+  private lazy var bottomContainer: UIView = self.makeBottomContainer()
+  lazy var bottomView: UIView = self.makeBottomView()
   lazy var stackView: StackView = self.makeStackView()
   lazy var shutterButton: ShutterButton = self.makeShutterButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
@@ -45,12 +46,17 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
     [closeButton, flashButton, rotateButton, bottomContainer].forEach {
       $0.translatesAutoresizingMaskIntoConstraints = false
-      self.addSubview($0)
+      addSubview($0)
     }
 
-    [stackView, shutterButton, doneButton].forEach {
+    [bottomView, shutterButton].forEach {
       $0.translatesAutoresizingMaskIntoConstraints = false
-      self.bottomContainer.addSubview($0)
+      bottomContainer.addSubview($0)
+    }
+
+    [stackView, doneButton].forEach {
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      bottomView.addSubview($0)
     }
 
     [closeButton, flashButton, rotateButton].forEach {
@@ -61,7 +67,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     insertSubview(rotateOverlayView, belowSubview: rotateButton)
     insertSubview(focusImageView, belowSubview: bottomContainer)
     insertSubview(shutterOverlayView, belowSubview: bottomContainer)
-    
+
     constrain(closeButton, flashButton, rotateButton, bottomContainer) {
       closeButton, flashButton, rotateButton, bottomContainer in
 
@@ -84,6 +90,12 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       bottomContainer.right == bottomContainer.superview!.right
       bottomContainer.bottom == bottomContainer.superview!.bottom
       bottomContainer.height == 80
+    }
+
+    constrain(bottomContainer, bottomView) {
+      bottomContainer, bottomView in
+
+      bottomView.edges == bottomView.superview!.edges
     }
 
     constrain(stackView, shutterButton, doneButton) {
@@ -192,7 +204,14 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeBottomContainer() -> UIView {
     let view = UIView()
+
+    return view
+  }
+
+  func makeBottomView() -> UIView {
+    let view = UIView()
     view.backgroundColor = Config.Camera.BottomContainer.backgroundColor
+    view.alpha = 0
 
     return view
   }
@@ -215,7 +234,6 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     button.setTitleColor(UIColor.lightGrayColor(), forState: .Disabled)
     button.titleLabel?.font = Config.Font.Text.regular.fontWithSize(16)
     button.setTitle("Done", forState: .Normal)
-    button.enabled = false
 
     return button
   }
