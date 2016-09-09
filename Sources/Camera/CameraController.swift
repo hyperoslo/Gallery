@@ -2,7 +2,7 @@ import UIKit
 import Cartography
 import AVFoundation
 
-class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate, CartDelegate {
+class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate, CartDelegate, PageAware {
 
   var locationManager: LocationManager?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
@@ -24,18 +24,16 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
     locationManager?.start()
   }
 
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-
-    once.run {
-      cameraMan.setup()
-    }
-  }
-
   override func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
 
     locationManager?.stop()
+  }
+
+  func pageDidShow() {
+    once.run {
+      cameraMan.setup()
+    }
   }
 
   // MARK: - Setup

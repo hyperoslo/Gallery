@@ -3,7 +3,7 @@ import Cartography
 import Photos
 
 class ImagesController: UIViewController,
-  UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownControllerDelegate, CartDelegate {
+  UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownControllerDelegate, CartDelegate, PageAware {
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
@@ -22,9 +22,7 @@ class ImagesController: UIViewController,
     setup()
   }
 
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-
+  func pageDidShow() {
     once.run {
       library.reload()
       dropdownController.albums = library.albums

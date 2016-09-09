@@ -4,7 +4,7 @@ import Photos
 import AVKit
 
 class VideosController: UIViewController, UICollectionViewDataSource,
-  UICollectionViewDelegateFlowLayout, VideoBoxDelegate {
+  UICollectionViewDelegateFlowLayout, VideoBoxDelegate, PageAware {
 
   lazy var gridView: GridView = self.makeGridView()
   lazy var videoBox: VideoBox = self.makeVideoBox()
@@ -22,9 +22,7 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     setup()
   }
 
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-
+  func pageDidShow() {
     once.run {
       library.reload()
       items = library.items

@@ -1,8 +1,8 @@
 import UIKit
 import Cartography
 
-protocol PagesControllerDelegate: class {
-  func pagesController(controller: PagesController, didSelect index: Int)
+protocol PageAware: class {
+  func pageDidShow()
 }
 
 class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDelegate {
@@ -14,7 +14,6 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   lazy var pageIndicator: PageIndicator = self.makePageIndicator()
 
   var selectedIndex: Int = 0
-  weak var delegate: PagesControllerDelegate?
 
   // MARK: - Initialization
 
@@ -133,6 +132,8 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
     guard selectedIndex != index else { return }
 
     selectedIndex = index
-    delegate?.pagesController(self, didSelect: index)
+    if let controller = controllers[selectedIndex] as? PageAware {
+      controller.pageDidShow()
+    }
   }
 }
