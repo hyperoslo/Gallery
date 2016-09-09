@@ -3,6 +3,7 @@ import Cartography
 
 class EmptyView: UIView {
 
+  lazy var imageView: UIImageView = self.makeImageView()
   lazy var label: UILabel = self.makeLabel()
 
   // MARK: - Initialization
@@ -20,13 +21,18 @@ class EmptyView: UIView {
   // MARK: - Setup
 
   func setup() {
-    addSubview(label)
-    label.translatesAutoresizingMaskIntoConstraints = false
+    [label, imageView].forEach {
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      addSubview($0)
+    }
 
-    constrain(label) {
-      label in
+    constrain(imageView, label) {
+      imageView, label in
 
       label.center == label.superview!.center
+
+      imageView.centerX == imageView.superview!.centerX
+      imageView.bottom == label.top - 12
     }
   }
 
@@ -34,10 +40,17 @@ class EmptyView: UIView {
 
   func makeLabel() -> UILabel {
     let label = UILabel()
-    label.textColor = UIColor.blackColor()
-    label.font = Config.Font.Text.regular.fontWithSize(15)
+    label.textColor = Config.EmptyView.textColor
+    label.font = Config.Font.Text.regular.fontWithSize(14)
     label.text = "Gallery.EmptyView.Text".g_localize(fallback: "Nothing to show")
 
     return label
+  }
+
+  func makeImageView() -> UIImageView {
+    let view = UIImageView()
+    view.image = Config.EmptyView.image
+
+    return view
   }
 }
