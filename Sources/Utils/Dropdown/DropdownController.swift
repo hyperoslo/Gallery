@@ -104,8 +104,7 @@ extension DropdownController: UITableViewDataSource, UITableViewDelegate {
 
     let album = albums[indexPath.row]
     cell.configure(album)
-    cell.accessoryType = (selectedIndex == indexPath.row) ? .Checkmark : .None
-
+    
     return cell
   }
 

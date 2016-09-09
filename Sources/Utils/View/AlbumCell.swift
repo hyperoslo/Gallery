@@ -6,7 +6,6 @@ class AlbumCell: UITableViewCell {
   lazy var albumImageView: UIImageView = self.makeAlbumImageView()
   lazy var albumTitleLabel: UILabel = self.makeAlbumTitleLabel()
   lazy var itemCountLabel: UILabel = self.makeItemCountLabel()
-  lazy var separator: UIView = self.makeSeparator()
 
   // MARK: - Initialization
 
@@ -35,7 +34,7 @@ class AlbumCell: UITableViewCell {
   // MARK: - Setup
 
   func setup() {
-    [albumImageView, albumTitleLabel, itemCountLabel, separator].forEach {
+    [albumImageView, albumTitleLabel, itemCountLabel].forEach {
       addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -43,26 +42,17 @@ class AlbumCell: UITableViewCell {
     constrain(albumImageView, albumTitleLabel, itemCountLabel) {
       albumImageView, albumTitleLabel, itemCountLabel in
 
-      albumImageView.left == albumImageView.superview!.left + 10
+      albumImageView.left == albumImageView.superview!.left + 12
       albumImageView.top == albumImageView.superview!.top + 5
       albumImageView.bottom == albumImageView.superview!.bottom - 5
       albumImageView.width == albumImageView.height
 
       albumTitleLabel.left == albumImageView.right + 10
-      albumTitleLabel.top == albumTitleLabel.superview!.top + 20
+      albumTitleLabel.top == albumTitleLabel.superview!.top + 24
       albumTitleLabel.right == albumTitleLabel.superview!.right - 10
 
       itemCountLabel.left == albumImageView.right + 10
-      itemCountLabel.top == albumTitleLabel.bottom + 10
-    }
-
-    constrain(separator) {
-      separator in
-
-      separator.left == separator.superview!.left
-      separator.right == separator.superview!.right
-      separator.bottom == separator.superview!.bottom
-      separator.height == 1
+      itemCountLabel.top == albumTitleLabel.bottom + 6
     }
   }
 
@@ -72,15 +62,13 @@ class AlbumCell: UITableViewCell {
     let imageView = UIImageView()
     imageView.image = Bundle.image("gallery_placeholder")
 
-    imageView.g_addShadow()
-
     return imageView
   }
 
   func makeAlbumTitleLabel() -> UILabel {
     let label = UILabel()
     label.numberOfLines = 1
-    label.font = Config.Font.Main.regular.fontWithSize(15)
+    label.font = Config.Font.Text.regular.fontWithSize(14)
 
     return label
   }
@@ -88,15 +76,8 @@ class AlbumCell: UITableViewCell {
   func makeItemCountLabel() -> UILabel {
     let label = UILabel()
     label.numberOfLines = 1
-    label.font = Config.Font.Text.regular.fontWithSize(12)
+    label.font = Config.Font.Text.regular.fontWithSize(10)
 
     return label
-  }
-
-  func makeSeparator() -> UIView {
-    let view = UIView()
-    view.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
-
-    return view
   }
 }
