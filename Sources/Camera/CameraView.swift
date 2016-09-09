@@ -224,6 +224,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeShutterButton() -> ShutterButton {
     let button = ShutterButton()
+    button.g_addShadow()
 
     return button
   }
