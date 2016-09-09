@@ -64,7 +64,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
 
   func makeImagesController() -> ImagesController {
     let controller = ImagesController()
-    controller.title = "IMAGES"
+    controller.title = "Gallery.Images.Title".g_localize(fallback: "PHOTOS")
     Cart.shared.add(delegate: controller)
 
     return controller
@@ -72,7 +72,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
 
   func makeCameraController() -> CameraController {
     let controller = CameraController()
-    controller.title = "CAMERA"
+    controller.title = "Gallery.Camera.Title".g_localize(fallback: "CAMERA")
     Cart.shared.add(delegate: controller)
 
     return controller
@@ -80,7 +80,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate, 
 
   func makeVideosController() -> VideosController {
     let controller = VideosController()
-    controller.title = "VIDEOS"
+    controller.title = "Gallery.Videos.Title".g_localize(fallback: "VIDEOS")
 
     return controller
   }

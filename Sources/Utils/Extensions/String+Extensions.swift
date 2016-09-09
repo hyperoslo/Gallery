@@ -1,9 +1,9 @@
-//
-//  String+Extensions.swift
-//  Pods
-//
-//  Created by Khoa Pham on 09/09/16.
-//
-//
-
 import Foundation
+
+extension String {
+
+  func g_localize(fallback fallback: String) -> String {
+    let string = NSLocalizedString(self, comment: "")
+    return string == self ? fallback : string
+  }
+}

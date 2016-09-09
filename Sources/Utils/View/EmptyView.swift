@@ -36,7 +36,7 @@ class EmptyView: UIView {
     let label = UILabel()
     label.textColor = UIColor.blackColor()
     label.font = Config.Font.Text.regular.fontWithSize(15)
-    label.text = "Nothing to show"
+    label.text = "Gallery.EmptyView.Text".g_localize(fallback: "Nothing to show")
 
     return label
   }
