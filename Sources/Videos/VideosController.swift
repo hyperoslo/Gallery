@@ -3,8 +3,7 @@ import Cartography
 import Photos
 import AVKit
 
-class VideosController: UIViewController, UICollectionViewDataSource,
-  UICollectionViewDelegateFlowLayout, VideoBoxDelegate, PageAware {
+class VideosController: UIViewController {
 
   lazy var gridView: GridView = self.makeGridView()
   lazy var videoBox: VideoBox = self.makeVideoBox()
@@ -20,14 +19,6 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     super.viewDidLoad()
 
     setup()
-  }
-
-  func pageDidShow() {
-    once.run {
-      library.reload()
-      items = library.items
-      gridView.collectionView.reloadData()
-    }
   }
 
   // MARK: - Setup
@@ -80,6 +71,79 @@ class VideosController: UIViewController, UICollectionViewDataSource,
   func doneButtonTouched(button: UIButton) {
     EventHub.shared.doneWithVideos?()
   }
+
+  // MARK: - View
+
+  func refreshView() {
+    if let selectedItem = Cart.shared.video {
+      videoBox.imageView.g_loadImage(selectedItem.asset)
+    } else {
+      videoBox.imageView.image = nil
+    }
+
+    let hasVideo = (Cart.shared.video != nil)
+    gridView.bottomView.g_fade(visible: hasVideo)
+    gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
+  }
+
+  // MARK: - Controls
+
+  func makeGridView() -> GridView {
+    let view = GridView()
+    view.bottomView.alpha = 0
+    
+    return view
+  }
+
+  func makeVideoBox() -> VideoBox {
+    let videoBox = VideoBox()
+    videoBox.delegate = self
+
+    return videoBox
+  }
+
+  func makeInfoLabel() -> UILabel {
+    let label = UILabel()
+    label.textColor = UIColor.whiteColor()
+    label.font = Config.Font.Text.regular.fontWithSize(12)
+    label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
+                        (Int(Config.VideoEditor.maximumDuration)))
+
+    return label
+  }
+}
+
+extension VideosController: PageAware {
+
+  func pageDidShow() {
+    once.run {
+      library.reload()
+      items = library.items
+      gridView.collectionView.reloadData()
+    }
+  }
+}
+
+extension VideosController: VideoBoxDelegate {
+
+  func videoBoxDidTap(videoBox: VideoBox) {
+    Cart.shared.video?.fetchPlayerItem { item in
+      guard let item = item else { return }
+
+      Dispatch.main {
+        let controller = AVPlayerViewController()
+        let player = AVPlayer(playerItem: item)
+        controller.player = player
+
+        self.presentViewController(controller, animated: true) {
+          player.play()
+        }
+      }
+    }
+  }
+}
+
+extension VideosController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   // MARK: - UICollectionViewDataSource
 
@@ -139,63 +203,5 @@ class VideosController: UIViewController, UICollectionViewDataSource,
     } else {
       cell.frameView.alpha = 0
     }
-  }
-
-  // MARK: - VideoBoxDelegate
-
-  func videoBoxDidTap(videoBox: VideoBox) {
-    Cart.shared.video?.fetchPlayerItem { item in
-      guard let item = item else { return }
-
-      Dispatch.main {
-        let controller = AVPlayerViewController()
-        let player = AVPlayer(playerItem: item)
-        controller.player = player
-
-        self.presentViewController(controller, animated: true) {
-          player.play()
-        }
-      }
-    }
-  }
-
-  // MARK: - View
-
-  func refreshView() {
-    if let selectedItem = Cart.shared.video {
-      videoBox.imageView.g_loadImage(selectedItem.asset)
-    } else {
-      videoBox.imageView.image = nil
-    }
-
-    let hasVideo = (Cart.shared.video != nil)
-    gridView.bottomView.g_fade(visible: hasVideo)
-    gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
-  }
-
-  // MARK: - Controls
-
-  func makeGridView() -> GridView {
-    let view = GridView()
-    view.bottomView.alpha = 0
-    
-    return view
-  }
-
-  func makeVideoBox() -> VideoBox {
-    let videoBox = VideoBox()
-    videoBox.delegate = self
-
-    return videoBox
-  }
-
-  func makeInfoLabel() -> UILabel {
-    let label = UILabel()
-    label.textColor = UIColor.whiteColor()
-    label.font = Config.Font.Text.regular.fontWithSize(12)
-    label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
-                        (Int(Config.VideoEditor.maximumDuration)))
-
-    return label
   }
 }

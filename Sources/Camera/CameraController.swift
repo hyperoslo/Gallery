@@ -2,7 +2,7 @@ import UIKit
 import Cartography
 import AVFoundation
 
-class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate, CartDelegate, PageAware {
+class CameraController: UIViewController {
 
   var locationManager: LocationManager?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
@@ -28,12 +28,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
     super.viewWillDisappear(animated)
 
     locationManager?.stop()
-  }
-
-  func pageDidShow() {
-    once.run {
-      cameraMan.setup()
-    }
   }
 
   // MARK: - Setup
@@ -118,43 +112,6 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
     EventHub.shared.doneWithImages?()
   }
 
-  // MARK: - CameraManDelegate
-
-  func cameraManDidStart(cameraMan: CameraMan) {
-    cameraView.setupPreviewLayer(cameraMan.session)
-  }
-
-  func cameraManNotAvailable(cameraMan: CameraMan) {
-    cameraView.focusImageView.hidden = true
-  }
-
-  func cameraMan(cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
-    cameraView.flashButton.hidden = !input.device.hasFlash
-  }
-
-  // MARK: - CameraViewDelegate
-
-  func cameraView(cameraView: CameraView, didTouch point: CGPoint) {
-    cameraMan.focus(point)
-  }
-
-  // MARK: - CartDelegate
-
-  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
-    cameraView.stackView.reload(cart.images, added: true)
-    refreshView()
-  }
-
-  func cart(cart: Cart, didRemove image: Image) {
-    cameraView.stackView.reload(cart.images)
-    refreshView()
-  }
-
-  func cartDidReload(cart: Cart) {
-    cameraView.stackView.reload(cart.images)
-    refreshView()
-  }
-
   // MARK: - View
 
   func refreshView() {
@@ -177,4 +134,54 @@ class CameraController: UIViewController, CameraManDelegate, CameraViewDelegate,
 
     return view
   }
+}
+
+extension CameraController: CartDelegate {
+
+  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
+    cameraView.stackView.reload(cart.images, added: true)
+    refreshView()
+  }
+
+  func cart(cart: Cart, didRemove image: Image) {
+    cameraView.stackView.reload(cart.images)
+    refreshView()
+  }
+
+  func cartDidReload(cart: Cart) {
+    cameraView.stackView.reload(cart.images)
+    refreshView()
+  }
+}
+
+extension CameraController: PageAware {
+
+  func pageDidShow() {
+    once.run {
+      cameraMan.setup()
+    }
+  }
+}
+
+extension CameraController: CameraViewDelegate {
+
+  func cameraView(cameraView: CameraView, didTouch point: CGPoint) {
+    cameraMan.focus(point)
+  }
+}
+
+extension CameraController: CameraManDelegate {
+
+  func cameraManDidStart(cameraMan: CameraMan) {
+    cameraView.setupPreviewLayer(cameraMan.session)
+  }
+
+  func cameraManNotAvailable(cameraMan: CameraMan) {
+    cameraView.focusImageView.hidden = true
+  }
+
+  func cameraMan(cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
+    cameraView.flashButton.hidden = !input.device.hasFlash
+  }
+
 }

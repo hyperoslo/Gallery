@@ -2,8 +2,7 @@ import UIKit
 import Cartography
 import Photos
 
-class ImagesController: UIViewController,
-  UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownControllerDelegate, CartDelegate, PageAware {
+class ImagesController: UIViewController {
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
@@ -20,19 +19,6 @@ class ImagesController: UIViewController,
     super.viewDidLoad()
 
     setup()
-  }
-
-  func pageDidShow() {
-    once.run {
-      library.reload()
-      dropdownController.albums = library.albums
-      dropdownController.tableView.reloadData()
-
-      if let album = library.albums.first {
-        selectedAlbum = album
-        show(album: album)
-      }
-    }
   }
 
   // MARK: - Setup
@@ -117,6 +103,89 @@ class ImagesController: UIViewController,
     }
   }
 
+  // MARK: - View
+
+  func refreshView() {
+    let hasImages = !Cart.shared.images.isEmpty
+    gridView.bottomView.g_fade(visible: hasImages)
+    gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
+  }
+
+  // MARK: - Controls
+
+  func makeDropdownController() -> DropdownController {
+    let controller = DropdownController()
+    controller.delegate = self
+    
+    return controller
+  }
+  
+  func makeGridView() -> GridView {
+    let view = GridView()
+    view.bottomView.alpha = 0
+    
+    return view
+  }
+
+  func makeStackView() -> StackView {
+    let view = StackView()
+
+    return view
+  }
+}
+
+extension ImagesController: PageAware {
+
+  func pageDidShow() {
+    once.run {
+      library.reload()
+      dropdownController.albums = library.albums
+      dropdownController.tableView.reloadData()
+
+      if let album = library.albums.first {
+        selectedAlbum = album
+        show(album: album)
+      }
+    }
+  }
+}
+
+extension ImagesController: CartDelegate {
+
+  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
+    stackView.reload(cart.images, added: true)
+    refreshView()
+
+    if newlyTaken {
+      refreshSelectedAlbum()
+    }
+  }
+
+  func cart(cart: Cart, didRemove image: Image) {
+    stackView.reload(cart.images)
+    refreshView()
+  }
+
+  func cartDidReload(cart: Cart) {
+    stackView.reload(cart.images)
+    refreshView()
+    refreshSelectedAlbum()
+  }
+}
+
+extension ImagesController: DropdownControllerDelegate {
+
+  func dropdownController(controller: DropdownController, didSelect album: Album) {
+    selectedAlbum = album
+    show(album: album)
+
+    dropdownController.toggle()
+    gridView.arrowButton.toggle(controller.expanding)
+  }
+}
+
+extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
   // MARK: - UICollectionViewDataSource
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -174,67 +243,5 @@ class ImagesController: UIViewController,
     } else {
       cell.frameView.alpha = 0
     }
-  }
-
-  // MARK: - DropdownControllerDelegate
-
-  func dropdownController(controller: DropdownController, didSelect album: Album) {
-    selectedAlbum = album
-    show(album: album)
-
-    dropdownController.toggle()
-    gridView.arrowButton.toggle(controller.expanding)
-  }
-
-  // MARK: - CartDelegate
-
-  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
-    stackView.reload(cart.images, added: true)
-    refreshView()
-
-    if newlyTaken {
-      refreshSelectedAlbum()
-    }
-  }
-
-  func cart(cart: Cart, didRemove image: Image) {
-    stackView.reload(cart.images)
-    refreshView()
-  }
-
-  func cartDidReload(cart: Cart) {
-    stackView.reload(cart.images)
-    refreshView()
-    refreshSelectedAlbum()
-  }
-
-  // MARK: - View
-
-  func refreshView() {
-    let hasImages = !Cart.shared.images.isEmpty
-    gridView.bottomView.g_fade(visible: hasImages)
-    gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
-  }
-
-  // MARK: - Controls
-
-  func makeDropdownController() -> DropdownController {
-    let controller = DropdownController()
-    controller.delegate = self
-    
-    return controller
-  }
-  
-  func makeGridView() -> GridView {
-    let view = GridView()
-    view.bottomView.alpha = 0
-    
-    return view
-  }
-
-  func makeStackView() -> StackView {
-    let view = StackView()
-
-    return view
   }
 }
