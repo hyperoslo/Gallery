@@ -83,7 +83,7 @@ private struct Info {
     let cropInfo = Info.cropInfo(avAsset)
 
     let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-    layer.setTransform(Info.transform(avAsset, scaleFactor: cropInfo.scale), atTime: kCMTimeZero)
+    layer.setTransform(Info.transform(avAsset, scale: cropInfo.scale), atTime: kCMTimeZero)
 
     let instruction = AVMutableVideoCompositionInstruction()
     instruction.layerInstructions = [layer]
@@ -100,13 +100,13 @@ private struct Info {
     var desiredSize = avAsset.g_isPortrait ? Config.VideoEditor.portraitSize : Config.VideoEditor.landscapeSize
     let avAssetSize = avAsset.g_correctSize
 
-    let ratio = min(desiredSize.width / avAssetSize.width, desiredSize.height / avAssetSize.height)
-    let size = CGSize(width: avAssetSize.width*ratio, height: avAssetSize.height*ratio)
+    let scale = min(desiredSize.width / avAssetSize.width, desiredSize.height / avAssetSize.height)
+    let size = CGSize(width: avAssetSize.width*scale, height: avAssetSize.height*scale)
 
-    return (size: size, scale: ratio)
+    return (size: size, scale: scale)
   }
 
-  static func transform(avAsset: AVAsset, scaleFactor: CGFloat) -> CGAffineTransform {
+  static func transform(avAsset: AVAsset, scale: CGFloat) -> CGAffineTransform {
     let offset: CGPoint
     let angle: Double
 
@@ -125,11 +125,11 @@ private struct Info {
       angle = M_PI_2
     }
 
-    let scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
-    let translation = CGAffineTransformTranslate(scale, offset.x, offset.y)
-    let rotation = CGAffineTransformRotate(translation, CGFloat(angle))
+    let scaleTransform = CGAffineTransformMakeScale(scale, scale)
+    let translationTransform = CGAffineTransformTranslate(scaleTransform, offset.x, offset.y)
+    let rotationTransform = CGAffineTransformRotate(translationTransform, CGFloat(angle))
 
-    return rotation
+    return rotationTransform
   }
 
   static func presetName(avAsset: AVAsset) -> String {
