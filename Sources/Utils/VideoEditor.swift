@@ -83,7 +83,7 @@ private struct Info {
     let cropInfo = Info.cropInfo(avAsset)
 
     let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-    layer.setTransform(Info.transform(avAsset, scale: cropInfo.scale), atTime: kCMTimeZero)
+    layer.setTransform(Info.transform(avAsset, scaleFactor: cropInfo.scale), atTime: kCMTimeZero)
 
     let instruction = AVMutableVideoCompositionInstruction()
     instruction.layerInstructions = [layer]
@@ -98,7 +98,7 @@ private struct Info {
 
   static func cropInfo(avAsset: AVAsset) -> (size: CGSize, scale: CGFloat) {
     var desiredSize = avAsset.g_isPortrait ? Config.VideoEditor.portraitSize : Config.VideoEditor.landscapeSize
-    let avAssetSize = avAsset.g_size
+    let avAssetSize = avAsset.g_correctSize
 
     let ratio = min(desiredSize.width / avAssetSize.width, desiredSize.height / avAssetSize.height)
     let size = CGSize(width: avAssetSize.width*ratio, height: avAssetSize.height*ratio)
@@ -106,29 +106,30 @@ private struct Info {
     return (size: size, scale: ratio)
   }
 
-  static func transform(avAsset: AVAsset, scale: CGFloat) -> CGAffineTransform {
+  static func transform(avAsset: AVAsset, scaleFactor: CGFloat) -> CGAffineTransform {
     let offset: CGPoint
     let angle: Double
 
     switch avAsset.g_orientation {
     case .LandscapeLeft:
-      offset = CGPoint(x: avAsset.g_size.width, y: avAsset.g_size.height)
+      offset = CGPoint(x: avAsset.g_correctSize.width, y: avAsset.g_correctSize.height)
       angle = M_PI
     case .LandscapeRight:
       offset = CGPoint.zero
       angle = 0
     case .PortraitUpsideDown:
-      offset = CGPoint(x: 0, y: avAsset.g_size.width)
+      offset = CGPoint(x: 0, y: avAsset.g_correctSize.height)
       angle = -M_PI_2
     default:
-      offset = CGPoint(x: avAsset.g_size.height, y: 0)
+      offset = CGPoint(x: avAsset.g_correctSize.width, y: 0)
       angle = M_PI_2
     }
 
-    let translation = CGAffineTransformMakeTranslation(offset.x, offset.y)
+    let scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
+    let translation = CGAffineTransformTranslate(scale, offset.x, offset.y)
     let rotation = CGAffineTransformRotate(translation, CGFloat(angle))
 
-    return CGAffineTransformScale(rotation, scale, scale)
+    return rotation
   }
 
   static func presetName(avAsset: AVAsset) -> String {

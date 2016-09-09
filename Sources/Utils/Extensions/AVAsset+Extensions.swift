@@ -3,12 +3,17 @@ import AVFoundation
 
 extension AVAsset {
 
-  var g_size: CGSize {
+  private var g_naturalSize: CGSize {
     return tracksWithMediaType(AVMediaTypeVideo).first?.naturalSize ?? .zero
   }
 
+  var g_correctSize: CGSize {
+    return g_isPortrait ? CGSize(width: g_naturalSize.height, height: g_naturalSize.width) : g_naturalSize
+  }
+
   var g_isPortrait: Bool {
-    return g_size.height > g_size.width
+    let portraits: [UIInterfaceOrientation] = [.Portrait, .PortraitUpsideDown]
+    return portraits.contains(g_orientation)
   }
 
   var g_fileSize: Double {
@@ -28,6 +33,7 @@ extension AVAsset {
     return tracksWithMediaType(AVMediaTypeVideo).first?.nominalFrameRate ?? 30
   }
 
+  // Same as UIImageOrientation
   var g_orientation: UIInterfaceOrientation {
     guard let transform = tracksWithMediaType(AVMediaTypeVideo).first?.preferredTransform else {
       return .Portrait
@@ -36,9 +42,9 @@ extension AVAsset {
     switch (transform.tx, transform.ty) {
     case (0, 0):
       return .LandscapeRight
-    case (g_size.width, g_size.height):
+    case (g_naturalSize.width, g_naturalSize.height):
       return .LandscapeLeft
-    case (0, g_size.width):
+    case (0, g_naturalSize.width):
       return .PortraitUpsideDown
     default:
       return .Portrait
