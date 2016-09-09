@@ -14,6 +14,7 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   lazy var pageIndicator: PageIndicator = self.makePageIndicator()
 
   var selectedIndex: Int = 0
+  let once = Once()
 
   // MARK: - Initialization
 
@@ -33,6 +34,16 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
     super.viewDidLoad()
 
     setup()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    if scrollView.frame.size.width > 0 {
+      once.run {
+        goAndNotify()
+      }
+    }
   }
 
   // MARK: - Controls
@@ -115,7 +126,7 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   func pageIndicator(pageIndicator: PageIndicator, didSelect index: Int) {
     let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
     scrollView.setContentOffset(point, animated: false)
-    notify(index)
+    updateAndNotify(index)
   }
 
   // MARK: - UIScrollViewDelegate
@@ -123,15 +134,29 @@ class PagesController: UIViewController, PageIndicatorDelegate, UIScrollViewDele
   func scrollViewDidScroll(scrollView: UIScrollView) {
     let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
     pageIndicator.select(index: index)
-    notify(index)
+    updateAndNotify(index)
   }
 
   // MARK: - Index
 
-  func notify(index: Int) {
+  func goAndNotify() {
+    let point = CGPoint(x: scrollView.frame.size.width * CGFloat(selectedIndex), y: scrollView.contentOffset.y)
+
+    Dispatch.main {
+      self.scrollView.setContentOffset(point, animated: false)
+    }
+
+    notify()
+  }
+
+  func updateAndNotify(index: Int) {
     guard selectedIndex != index else { return }
 
     selectedIndex = index
+    notify()
+  }
+
+  func notify() {
     if let controller = controllers[selectedIndex] as? PageAware {
       controller.pageDidShow()
     }
