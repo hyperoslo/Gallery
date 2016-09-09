@@ -2,6 +2,7 @@ import UIKit
 import Gallery
 import Lightbox
 import AVFoundation
+import AVKit
 
 class ViewController: UIViewController, LightboxControllerDismissalDelegate, GalleryControllerDelegate {
 
@@ -12,7 +13,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     super.viewDidLoad()
     view.backgroundColor = UIColor.whiteColor()
 
-    Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
+    Gallery.Config.VideoEditor.savesEditedVideoToLibrary = false
 
     button = UIButton(type: .System)
     button.frame.size = CGSize(width: 200, height: 50)
@@ -60,6 +61,10 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
         if let tempPath = tempPath {
           let data = NSData(contentsOfURL: tempPath)
           print(data?.length)
+          let controller = AVPlayerViewController()
+          controller.player = AVPlayer(URL: tempPath)
+
+          self.presentViewController(controller, animated: true, completion: nil)
         }
       }
     }
