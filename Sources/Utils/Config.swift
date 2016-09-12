@@ -62,6 +62,7 @@ public struct Config {
       public static var light: UIFont = UIFont.systemFontOfSize(1)
       public static var regular: UIFont = UIFont.systemFontOfSize(1)
       public static var bold: UIFont = UIFont.boldSystemFontOfSize(1)
+      public static var medium: UIFont = UIFont.boldSystemFontOfSize(1)
     }
 
     public struct Text {
