@@ -14,7 +14,9 @@ class VideoCell: ImageCell {
     super.configure(video.asset)
 
     video.fetchDuration { duration in
-      self.durationLabel.text = "\(Utils.format(duration))"
+      Dispatch.main {
+        self.durationLabel.text = "\(Utils.format(duration))"
+      }
     }
   }
 
