@@ -30,6 +30,8 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
+    backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+
     [collectionView, bottomView, topView, emptyView].forEach {
       addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false

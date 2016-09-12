@@ -24,6 +24,8 @@ class ImagesController: UIViewController {
   // MARK: - Setup
 
   func setup() {
+    view.backgroundColor = UIColor.whiteColor()
+
     view.addSubview(gridView)
     gridView.translatesAutoresizingMaskIntoConstraints = false
 
