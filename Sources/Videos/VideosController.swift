@@ -43,10 +43,10 @@ class VideosController: UIViewController {
     constrain(videoBox, infoLabel) {
       videoBox, infoLabel in
 
-      videoBox.width == 48
-      videoBox.height == 48
+      videoBox.width == 44
+      videoBox.height == 44
       videoBox.centerY == videoBox.superview!.centerY
-      videoBox.left == videoBox.superview!.left + 16
+      videoBox.left == videoBox.superview!.left + 38
 
       infoLabel.centerY == infoLabel.superview!.centerY
       infoLabel.left == videoBox.right + 11
