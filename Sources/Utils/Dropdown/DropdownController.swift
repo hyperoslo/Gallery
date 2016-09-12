@@ -37,17 +37,20 @@ class DropdownController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    [blurView, tableView].forEach {
+    view.backgroundColor = UIColor.clearColor()
+    tableView.backgroundColor = UIColor.clearColor()
+    tableView.backgroundView = blurView
+
+    [tableView].forEach {
       $0.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview($0)
     }
 
     tableView.registerClass(AlbumCell.self, forCellReuseIdentifier: String(AlbumCell.self))
 
-    constrain(blurView, tableView) {
-      blurView, tableView in
+    constrain(tableView) {
+      tableView in
 
-      blurView.edges == blurView.superview!.edges
       tableView.edges == tableView.superview!.edges
     }
   }
@@ -104,7 +107,8 @@ extension DropdownController: UITableViewDataSource, UITableViewDelegate {
 
     let album = albums[indexPath.row]
     cell.configure(album)
-    
+    cell.backgroundColor = UIColor.clearColor()
+
     return cell
   }
 
