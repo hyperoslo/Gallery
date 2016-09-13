@@ -64,7 +64,7 @@ struct EditInfo {
     if availablePresets.contains(preferredPresetName()) {
       return preferredPresetName()
     } else {
-      return availablePresets.first ?? AVAssetExportPresetMediumQuality
+      return availablePresets.first ?? AVAssetExportPresetHighestQuality
     }
   }
 

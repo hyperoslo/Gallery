@@ -74,7 +74,7 @@ public struct Config {
 
   public struct VideoEditor {
 
-    public static var quality: String = AVAssetExportPresetMediumQuality
+    public static var quality: String = AVAssetExportPresetHighestQuality
     public static var savesEditedVideoToLibrary: Bool = false
     public static var maximumDuration: NSTimeInterval = 15
     public static var portraitSize: CGSize = CGSize(width: 360, height: 640)
