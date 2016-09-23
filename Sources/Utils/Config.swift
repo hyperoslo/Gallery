@@ -17,7 +17,7 @@ public struct Config {
     }
 
     public struct BottomContainer {
-      public static var backgroundColor: UIColor = UIColor(red: 3/255, green: 15/255, blue: 29/255, alpha: 0.7)
+      public static var backgroundColor: UIColor = UIColor(red: 23/255, green: 25/255, blue: 28/255, alpha: 0.8)
     }
 
     public struct StackView {
