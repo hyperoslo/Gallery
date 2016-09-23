@@ -20,6 +20,7 @@ class FrameView: UIView {
   // MARK: - Setup
 
   func setup() {
+    layer.backgroundColor = Config.Grid.FrameView.fillColor.CGColor
     layer.borderColor = Config.Grid.FrameView.borderColor.CGColor
     layer.borderWidth = 3
 
@@ -39,8 +40,6 @@ class FrameView: UIView {
     let label = UILabel()
     label.font = Config.Font.Main.regular.fontWithSize(40)
     label.textColor = UIColor.whiteColor()
-
-    label.g_addShadow()
 
     return label
   }

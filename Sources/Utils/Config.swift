@@ -36,6 +36,7 @@ public struct Config {
     }
 
     public struct FrameView {
+      public static var fillColor: UIColor = UIColor(red: 3/255, green: 5/255, blue: 24/255, alpha: 0.2)
       public static var borderColor: UIColor = UIColor(red: 0, green: 239/255, blue: 155/255, alpha: 1)
     }
 
