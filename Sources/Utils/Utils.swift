@@ -34,7 +34,7 @@ struct Utils {
 
   static func fetchOptions() -> PHFetchOptions {
     var options = PHFetchOptions()
-    options.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+    options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
     return options
   }
