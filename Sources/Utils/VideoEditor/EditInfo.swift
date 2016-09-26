@@ -61,14 +61,14 @@ struct EditInfo {
   static func presetName(avAsset: AVAsset) -> String {
     let availablePresets = AVAssetExportSession.exportPresetsCompatibleWithAsset(avAsset)
 
-    if availablePresets.contains(preferredPresetName()) {
-      return preferredPresetName()
+    if availablePresets.contains(preferredPresetName) {
+      return preferredPresetName
     } else {
       return availablePresets.first ?? AVAssetExportPresetHighestQuality
     }
   }
 
-  static func preferredPresetName() -> String {
+  static var preferredPresetName: String {
     return Config.VideoEditor.quality
   }
 
@@ -86,7 +86,7 @@ struct EditInfo {
     return (type: AVFileTypeMPEG4, pathExtension: "mp4")
   }
 
-  static func outputURL() -> NSURL? {
+  static var outputURL: NSURL? {
     return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
       .URLByAppendingPathComponent(NSUUID().UUIDString)
       .URLByAppendingPathExtension(file.pathExtension)

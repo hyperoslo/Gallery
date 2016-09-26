@@ -23,7 +23,7 @@ public class AdvancedVideoEditor: VideoEditing {
   // MARK: - Crop
 
   public func crop(avAsset: AVAsset, completion: (NSURL?) -> Void) {
-    guard let outputURL = EditInfo.outputURL() else {
+    guard let outputURL = EditInfo.outputURL else {
       completion(nil)
       return
     }

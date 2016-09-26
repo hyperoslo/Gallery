@@ -53,7 +53,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     controller.dismissViewControllerAnimated(true, completion: nil)
     gallery = nil
 
-    let editor = VideoEditor()
+    let editor: VideoEditing = AdvancedVideoEditor()
 
     editor.edit(video) { (editedVideo: Video?, tempPath: NSURL?) in
       dispatch_async(dispatch_get_main_queue()) {
