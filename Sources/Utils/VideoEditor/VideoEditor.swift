@@ -21,7 +21,7 @@ public class VideoEditor: VideoEditing {
     let export = AVAssetExportSession(asset: avAsset, presetName: EditInfo.presetName(avAsset))
     export?.timeRange = EditInfo.timeRange(avAsset)
     export?.outputURL = outputURL
-    export?.outputFileType = EditInfo.file().type
+    export?.outputFileType = EditInfo.file.type
     export?.videoComposition = EditInfo.composition(avAsset)
     export?.shouldOptimizeForNetworkUse = true
 

@@ -4,6 +4,11 @@ import Photos
 
 public class AdvancedVideoEditor: VideoEditing {
 
+  var writer: AVAssetWriter!
+  var writerInput: AVAssetWriterInput!
+  var reader: AVAssetReader!
+  var readerOutput: AVAssetReaderOutput!
+
   // MARK: - Initialization
 
   public init() {
@@ -18,21 +23,8 @@ public class AdvancedVideoEditor: VideoEditing {
       return
     }
 
-    let export = AVAssetExportSession(asset: avAsset, presetName: EditInfo.presetName(avAsset))
-    export?.timeRange = EditInfo.timeRange(avAsset)
-    export?.outputURL = outputURL
-    export?.outputFileType = EditInfo.file().type
-    export?.videoComposition = EditInfo.composition(avAsset)
-    export?.shouldOptimizeForNetworkUse = true
-
-    var localIdentifier: String?
-    export?.exportAsynchronouslyWithCompletionHandler {
-      if export?.status == AVAssetExportSessionStatus.Completed {
-        completion(outputURL)
-      } else {
-        completion(nil)
-      }
-    }
+    let writer = try? AVAssetWriter(URL: outputURL, fileType: EditInfo.file.type)
+  
   }
 }
 

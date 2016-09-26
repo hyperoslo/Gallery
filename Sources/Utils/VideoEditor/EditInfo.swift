@@ -82,14 +82,14 @@ struct EditInfo {
     return CMTimeRange(start: kCMTimeZero, duration: end)
   }
 
-  static func file() -> (type: String, pathExtension: String) {
+  static var file: (type: String, pathExtension: String) {
     return (type: AVFileTypeMPEG4, pathExtension: "mp4")
   }
 
   static func outputURL() -> NSURL? {
     return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
       .URLByAppendingPathComponent(NSUUID().UUIDString)
-      .URLByAppendingPathExtension(file().pathExtension)
+      .URLByAppendingPathExtension(file.pathExtension)
   }
 }
 
