@@ -35,14 +35,24 @@ public class AdvancedVideoEditor: VideoEditing {
       return
     }
 
+    // Config
+    writer.shouldOptimizeForNetworkUse = true
+
     self.writer = writer
     self.reader = reader
 
     wire(avAsset)
 
+    // Start
     writer.startWriting()
     reader.startReading()
     writer.startSessionAtSourceTime(kCMTimeZero)
+
+    guard reader.status == .Reading && writer.status == .Writing
+    else {
+      completion(nil)
+      return
+    }
 
     // Video
     if let videoOutput = videoOutput, videoInput = videoInput {
@@ -58,26 +68,36 @@ public class AdvancedVideoEditor: VideoEditing {
       }
     }
 
+    // Finish
     writer.finishWritingWithCompletionHandler {
-      completion(outputURL)
+      switch self.writer.status {
+      case .Completed:
+        completion(outputURL)
+      default:
+        completion(nil)
+      }
     }
   }
 
   // MARK: - Helper
 
   private func wire(avAsset: AVAsset) {
-    // Video
+    wireVideo(avAsset)
+    wireAudio(avAsset)
+  }
+
+  private func wireVideo(avAsset: AVAsset) {
     let videoTracks = avAsset.tracksWithMediaType(AVMediaTypeVideo)
     if !videoTracks.isEmpty {
       // Output
       let videoOutput = AVAssetReaderVideoCompositionOutput(videoTracks: videoTracks, videoSettings: nil)
       videoOutput.videoComposition = EditInfo.composition(avAsset)
       if reader.canAddOutput(videoOutput) {
-        reader.canAddOutput(videoOutput)
+        reader.addOutput(videoOutput)
       }
 
       // Input
-      let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: nil)
+      let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: EditInfo.videoSettings)
       if writer.canAddInput(videoInput) {
         writer.addInput(videoInput)
       }
@@ -85,18 +105,20 @@ public class AdvancedVideoEditor: VideoEditing {
       self.videoInput = videoInput
       self.videoOutput = videoOutput
     }
+  }
 
-    // Audio
+  private func wireAudio(avAsset: AVAsset) {
     let audioTracks = avAsset.tracksWithMediaType(AVMediaTypeAudio)
     if !audioTracks.isEmpty {
       // Output
       let audioOutput = AVAssetReaderAudioMixOutput(audioTracks: audioTracks, audioSettings: nil)
+      audioOutput.alwaysCopiesSampleData = true
       if reader.canAddOutput(audioOutput) {
         reader.addOutput(audioOutput)
       }
 
       // Input
-      let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: nil)
+      let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: EditInfo.audioSettings)
       if writer.canAddInput(audioInput) {
         writer.addInput(audioInput)
       }

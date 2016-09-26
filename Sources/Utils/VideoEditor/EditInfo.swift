@@ -3,6 +3,8 @@ import AVFoundation
 
 struct EditInfo {
 
+  // MARK: - Basic
+
   static func composition(avAsset: AVAsset) -> AVVideoComposition? {
     guard let track = avAsset.tracksWithMediaType(AVMediaTypeVideo).first else { return nil }
 
@@ -90,6 +92,29 @@ struct EditInfo {
     return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
       .URLByAppendingPathComponent(NSUUID().UUIDString)
       .URLByAppendingPathExtension(file.pathExtension)
+  }
+
+  // MARK: - Advanced
+
+  static var audioSettings: [String: AnyObject] {
+    return [
+      AVFormatIDKey: NSNumber(integer: Int(kAudioFormatMPEG4AAC)),
+      AVNumberOfChannelsKey: NSNumber(integer: 2),
+      AVSampleRateKey: NSNumber(integer: 44100),
+      AVEncoderBitRateKey: NSNumber(integer: 128000)
+    ]
+  }
+
+  static var videoSettings: [String: AnyObject] {
+    return [
+      AVVideoCodecKey: AVVideoCodecH264,
+      AVVideoWidthKey: NSNumber(integer: 1920),
+      AVVideoHeightKey: NSNumber(integer: 1080),
+      AVVideoCompressionPropertiesKey: [
+        AVVideoAverageBitRateKey: 6000000,
+        AVVideoProfileLevelKey: AVVideoProfileLevelH264High40
+      ]
+    ]
   }
 }
 
