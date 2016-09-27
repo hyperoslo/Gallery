@@ -113,6 +113,6 @@ class PageIndicator: UIView {
   // MARK: - Helper
 
   func buttonFont(selected: Bool) -> UIFont {
-    return selected ? Config.Font.Main.bold.fontWithSize(14) : Config.Font.Main.light.fontWithSize(14)
+    return selected ? Config.Font.Main.bold.fontWithSize(14) : Config.Font.Main.regular.fontWithSize(14)
   }
 }
