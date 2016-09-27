@@ -50,4 +50,22 @@ extension AVAsset {
       return .Portrait
     }
   }
+
+  // MARK: - Description
+
+  var g_videoDescription: CMFormatDescription? {
+    if let object = tracksWithMediaType(AVMediaTypeVideo).first?.formatDescriptions.first {
+      return object as! CMFormatDescription
+    }
+
+    return nil
+  }
+
+  var g_audioDescription: CMFormatDescription? {
+    if let object = tracksWithMediaType(AVMediaTypeAudio).first?.formatDescriptions.first {
+      return object as! CMFormatDescription
+    }
+
+    return nil
+  }
 }

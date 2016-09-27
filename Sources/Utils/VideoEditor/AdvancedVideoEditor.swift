@@ -125,10 +125,9 @@ public class AdvancedVideoEditor: VideoEditing {
       }
 
       // Input
-      let hint = videoTracks.first?.formatDescriptions.first as! CMFormatDescription
       let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo,
                                           outputSettings: EditInfo.videoSettings,
-                                          sourceFormatHint: hint)
+                                          sourceFormatHint: avAsset.g_videoDescription)
       if writer.canAddInput(videoInput) {
         writer.addInput(videoInput)
       }
@@ -149,10 +148,9 @@ public class AdvancedVideoEditor: VideoEditing {
       }
 
       // Input
-      let hint = audioTracks.first?.formatDescriptions.first as! CMFormatDescription
       let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio,
                                           outputSettings: EditInfo.audioSettings,
-                                          sourceFormatHint: hint)
+                                          sourceFormatHint: avAsset.g_audioDescription)
       if writer.canAddInput(audioInput) {
         writer.addInput(audioInput)
       }
