@@ -86,6 +86,10 @@ class VideosController: UIViewController {
     let hasVideo = (Cart.shared.video != nil)
     gridView.bottomView.g_fade(visible: hasVideo)
     gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
+
+    Cart.shared.video?.fetchDuration { [weak self] duration in
+      self?.infoLabel.hidden = duration <= Config.VideoEditor.maximumDuration
+    }
   }
 
   // MARK: - Controls
