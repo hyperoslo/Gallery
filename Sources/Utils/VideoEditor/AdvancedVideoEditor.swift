@@ -12,7 +12,11 @@ public class AdvancedVideoEditor: VideoEditing {
   var videoOutput: AVAssetReaderVideoCompositionOutput?
   var audioOutput: AVAssetReaderAudioMixOutput?
 
-  let queue = dispatch_queue_create("no.hyper.Gallery.AdvancedVideoEditor.Queue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
+  var audioCompleted: Bool = false
+  var videoCompleted: Bool = false
+
+  let requestQueue = dispatch_queue_create("no.hyper.Gallery.AdvancedVideoEditor.RequestQueue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
+  let finishQueue = dispatch_queue_create("no.hyper.Gallery.AdvancedVideoEditor.FinishQueue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
 
   // MARK: - Initialization
 
@@ -48,27 +52,51 @@ public class AdvancedVideoEditor: VideoEditing {
     reader.startReading()
     writer.startSessionAtSourceTime(kCMTimeZero)
 
-    guard reader.status == .Reading && writer.status == .Writing
-    else {
-      completion(nil)
-      return
-    }
-
     // Video
     if let videoOutput = videoOutput, videoInput = videoInput {
-      videoInput.requestMediaDataWhenReadyOnQueue(queue) {
-        self.stream(from: videoOutput, to: videoInput)
+      videoInput.requestMediaDataWhenReadyOnQueue(requestQueue) {
+        if !self.stream(from: videoOutput, to: videoInput) {
+          Dispatch.on(self.finishQueue) {
+            self.videoCompleted = true
+            if self.audioCompleted {
+              self.finish(outputURL, completion: completion)
+            }
+          }
+        }
       }
     }
 
     // Audio
     if let audioOutput = audioOutput, audioInput = audioInput {
-      audioInput.requestMediaDataWhenReadyOnQueue(queue) {
-        self.stream(from: audioOutput, to: audioInput)
+      audioInput.requestMediaDataWhenReadyOnQueue(requestQueue) {
+        if !self.stream(from: audioOutput, to: audioInput) {
+          Dispatch.on(self.finishQueue) {
+            self.audioCompleted = true
+            if self.videoCompleted {
+              self.finish(outputURL, completion: completion)
+            }
+          }
+        }
       }
     }
+  }
 
-    // Finish
+  // MARK: - Finish
+
+  func finish(outputURL: NSURL, completion: (NSURL?) -> Void) {
+    if reader.status == .Failed {
+      writer.cancelWriting()
+    }
+
+    guard reader.status != .Cancelled
+      && reader.status != .Failed
+      && writer.status != .Cancelled
+      && writer.status != .Failed
+    else {
+      completion(nil)
+      return
+    }
+
     writer.finishWritingWithCompletionHandler {
       switch self.writer.status {
       case .Completed:
@@ -97,7 +125,10 @@ public class AdvancedVideoEditor: VideoEditing {
       }
 
       // Input
-      let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: EditInfo.videoSettings)
+      let hint = videoTracks.first?.formatDescriptions.first as! CMFormatDescription
+      let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo,
+                                          outputSettings: EditInfo.videoSettings,
+                                          sourceFormatHint: hint)
       if writer.canAddInput(videoInput) {
         writer.addInput(videoInput)
       }
@@ -118,7 +149,10 @@ public class AdvancedVideoEditor: VideoEditing {
       }
 
       // Input
-      let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: EditInfo.audioSettings)
+      let hint = audioTracks.first?.formatDescriptions.first as! CMFormatDescription
+      let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio,
+                                          outputSettings: EditInfo.audioSettings,
+                                          sourceFormatHint: hint)
       if writer.canAddInput(audioInput) {
         writer.addInput(audioInput)
       }
@@ -128,16 +162,19 @@ public class AdvancedVideoEditor: VideoEditing {
     }
   }
 
-  private func stream(from output: AVAssetReaderOutput, to input: AVAssetWriterInput) {
+  private func stream(from output: AVAssetReaderOutput, to input: AVAssetWriterInput) -> Bool {
     while input.readyForMoreMediaData {
-      guard let buffer = output.copyNextSampleBuffer()
+      guard reader.status == .Reading && writer.status == .Writing,
+        let buffer = output.copyNextSampleBuffer()
       else {
         input.markAsFinished()
-        break
+        return false
       }
 
-      input.appendSampleBuffer(buffer)
+      return input.appendSampleBuffer(buffer)
     }
+
+    return true
   }
 }
 

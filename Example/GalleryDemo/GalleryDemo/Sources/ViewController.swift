@@ -8,6 +8,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
   var button: UIButton!
   var gallery: GalleryController!
+  let editor: VideoEditing = VideoEditor()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,7 +54,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     controller.dismissViewControllerAnimated(true, completion: nil)
     gallery = nil
 
-    let editor: VideoEditing = AdvancedVideoEditor()
+
     editor.edit(video) { (editedVideo: Video?, tempPath: NSURL?) in
       dispatch_async(dispatch_get_main_queue()) {
         print(editedVideo)
