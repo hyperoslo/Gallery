@@ -57,7 +57,7 @@ public struct Config {
 
     public struct Button {
       public static var textColor: UIColor = UIColor.whiteColor()
-      public static var highlighedTextColor: UIColor = UIColor.lightGrayColor()
+      public static var highlightedTextColor: UIColor = UIColor.lightGrayColor()
       public static var backgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
     }
   }

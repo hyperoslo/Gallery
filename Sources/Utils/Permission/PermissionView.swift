@@ -70,7 +70,7 @@ class PermissionView: UIView {
     button.backgroundColor = Config.Permission.Button.backgroundColor
     button.titleLabel?.font = Config.Font.Main.medium.fontWithSize(16)
     button.setTitleColor(Config.Permission.Button.textColor, forState: .Normal)
-    button.setTitleColor(Config.Permission.Button.highlighedTextColor, forState: .Highlighted)
+    button.setTitleColor(Config.Permission.Button.highlightedTextColor, forState: .Highlighted)
     button.layer.cornerRadius = 22
     button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
