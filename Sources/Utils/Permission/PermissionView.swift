@@ -15,6 +15,7 @@ class PermissionView: UIView {
 
     backgroundColor = UIColor.whiteColor()
     setup()
+
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -38,6 +39,7 @@ class PermissionView: UIView {
       closeButton.width == 44
 
       settingButton.center == settingButton.superview!.center
+      settingButton.height == 44
 
       label.bottom == settingButton.top - 33
       label.left == label.superview!.left + 50
@@ -65,9 +67,11 @@ class PermissionView: UIView {
     let button = UIButton(type: .Custom)
     button.setTitle("Gallery.Permission.Button".g_localize(fallback: "Go to Settings").uppercaseString,
                     forState: .Normal)
-    button.setBackgroundImage(Config.Permission.buttonBackgroundImage, forState: .Normal)
+    button.backgroundColor = Config.Permission.buttonBackgroundColor
     button.titleLabel?.font = Config.Font.Main.medium.fontWithSize(16)
     button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+    button.layer.cornerRadius = 22
+    button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
     return button
   }

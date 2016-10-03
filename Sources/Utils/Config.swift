@@ -54,7 +54,7 @@ public struct Config {
   public struct Permission {
     public static var image: UIImage? = Bundle.image("gallery_permission_view_camera")
     public static var textColor: UIColor = UIColor(red: 102/255, green: 118/255, blue: 138/255, alpha: 1)
-    public static var buttonBackgroundImage: UIImage? = Bundle.image("gallery_permission_view_button")
+    public static var buttonBackgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
   }
 
   public struct Font {
