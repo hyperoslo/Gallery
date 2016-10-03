@@ -67,9 +67,10 @@ class PermissionView: UIView {
     let button = UIButton(type: .Custom)
     button.setTitle("Gallery.Permission.Button".g_localize(fallback: "Go to Settings").uppercaseString,
                     forState: .Normal)
-    button.backgroundColor = Config.Permission.buttonBackgroundColor
+    button.backgroundColor = Config.Permission.Button.backgroundColor
     button.titleLabel?.font = Config.Font.Main.medium.fontWithSize(16)
-    button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+    button.setTitleColor(Config.Permission.Button.textColor, forState: .Normal)
+    button.setTitleColor(Config.Permission.Button.highlighedTextColor, forState: .Highlighted)
     button.layer.cornerRadius = 22
     button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
