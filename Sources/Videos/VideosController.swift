@@ -126,6 +126,7 @@ extension VideosController: PageAware {
       library.reload {
         self.items = self.library.items
         self.gridView.collectionView.reloadData()
+        self.gridView.emptyView.hidden = !self.items.isEmpty
       }
     }
   }
@@ -155,7 +156,6 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
   // MARK: - UICollectionViewDataSource
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    gridView.emptyView.hidden = !items.isEmpty
     return items.count
   }
 

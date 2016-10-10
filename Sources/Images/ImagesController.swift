@@ -96,6 +96,7 @@ class ImagesController: UIViewController {
     items = album.items
     gridView.collectionView.reloadData()
     gridView.collectionView.g_scrollToTop()
+    gridView.emptyView.hidden = !items.isEmpty
   }
 
   func refreshSelectedAlbum() {
@@ -192,7 +193,6 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
   // MARK: - UICollectionViewDataSource
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    gridView.emptyView.hidden = !items.isEmpty
     return items.count
   }
 

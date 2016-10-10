@@ -45,6 +45,7 @@ class ArrowButton: UIButton {
 
   func updateText(text: String) {
     label.text = text.uppercaseString
+    arrow.alpha = text.isEmpty ? 0 : 1
     invalidateIntrinsicContentSize()
   }
 
@@ -72,6 +73,7 @@ class ArrowButton: UIButton {
     let arrow = UIImageView()
     arrow.image = Bundle.image("gallery_title_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
     arrow.tintColor = Config.Grid.ArrowButton.tintColor
+    arrow.alpha = 0
 
     return arrow
   }
