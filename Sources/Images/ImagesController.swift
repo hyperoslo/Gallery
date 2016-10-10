@@ -92,7 +92,7 @@ class ImagesController: UIViewController {
   // MARK: - Logic
 
   func show(album album: Album) {
-    gridView.arrowButton.updateText(album.collection.localizedTitle ?? "Images")
+    gridView.arrowButton.updateText(album.collection.localizedTitle ?? "")
     items = album.items
     gridView.collectionView.reloadData()
     gridView.collectionView.g_scrollToTop()

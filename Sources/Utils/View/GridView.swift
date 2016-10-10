@@ -117,7 +117,7 @@ class GridView: UIView {
 
   func makeArrowButton() -> ArrowButton {
     let button = ArrowButton()
-    button.label.text = "ALL PHOTOS"
+    button.label.text = "Gallery.AllPhotos".g_localize(fallback: "ALL PHOTOS")
     button.layoutSubviews()
 
     return button
