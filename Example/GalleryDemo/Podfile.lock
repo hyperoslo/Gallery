@@ -1,7 +1,5 @@
 PODS:
-  - Cartography (0.6.0)
-  - Gallery (0.1.0):
-    - Cartography
+  - Gallery (0.2.0)
   - Hue (1.1.1)
   - Lightbox (1.0.0):
     - Hue
@@ -24,12 +22,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/hyperoslo/Lightbox.git
 
 SPEC CHECKSUMS:
-  Cartography: 70af183a248547694a8cfaa6b989cb7e04589985
-  Gallery: f2ea284fc9569b03886c9d052c1e2b9e58cf006b
+  Gallery: 91bb9b51f5f8cd6d117bb8b31ecb6f918d2bebce
   Hue: 931aeeadcb29ce5de5b97589aa936be4638a1501
   Lightbox: 6deb5fc2c51f353212631470c4c689bc5120598c
   Sugar: 556b623f0f8846cf08de7302701892f11d567419
 
 PODFILE CHECKSUM: ca5ebfaf5b3d2d0d2916dcc96ba18ae8326c7603
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.3
