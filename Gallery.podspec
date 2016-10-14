@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "Gallery"
   s.summary          = "Something good about gallery"
-  s.version          = "0.1.0"
+  s.version          = "0.2.0"
   s.homepage         = "https://github.com/hyperoslo/Gallery"
   s.license          = 'MIT'
   s.author           = { "Hyper Interaktiv AS" => "ios@hyper.no" }
@@ -17,7 +17,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Sources/**/*'
   s.resource = 'Sources/Gallery.bundle'
   s.frameworks = 'UIKit', 'Foundation', 'AVFoundation', 'Photos', 'PhotosUI', 'CoreLocation', 'AVKit'
-
-  s.dependency 'Cartography'
-
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' } in .podspec
+  
 end
