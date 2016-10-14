@@ -80,27 +80,27 @@ class PagesController: UIViewController {
     scrollView.g_pin(on: .bottom, view: pageIndicator, on: .top)
 
     scrollViewContentView.g_pinEdges()
-    scrollViewContentView.g_pin(on: .top, view: scrollView.superview!)
-    scrollViewContentView.g_pin(on: .bottom, view: scrollView.superview!)
+    scrollViewContentView.g_pin(on: .top)
+    scrollViewContentView.g_pin(on: .bottom)
 
     for (i, controller) in controllers.enumerated() {
       addChildViewController(controller)
       scrollViewContentView.addSubview(controller.view)
       controller.didMove(toParentViewController: self)
-      
-      scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .top, relatedBy: .equal, toItem: scrollViewContentView, attribute: .top, multiplier: 1, constant: 0))
-      scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .bottom, relatedBy: .equal, toItem: scrollViewContentView, attribute: .bottom, multiplier: 1, constant: 0))
-      scrollView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1, constant: 0))
-      scrollView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .height, relatedBy: .equal, toItem: scrollView, attribute: .height, multiplier: 1, constant: 0))
+
+      controller.view.g_pin(on: .top)
+      controller.view.g_pin(on: .bottom)
+      controller.view.g_pin(on: .width)
+      controller.view.g_pin(on: .height)
 
       if i == 0 {
-        scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .left, relatedBy: .equal, toItem: scrollViewContentView, attribute: .left, multiplier: 1, constant: 0))
+        controller.view.g_pin(on: .left)
       } else {
-        scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .left, relatedBy: .equal, toItem: self.controllers[i-1].view, attribute: .right, multiplier: 1, constant: 0))
+        controller.view.g_pin(on: .left, view: self.controllers[i-1].view, on: .right)
       }
 
       if i == self.controllers.count - 1 {
-        scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .right, relatedBy: .equal, toItem: scrollViewContentView, attribute: .right, multiplier: 1, constant: 0))
+        controller.view.g_pin(on: .right)
       }
     }
   }
