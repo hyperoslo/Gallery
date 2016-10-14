@@ -14,10 +14,12 @@ extension UIView {
   }
 
   func g_commonAncestor(view: UIView) -> UIView? {
-    let set1 = NSOrderedSet(array: g_ancestors())
-    let set2 = NSOrderedSet(array: view.g_ancestors())
+    let viewAncestors = view.g_ancestors()
 
-    return view
+    return g_ancestors()
+      .filter {
+        return viewAncestors.contains($0)
+      }.first
   }
 
   @discardableResult func g_pin(on type1: NSLayoutAttribute,
