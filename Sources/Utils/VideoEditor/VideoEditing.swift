@@ -4,45 +4,45 @@ import Photos
 
 public protocol VideoEditing: class {
 
-  func crop(avAsset: AVAsset, completion: (NSURL?) -> Void)
-  func edit(video: Video, completion: (video: Video?, tempPath: NSURL?) -> Void)
+  func crop(avAsset: AVAsset, completion: (URL?) -> Void)
+  func edit(video: Video, completion: (_ video: Video?, _ tempPath: URL?) -> Void)
 }
 
 extension VideoEditing {
 
-  public func edit(video: Video, completion: (video: Video?, tempPath: NSURL?) -> Void) {
+  public func edit(video: Video, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void) {
     video.fetchAVAsset { avAsset in
       guard let avAsset = avAsset else {
-        completion(video: nil, tempPath: nil)
+        completion(nil, nil)
         return
       }
 
-      self.crop(avAsset) { (outputURL: NSURL?) in
+      self.crop(avAsset: avAsset) { (outputURL: URL?) in
         guard let outputURL = outputURL else {
-          completion(video: nil, tempPath: nil)
+          completion(nil, nil)
           return
         }
 
-        self.handle(outputURL, completion: completion)
+        self.handle(outputURL: outputURL, completion: completion)
       }
     }
   }
 
-  func handle(outputURL: NSURL, completion: (video: Video?, tempPath: NSURL?) -> Void) {
+  func handle(outputURL: URL, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void) {
     guard Config.VideoEditor.savesEditedVideoToLibrary else {
-      completion(video: nil, tempPath: outputURL)
+      completion(nil, outputURL)
       return
     }
 
     var localIdentifier: String?
-    PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-      let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputURL)
+    PHPhotoLibrary.shared().performChanges({
+      let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputURL)
       localIdentifier = request?.placeholderForCreatedAsset?.localIdentifier
       }, completionHandler: { succeeded, info in
-        if let localIdentifier = localIdentifier, asset = Fetcher.fetchAsset(localIdentifier) {
-          completion(video: Video(asset: asset), tempPath: outputURL)
+        if let localIdentifier = localIdentifier, let asset = Fetcher.fetchAsset(localIdentifier) {
+          completion(Video(asset: asset), outputURL)
         } else {
-          completion(video: nil, tempPath: outputURL)
+          completion(nil, outputURL)
         }
     })
   }

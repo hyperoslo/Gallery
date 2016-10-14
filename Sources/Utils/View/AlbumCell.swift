@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 
 class AlbumCell: UITableViewCell {
 
@@ -21,7 +20,7 @@ class AlbumCell: UITableViewCell {
 
   // MARK: - Config
 
-  func configure(album: Album) {
+  func configure(_ album: Album) {
     albumTitleLabel.text = album.collection.localizedTitle
     itemCountLabel.text = "\(album.items.count)"
 
@@ -35,25 +34,20 @@ class AlbumCell: UITableViewCell {
 
   func setup() {
     [albumImageView, albumTitleLabel, itemCountLabel].forEach {
-      addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
+      addSubview($0 as! UIView)
     }
 
-    constrain(albumImageView, albumTitleLabel, itemCountLabel) {
-      albumImageView, albumTitleLabel, itemCountLabel in
+    albumImageView.g_pin(on: .left, constant: 12)
+    albumImageView.g_pin(on: .top, constant: 5)
+    albumImageView.g_pin(on: .bottom, constant: -5)
+    albumImageView.g_pin(on: .width, view: albumImageView, on: .height)
 
-      albumImageView.left == albumImageView.superview!.left + 12
-      albumImageView.top == albumImageView.superview!.top + 5
-      albumImageView.bottom == albumImageView.superview!.bottom - 5
-      albumImageView.width == albumImageView.height
+    albumTitleLabel.g_pin(on: .left, view: albumImageView, on: .right, constant: 10)
+    albumTitleLabel.g_pin(on: .top, constant: 24)
+    albumTitleLabel.g_pin(on: .right, constant: -10)
 
-      albumTitleLabel.left == albumImageView.right + 10
-      albumTitleLabel.top == albumTitleLabel.superview!.top + 24
-      albumTitleLabel.right == albumTitleLabel.superview!.right - 10
-
-      itemCountLabel.left == albumImageView.right + 10
-      itemCountLabel.top == albumTitleLabel.bottom + 6
-    }
+    itemCountLabel.g_pin(on: .left, view: albumImageView, on: .right, constant: 10)
+    itemCountLabel.g_pin(on: .top, view: albumTitleLabel, on: .bottom, constant: 6)
   }
 
   // MARK: - Controls
@@ -68,7 +62,7 @@ class AlbumCell: UITableViewCell {
   func makeAlbumTitleLabel() -> UILabel {
     let label = UILabel()
     label.numberOfLines = 1
-    label.font = Config.Font.Text.regular.fontWithSize(14)
+    label.font = Config.Font.Text.regular.withSize(14)
 
     return label
   }
@@ -76,7 +70,7 @@ class AlbumCell: UITableViewCell {
   func makeItemCountLabel() -> UILabel {
     let label = UILabel()
     label.numberOfLines = 1
-    label.font = Config.Font.Text.regular.fontWithSize(10)
+    label.font = Config.Font.Text.regular.withSize(10)
 
     return label
   }

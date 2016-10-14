@@ -1,8 +1,7 @@
 import UIKit
-import Cartography
 
 protocol VideoBoxDelegate: class {
-  func videoBoxDidTap(videoBox: VideoBox)
+  func videoBoxDidTap(_ videoBox: VideoBox)
 }
 
 class VideoBox: UIView {
@@ -26,14 +25,14 @@ class VideoBox: UIView {
 
   // MARK: - Action
 
-  func viewTapped(gr: UITapGestureRecognizer) {
+  func viewTapped(_ gr: UITapGestureRecognizer) {
     delegate?.videoBoxDidTap(self)
   }
 
   // MARK: - Setup
 
   func setup() {
-    backgroundColor = UIColor.clearColor()
+    backgroundColor = UIColor.clear
     imageView.g_addRoundBorder()
 
     let gr = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
@@ -41,19 +40,12 @@ class VideoBox: UIView {
 
     [imageView, cameraImageView].forEach {
       self.addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(imageView, cameraImageView) {
-      imageView, cameraImageView in
-
-      imageView.edges == imageView.superview!.edges
-
-      cameraImageView.left == cameraImageView.superview!.left + 5
-      cameraImageView.bottom == cameraImageView.superview!.bottom - 5
-      cameraImageView.width == 12
-      cameraImageView.height == 6
-    }
+    imageView.g_pinEdges()
+    cameraImageView.g_pin(on: .left, constant: 5)
+    cameraImageView.g_pin(on: .bottom, constant: -5)
+    cameraImageView.g_pin(size: CGSize(width: 12, height: 6))
   }
 
   // MARK: - Controls

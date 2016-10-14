@@ -2,7 +2,7 @@ import Foundation
 import AVFoundation
 import Photos
 
-public class AdvancedVideoEditor: VideoEditing {
+open class AdvancedVideoEditor: VideoEditing {
 
   var writer: AVAssetWriter!
   var videoInput: AVAssetWriterInput?
@@ -15,9 +15,9 @@ public class AdvancedVideoEditor: VideoEditing {
   var audioCompleted: Bool = false
   var videoCompleted: Bool = false
 
-  let requestQueue = dispatch_queue_create("no.hyper.Gallery.AdvancedVideoEditor.RequestQueue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
-  let finishQueue = dispatch_queue_create("no.hyper.Gallery.AdvancedVideoEditor.FinishQueue", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0))
-
+  let requestQueue = DispatchQueue(label: "no.hyper.Gallery.AdvancedVideoEditor.RequestQueue", qos: .background)
+  let finishQueue = DispatchQueue(label: "no.hyper.Gallery.AdvancedVideoEditor.FinishQueue", qos: .background)
+  
   // MARK: - Initialization
 
   public init() {
@@ -26,14 +26,14 @@ public class AdvancedVideoEditor: VideoEditing {
 
   // MARK: - Crop
 
-  public func crop(avAsset: AVAsset, completion: (NSURL?) -> Void) {
+  open func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
     guard let outputURL = EditInfo.outputURL else {
       completion(nil)
       return
     }
 
-    guard let writer = try? AVAssetWriter(URL: outputURL, fileType: EditInfo.file.type),
-      reader = try? AVAssetReader(asset: avAsset)
+    guard let writer = try? AVAssetWriter(outputURL: outputURL as URL, fileType: EditInfo.file.type),
+      let reader = try? AVAssetReader(asset: avAsset)
     else {
       completion(nil)
       return
@@ -50,16 +50,16 @@ public class AdvancedVideoEditor: VideoEditing {
     // Start
     writer.startWriting()
     reader.startReading()
-    writer.startSessionAtSourceTime(kCMTimeZero)
+    writer.startSession(atSourceTime: kCMTimeZero)
 
     // Video
-    if let videoOutput = videoOutput, videoInput = videoInput {
-      videoInput.requestMediaDataWhenReadyOnQueue(requestQueue) {
+    if let videoOutput = videoOutput, let videoInput = videoInput {
+      videoInput.requestMediaDataWhenReady(on: requestQueue) {
         if !self.stream(from: videoOutput, to: videoInput) {
-          Dispatch.on(self.finishQueue) {
+          self.finishQueue.async {
             self.videoCompleted = true
             if self.audioCompleted {
-              self.finish(outputURL, completion: completion)
+              self.finish(outputURL: outputURL, completion: completion)
             }
           }
         }
@@ -67,13 +67,13 @@ public class AdvancedVideoEditor: VideoEditing {
     }
 
     // Audio
-    if let audioOutput = audioOutput, audioInput = audioInput {
-      audioInput.requestMediaDataWhenReadyOnQueue(requestQueue) {
+    if let audioOutput = audioOutput, let audioInput = audioInput {
+      audioInput.requestMediaDataWhenReady(on: requestQueue) {
         if !self.stream(from: audioOutput, to: audioInput) {
-          Dispatch.on(self.finishQueue) {
+          self.finishQueue.async {
             self.audioCompleted = true
             if self.videoCompleted {
-              self.finish(outputURL, completion: completion)
+              self.finish(outputURL: outputURL, completion: completion)
             }
           }
         }
@@ -83,23 +83,23 @@ public class AdvancedVideoEditor: VideoEditing {
 
   // MARK: - Finish
 
-  func finish(outputURL: NSURL, completion: (NSURL?) -> Void) {
-    if reader.status == .Failed {
+  func finish(outputURL: URL, completion: @escaping (URL?) -> Void) {
+    if reader.status == .failed {
       writer.cancelWriting()
     }
 
-    guard reader.status != .Cancelled
-      && reader.status != .Failed
-      && writer.status != .Cancelled
-      && writer.status != .Failed
+    guard reader.status != .cancelled
+      && reader.status != .failed
+      && writer.status != .cancelled
+      && writer.status != .failed
     else {
       completion(nil)
       return
     }
 
-    writer.finishWritingWithCompletionHandler {
+    writer.finishWriting {
       switch self.writer.status {
-      case .Completed:
+      case .completed:
         completion(outputURL)
       default:
         completion(nil)
@@ -109,27 +109,27 @@ public class AdvancedVideoEditor: VideoEditing {
 
   // MARK: - Helper
 
-  private func wire(avAsset: AVAsset) {
+  fileprivate func wire(_ avAsset: AVAsset) {
     wireVideo(avAsset)
     wireAudio(avAsset)
   }
 
-  private func wireVideo(avAsset: AVAsset) {
-    let videoTracks = avAsset.tracksWithMediaType(AVMediaTypeVideo)
+  fileprivate func wireVideo(_ avAsset: AVAsset) {
+    let videoTracks = avAsset.tracks(withMediaType: AVMediaTypeVideo)
     if !videoTracks.isEmpty {
       // Output
       let videoOutput = AVAssetReaderVideoCompositionOutput(videoTracks: videoTracks, videoSettings: nil)
       videoOutput.videoComposition = EditInfo.composition(avAsset)
-      if reader.canAddOutput(videoOutput) {
-        reader.addOutput(videoOutput)
+      if reader.canAdd(videoOutput) {
+        reader.add(videoOutput)
       }
 
       // Input
       let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo,
                                           outputSettings: EditInfo.videoSettings,
                                           sourceFormatHint: avAsset.g_videoDescription)
-      if writer.canAddInput(videoInput) {
-        writer.addInput(videoInput)
+      if writer.canAdd(videoInput) {
+        writer.add(videoInput)
       }
 
       self.videoInput = videoInput
@@ -137,22 +137,22 @@ public class AdvancedVideoEditor: VideoEditing {
     }
   }
 
-  private func wireAudio(avAsset: AVAsset) {
-    let audioTracks = avAsset.tracksWithMediaType(AVMediaTypeAudio)
+  fileprivate func wireAudio(_ avAsset: AVAsset) {
+    let audioTracks = avAsset.tracks(withMediaType: AVMediaTypeAudio)
     if !audioTracks.isEmpty {
       // Output
       let audioOutput = AVAssetReaderAudioMixOutput(audioTracks: audioTracks, audioSettings: nil)
       audioOutput.alwaysCopiesSampleData = true
-      if reader.canAddOutput(audioOutput) {
-        reader.addOutput(audioOutput)
+      if reader.canAdd(audioOutput) {
+        reader.add(audioOutput)
       }
 
       // Input
       let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio,
                                           outputSettings: EditInfo.audioSettings,
                                           sourceFormatHint: avAsset.g_audioDescription)
-      if writer.canAddInput(audioInput) {
-        writer.addInput(audioInput)
+      if writer.canAdd(audioInput) {
+        writer.add(audioInput)
       }
 
       self.audioOutput = audioOutput
@@ -160,16 +160,16 @@ public class AdvancedVideoEditor: VideoEditing {
     }
   }
 
-  private func stream(from output: AVAssetReaderOutput, to input: AVAssetWriterInput) -> Bool {
-    while input.readyForMoreMediaData {
-      guard reader.status == .Reading && writer.status == .Writing,
+  fileprivate func stream(from output: AVAssetReaderOutput, to input: AVAssetWriterInput) -> Bool {
+    while input.isReadyForMoreMediaData {
+      guard reader.status == .reading && writer.status == .writing,
         let buffer = output.copyNextSampleBuffer()
       else {
         input.markAsFinished()
         return false
       }
 
-      return input.appendSampleBuffer(buffer)
+      return input.append(buffer)
     }
 
     return true

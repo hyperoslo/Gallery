@@ -2,7 +2,7 @@ import Foundation
 import AVFoundation
 import Photos
 
-public class VideoEditor: VideoEditing {
+open class VideoEditor: VideoEditing {
 
   // MARK: - Initialization
 
@@ -12,7 +12,7 @@ public class VideoEditor: VideoEditing {
 
   // MARK: - Crop
   
-  public func crop(avAsset: AVAsset, completion: (NSURL?) -> Void) {
+  open func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
     guard let outputURL = EditInfo.outputURL else {
       completion(nil)
       return
@@ -25,9 +25,8 @@ public class VideoEditor: VideoEditing {
     export?.videoComposition = EditInfo.composition(avAsset)
     export?.shouldOptimizeForNetworkUse = true
 
-    var localIdentifier: String?
-    export?.exportAsynchronouslyWithCompletionHandler {
-      if export?.status == AVAssetExportSessionStatus.Completed {
+    export?.exportAsynchronously {
+      if export?.status == AVAssetExportSessionStatus.completed {
         completion(outputURL)
       } else {
         completion(nil)

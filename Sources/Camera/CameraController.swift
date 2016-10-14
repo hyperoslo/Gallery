@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 import AVFoundation
 
 class CameraController: UIViewController {
@@ -18,13 +17,13 @@ class CameraController: UIViewController {
     setupLocation()
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     locationManager?.start()
   }
 
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
     locationManager?.stop()
@@ -34,19 +33,14 @@ class CameraController: UIViewController {
 
   func setup() {
     view.addSubview(cameraView)
+    cameraView.g_pinEdges()
 
-    cameraView.translatesAutoresizingMaskIntoConstraints = false
-
-    constrain(cameraView) { cameraView in
-      cameraView.edges == cameraView.superview!.edges
-    }
-
-    cameraView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    cameraView.flashButton.addTarget(self, action: #selector(flashButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    cameraView.rotateButton.addTarget(self, action: #selector(rotateButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), forControlEvents: .TouchUpInside)
-    cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
+    cameraView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
+    cameraView.flashButton.addTarget(self, action: #selector(flashButtonTouched(_:)), for: .touchUpInside)
+    cameraView.rotateButton.addTarget(self, action: #selector(rotateButtonTouched(_:)), for: .touchUpInside)
+    cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
+    cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
+    cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
   }
 
   func setupLocation() {
@@ -57,11 +51,11 @@ class CameraController: UIViewController {
 
   // MARK: - Action
 
-  func closeButtonTouched(button: UIButton) {
+  func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
   }
 
-  func flashButtonTouched(button: UIButton) {
+  func flashButtonTouched(_ button: UIButton) {
     cameraView.flashButton.toggle()
 
     if let flashMode = AVCaptureFlashMode(rawValue: cameraView.flashButton.selectedIndex) {
@@ -69,37 +63,37 @@ class CameraController: UIViewController {
     }
   }
 
-  func rotateButtonTouched(button: UIButton) {
-    UIView.animateWithDuration(0.3, animations: {
+  func rotateButtonTouched(_ button: UIButton) {
+    UIView.animate(withDuration: 0.3, animations: {
       self.cameraView.rotateOverlayView.alpha = 1
     }, completion: { _ in
       self.cameraMan.switchCamera {
-        UIView.animateWithDuration(0.7) {
+        UIView.animate(withDuration: 0.7, animations: {
           self.cameraView.rotateOverlayView.alpha = 0
-        }
+        }) 
       }
     })
   }
 
-  func stackViewTouched(stackView: StackView) {
+  func stackViewTouched(_ stackView: StackView) {
     EventHub.shared.stackViewTouched?()
   }
 
-  func shutterButtonTouched(button: ShutterButton) {
+  func shutterButtonTouched(_ button: ShutterButton) {
     guard let previewLayer = cameraView.previewLayer else { return }
 
-    button.enabled = false
-    UIView.animateWithDuration(0.1, animations: {
+    button.isEnabled = false
+    UIView.animate(withDuration: 0.1, animations: {
       self.cameraView.shutterOverlayView.alpha = 1
     }, completion: { _ in
-      UIView.animateWithDuration(0.1) {
+      UIView.animate(withDuration: 0.1, animations: {
         self.cameraView.shutterOverlayView.alpha = 0
-      }
+      }) 
     })
 
     self.cameraView.stackView.startLoading()
     cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { asset in
-      button.enabled = true
+      button.isEnabled = true
       self.cameraView.stackView.stopLoading()
 
       if let asset = asset {
@@ -108,7 +102,7 @@ class CameraController: UIViewController {
     }
   }
 
-  func doneButtonTouched(button: UIButton) {
+  func doneButtonTouched(_ button: UIButton) {
     EventHub.shared.doneWithImages?()
   }
 
@@ -138,17 +132,17 @@ class CameraController: UIViewController {
 
 extension CameraController: CartDelegate {
 
-  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
+  func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
     cameraView.stackView.reload(cart.images, added: true)
     refreshView()
   }
 
-  func cart(cart: Cart, didRemove image: Image) {
+  func cart(_ cart: Cart, didRemove image: Image) {
     cameraView.stackView.reload(cart.images)
     refreshView()
   }
 
-  func cartDidReload(cart: Cart) {
+  func cartDidReload(_ cart: Cart) {
     cameraView.stackView.reload(cart.images)
     refreshView()
   }
@@ -165,23 +159,23 @@ extension CameraController: PageAware {
 
 extension CameraController: CameraViewDelegate {
 
-  func cameraView(cameraView: CameraView, didTouch point: CGPoint) {
+  func cameraView(_ cameraView: CameraView, didTouch point: CGPoint) {
     cameraMan.focus(point)
   }
 }
 
 extension CameraController: CameraManDelegate {
 
-  func cameraManDidStart(cameraMan: CameraMan) {
+  func cameraManDidStart(_ cameraMan: CameraMan) {
     cameraView.setupPreviewLayer(cameraMan.session)
   }
 
-  func cameraManNotAvailable(cameraMan: CameraMan) {
-    cameraView.focusImageView.hidden = true
+  func cameraManNotAvailable(_ cameraMan: CameraMan) {
+    cameraView.focusImageView.isHidden = true
   }
 
-  func cameraMan(cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
-    cameraView.flashButton.hidden = !input.device.hasFlash
+  func cameraMan(_ cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
+    cameraView.flashButton.isHidden = !input.device.hasFlash
   }
 
 }

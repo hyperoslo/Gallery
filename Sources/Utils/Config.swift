@@ -5,7 +5,7 @@ public struct Config {
 
   public struct PageIndicator {
     public static var backgroundColor: UIColor = UIColor(red: 0, green: 3/255, blue: 10/255, alpha: 1)
-    public static var textColor: UIColor = UIColor.whiteColor()
+    public static var textColor: UIColor = UIColor.white
   }
 
   public struct Camera {
@@ -56,8 +56,8 @@ public struct Config {
     public static var textColor: UIColor = UIColor(red: 102/255, green: 118/255, blue: 138/255, alpha: 1)
 
     public struct Button {
-      public static var textColor: UIColor = UIColor.whiteColor()
-      public static var highlightedTextColor: UIColor = UIColor.lightGrayColor()
+      public static var textColor: UIColor = UIColor.white
+      public static var highlightedTextColor: UIColor = UIColor.lightGray
       public static var backgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
     }
   }
@@ -65,16 +65,16 @@ public struct Config {
   public struct Font {
 
     public struct Main {
-      public static var light: UIFont = UIFont.systemFontOfSize(1)
-      public static var regular: UIFont = UIFont.systemFontOfSize(1)
-      public static var bold: UIFont = UIFont.boldSystemFontOfSize(1)
-      public static var medium: UIFont = UIFont.boldSystemFontOfSize(1)
+      public static var light: UIFont = UIFont.systemFont(ofSize: 1)
+      public static var regular: UIFont = UIFont.systemFont(ofSize: 1)
+      public static var bold: UIFont = UIFont.boldSystemFont(ofSize: 1)
+      public static var medium: UIFont = UIFont.boldSystemFont(ofSize: 1)
     }
 
     public struct Text {
-      public static var regular: UIFont = UIFont.systemFontOfSize(1)
-      public static var bold: UIFont = UIFont.boldSystemFontOfSize(1)
-      public static var semibold: UIFont = UIFont.boldSystemFontOfSize(1)
+      public static var regular: UIFont = UIFont.systemFont(ofSize: 1)
+      public static var bold: UIFont = UIFont.boldSystemFont(ofSize: 1)
+      public static var semibold: UIFont = UIFont.boldSystemFont(ofSize: 1)
     }
   }
 
@@ -82,7 +82,7 @@ public struct Config {
 
     public static var quality: String = AVAssetExportPresetHighestQuality
     public static var savesEditedVideoToLibrary: Bool = false
-    public static var maximumDuration: NSTimeInterval = 15
+    public static var maximumDuration: TimeInterval = 15
     public static var portraitSize: CGSize = CGSize(width: 360, height: 640)
     public static var landscapeSize: CGSize = CGSize(width: 640, height: 360)
   }

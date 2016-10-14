@@ -1,32 +1,31 @@
 import UIKit
-import Cartography
 import AVFoundation
 
 public protocol GalleryControllerDelegate: class {
 
-  func galleryController(controller: GalleryController, didSelectImages images: [UIImage])
-  func galleryController(controller: GalleryController, didSelectVideo video: Video)
-  func galleryController(controller: GalleryController, requestLightbox images: [UIImage])
-  func galleryControllerDidCancel(controller: GalleryController)
+  func galleryController(_ controller: GalleryController, didSelectImages images: [UIImage])
+  func galleryController(_ controller: GalleryController, didSelectVideo video: Video)
+  func galleryController(_ controller: GalleryController, requestLightbox images: [UIImage])
+  func galleryControllerDidCancel(_ controller: GalleryController)
 }
 
-public class GalleryController: UIViewController, PermissionControllerDelegate {
+open class GalleryController: UIViewController, PermissionControllerDelegate {
 
   lazy var imagesController: ImagesController = self.makeImagesController()
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
 
   enum Page: Int {
-    case Images, Camera, Videos
+    case images, camera, videos
   }
 
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
-  public weak var delegate: GalleryControllerDelegate?
+  open weak var delegate: GalleryControllerDelegate?
 
   // MARK: - Life cycle
 
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
 
     setup()
@@ -42,13 +41,13 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     Cart.shared.reset()
   }
 
-  public override func prefersStatusBarHidden() -> Bool {
+  open override var prefersStatusBarHidden : Bool {
     return true
   }
 
   // MARK: - Logic
 
-  public func reload(images: [UIImage]) {
+  open func reload(_ images: [UIImage]) {
     Cart.shared.reload(images)
   }
 
@@ -87,7 +86,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   func makePagesController() -> PagesController {
     let controller = PagesController(controllers: [imagesController, cameraController, videosController])
-    controller.selectedIndex = Page.Camera.rawValue
+    controller.selectedIndex = Page.camera.rawValue
 
     return controller
   }
@@ -115,7 +114,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     }
 
     EventHub.shared.doneWithVideos = { [weak self] in
-      if let strongSelf = self, video = Cart.shared.video {
+      if let strongSelf = self, let video = Cart.shared.video {
         strongSelf.delegate?.galleryController(strongSelf, didSelectVideo: video)
       }
     }
@@ -129,7 +128,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   // MARK: - PermissionControllerDelegate
 
-  func permissionControllerDidFinish(controller: PermissionController) {
+  func permissionControllerDidFinish(_ controller: PermissionController) {
     showMain()
     permissionController.g_removeFromParentController()
   }

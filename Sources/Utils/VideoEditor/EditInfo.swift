@@ -5,27 +5,27 @@ struct EditInfo {
 
   // MARK: - Basic
 
-  static func composition(avAsset: AVAsset) -> AVVideoComposition? {
-    guard let track = avAsset.tracksWithMediaType(AVMediaTypeVideo).first else { return nil }
+  static func composition(_ avAsset: AVAsset) -> AVVideoComposition? {
+    guard let track = avAsset.tracks(withMediaType: AVMediaTypeVideo).first else { return nil }
 
     let cropInfo = EditInfo.cropInfo(avAsset)
 
     let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-    layer.setTransform(EditInfo.transform(avAsset, scale: cropInfo.scale), atTime: kCMTimeZero)
+    layer.setTransform(EditInfo.transform(avAsset, scale: cropInfo.scale), at: kCMTimeZero)
 
     let instruction = AVMutableVideoCompositionInstruction()
     instruction.layerInstructions = [layer]
     instruction.timeRange = timeRange(avAsset)
 
-    let composition = AVMutableVideoComposition(propertiesOfAsset: avAsset)
+    let composition = AVMutableVideoComposition(propertiesOf: avAsset)
     composition.instructions = [instruction]
     composition.renderSize = cropInfo.size
 
     return composition
   }
 
-  static func cropInfo(avAsset: AVAsset) -> (size: CGSize, scale: CGFloat) {
-    var desiredSize = avAsset.g_isPortrait ? Config.VideoEditor.portraitSize : Config.VideoEditor.landscapeSize
+  static func cropInfo(_ avAsset: AVAsset) -> (size: CGSize, scale: CGFloat) {
+    let desiredSize = avAsset.g_isPortrait ? Config.VideoEditor.portraitSize : Config.VideoEditor.landscapeSize
     let avAssetSize = avAsset.g_correctSize
 
     let scale = min(desiredSize.width / avAssetSize.width, desiredSize.height / avAssetSize.height)
@@ -34,18 +34,18 @@ struct EditInfo {
     return (size: size, scale: scale)
   }
 
-  static func transform(avAsset: AVAsset, scale: CGFloat) -> CGAffineTransform {
+  static func transform(_ avAsset: AVAsset, scale: CGFloat) -> CGAffineTransform {
     let offset: CGPoint
     let angle: Double
 
     switch avAsset.g_orientation {
-    case .LandscapeLeft:
+    case .landscapeLeft:
       offset = CGPoint(x: avAsset.g_correctSize.width, y: avAsset.g_correctSize.height)
       angle = M_PI
-    case .LandscapeRight:
+    case .landscapeRight:
       offset = CGPoint.zero
       angle = 0
-    case .PortraitUpsideDown:
+    case .portraitUpsideDown:
       offset = CGPoint(x: 0, y: avAsset.g_correctSize.height)
       angle = -M_PI_2
     default:
@@ -53,15 +53,15 @@ struct EditInfo {
       angle = M_PI_2
     }
 
-    let scaleTransform = CGAffineTransformMakeScale(scale, scale)
-    let translationTransform = CGAffineTransformTranslate(scaleTransform, offset.x, offset.y)
-    let rotationTransform = CGAffineTransformRotate(translationTransform, CGFloat(angle))
+    let scaleTransform = CGAffineTransform(scaleX: scale, y: scale)
+    let translationTransform = scaleTransform.translatedBy(x: offset.x, y: offset.y)
+    let rotationTransform = translationTransform.rotated(by: CGFloat(angle))
 
     return rotationTransform
   }
 
-  static func presetName(avAsset: AVAsset) -> String {
-    let availablePresets = AVAssetExportSession.exportPresetsCompatibleWithAsset(avAsset)
+  static func presetName(_ avAsset: AVAsset) -> String {
+    let availablePresets = AVAssetExportSession.exportPresets(compatibleWith: avAsset)
 
     if availablePresets.contains(preferredPresetName) {
       return preferredPresetName
@@ -74,7 +74,7 @@ struct EditInfo {
     return Config.VideoEditor.quality
   }
 
-  static func timeRange(avAsset: AVAsset) -> CMTimeRange {
+  static func timeRange(_ avAsset: AVAsset) -> CMTimeRange {
     var end = avAsset.duration
 
     if Config.VideoEditor.maximumDuration < avAsset.duration.seconds {
@@ -88,32 +88,34 @@ struct EditInfo {
     return (type: AVFileTypeMPEG4, pathExtension: "mp4")
   }
 
-  static var outputURL: NSURL? {
-    return NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-      .URLByAppendingPathComponent(NSUUID().UUIDString)
-      .URLByAppendingPathExtension(file.pathExtension)
+  static var outputURL: URL? {
+    return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathComponent(file.pathExtension)
   }
 
   // MARK: - Advanced
 
   static var audioSettings: [String: AnyObject] {
     return [
-      AVFormatIDKey: NSNumber(integer: Int(kAudioFormatMPEG4AAC)),
-      AVNumberOfChannelsKey: NSNumber(integer: 2),
-      AVSampleRateKey: NSNumber(integer: 44100),
-      AVEncoderBitRateKey: NSNumber(integer: 128000)
+      AVFormatIDKey: NSNumber(value: Int(kAudioFormatMPEG4AAC) as Int),
+      AVNumberOfChannelsKey: NSNumber(value: 2 as Int),
+      AVSampleRateKey: NSNumber(value: 44100 as Int),
+      AVEncoderBitRateKey: NSNumber(value: 128000 as Int)
     ]
   }
 
   static var videoSettings: [String: AnyObject] {
+    let compression: [String: Any] = [
+      AVVideoAverageBitRateKey: NSNumber(value: 6000000),
+      AVVideoProfileLevelKey: AVVideoProfileLevelH264High40
+    ]
+
     return [
-      AVVideoCodecKey: AVVideoCodecH264,
-      AVVideoWidthKey: NSNumber(integer: 1920),
-      AVVideoHeightKey: NSNumber(integer: 1080),
-      AVVideoCompressionPropertiesKey: [
-        AVVideoAverageBitRateKey: 6000000,
-        AVVideoProfileLevelKey: AVVideoProfileLevelH264High40
-      ]
+      AVVideoCodecKey: AVVideoCodecH264 as AnyObject,
+      AVVideoWidthKey: NSNumber(value: 1920 as Int),
+      AVVideoHeightKey: NSNumber(value: 1080 as Int),
+      AVVideoCompressionPropertiesKey: compression as AnyObject
     ]
   }
 }

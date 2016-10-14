@@ -3,7 +3,7 @@ import Photos
 
 extension UIImageView {
 
-  func g_loadImage(asset: PHAsset) {
+  func g_loadImage(_ asset: PHAsset) {
     guard frame.size != CGSize.zero
       else {
         image = Bundle.image("gallery_placeholder")
@@ -13,13 +13,13 @@ extension UIImageView {
     if tag == 0 {
       image = Bundle.image("gallery_placeholder")
     } else {
-      PHImageManager.defaultManager().cancelImageRequest(PHImageRequestID(tag))
+      PHImageManager.default().cancelImageRequest(PHImageRequestID(tag))
     }
 
     let options = PHImageRequestOptions()
 
-    let id = PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: frame.size,
-                                                                  contentMode: .AspectFill, options: options)
+    let id = PHImageManager.default().requestImage(for: asset, targetSize: frame.size,
+                                                                  contentMode: .aspectFill, options: options)
     { [weak self] image, _ in
 
       self?.image = image

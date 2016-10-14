@@ -1,9 +1,8 @@
 import UIKit
-import Cartography
 import AVFoundation
 
 protocol CameraViewDelegate: class {
-  func cameraView(cameraView: CameraView, didTouch point: CGPoint)
+  func cameraView(_ cameraView: CameraView, didTouch point: CGPoint)
 }
 
 class CameraView: UIView, UIGestureRecognizerDelegate {
@@ -11,7 +10,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var flashButton: TripleButton = self.makeFlashButton()
   lazy var rotateButton: UIButton = self.makeRotateButton()
-  private lazy var bottomContainer: UIView = self.makeBottomContainer()
+  fileprivate lazy var bottomContainer: UIView = self.makeBottomContainer()
   lazy var bottomView: UIView = self.makeBottomView()
   lazy var stackView: StackView = self.makeStackView()
   lazy var shutterButton: ShutterButton = self.makeShutterButton()
@@ -22,7 +21,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var shutterOverlayView: UIView = self.makeShutterOverlayView()
   lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
-  var timer: NSTimer?
+  var timer: Timer?
   var previewLayer: AVCaptureVideoPreviewLayer?
   weak var delegate: CameraViewDelegate?
 
@@ -31,7 +30,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = UIColor.blackColor()
+    backgroundColor = UIColor.black
     setup()
   }
 
@@ -55,8 +54,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     }
 
     [stackView, doneButton].forEach {
-      $0.translatesAutoresizingMaskIntoConstraints = false
-      bottomView.addSubview($0)
+      bottomView.addSubview($0 as! UIView)
     }
 
     [closeButton, flashButton, rotateButton].forEach {
@@ -68,107 +66,81 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     insertSubview(focusImageView, belowSubview: bottomContainer)
     insertSubview(shutterOverlayView, belowSubview: bottomContainer)
 
-    constrain(closeButton, flashButton, rotateButton, bottomContainer) {
-      closeButton, flashButton, rotateButton, bottomContainer in
+    closeButton.g_pin(on: .top)
+    closeButton.g_pin(on: .left)
+    closeButton.g_pin(size: CGSize(width: 44, height: 44))
 
-      closeButton.top == closeButton.superview!.top
-      closeButton.left == closeButton.superview!.left
-      closeButton.width == 44
-      closeButton.height == 44
+    flashButton.g_pin(on: .centerY, view: closeButton)
+    flashButton.g_pin(on: .centerX)
+    flashButton.g_pin(size: CGSize(width: 60, height: 44))
 
-      flashButton.centerY == closeButton.centerY
-      flashButton.centerX == flashButton.superview!.centerX
-      flashButton.height == 44
-      flashButton.width == 60
+    rotateButton.g_pin(on: .top)
+    rotateButton.g_pin(on: .right)
+    rotateButton.g_pin(size: CGSize(width: 44, height: 44))
 
-      rotateButton.top == rotateButton.superview!.top
-      rotateButton.right == rotateButton.superview!.right
-      rotateButton.width == 44
-      rotateButton.height == 44
+    bottomContainer.g_pinDownward()
+    bottomContainer.g_pin(height: 80)
+    bottomView.g_pinEdges()
 
-      bottomContainer.left == bottomContainer.superview!.left
-      bottomContainer.right == bottomContainer.superview!.right
-      bottomContainer.bottom == bottomContainer.superview!.bottom
-      bottomContainer.height == 80
-    }
+    stackView.g_pin(on: .centerY, constant: -4)
+    stackView.g_pin(on: .left, constant: 38)
+    stackView.g_pin(size: CGSize(width: 56, height: 56))
 
-    constrain(bottomContainer, bottomView) {
-      bottomContainer, bottomView in
+    shutterButton.g_pinCenter()
+    doneButton.g_pin(on: .centerY)
+    doneButton.g_pin(on: .right, constant: -38)
 
-      bottomView.edges == bottomView.superview!.edges
-    }
-
-    constrain(stackView, shutterButton, doneButton) {
-      stackView, shutterButton, doneButton in
-
-      stackView.centerY == stackView.superview!.centerY - 4
-      stackView.left == stackView.superview!.left + 38
-      stackView.width == 56
-      stackView.height == 56
-
-      shutterButton.center == shutterButton.superview!.center
-      shutterButton.width == 60
-      shutterButton.height == 60
-
-      doneButton.centerY == doneButton.superview!.centerY
-      doneButton.right == doneButton.superview!.right - 38
-    }
-
-    constrain(rotateOverlayView, blurView, shutterOverlayView) {
-      overlayView, blurView, shutterOverlayView in
-
-      overlayView.edges == overlayView.superview!.edges
-      blurView.edges == blurView.superview!.edges
-      shutterOverlayView.edges == shutterOverlayView.superview!.edges
-    }
+    rotateOverlayView.g_pinEdges()
+    blurView.g_pinEdges()
+    shutterOverlayView.g_pinEdges()
   }
 
-  func setupPreviewLayer(session: AVCaptureSession) {
+  func setupPreviewLayer(_ session: AVCaptureSession) {
     guard previewLayer == nil else { return }
 
     let layer = AVCaptureVideoPreviewLayer(session: session)
-    layer.autoreverses = true
-    layer.videoGravity = AVLayerVideoGravityResizeAspectFill
+    layer?.autoreverses = true
+    layer?.videoGravity = AVLayerVideoGravityResizeAspectFill
 
-    self.layer.insertSublayer(layer, atIndex: 0)
-    layer.frame = self.layer.bounds
+    self.layer.insertSublayer(layer!, at: 0)
+    layer?.frame = self.layer.bounds
 
     previewLayer = layer
   }
 
   // MARK: - Action
 
-  func viewTapped(gr: UITapGestureRecognizer) {
-    let point = gr.locationInView(self)
+  func viewTapped(_ gr: UITapGestureRecognizer) {
+    let point = gr.location(in: self)
 
-    focusImageView.transform = CGAffineTransformIdentity
+    focusImageView.transform = CGAffineTransform.identity
     timer?.invalidate()
     delegate?.cameraView(self, didTouch: point)
 
     focusImageView.center = point
 
-    UIView.animateWithDuration(0.5, animations: {
+    UIView.animate(withDuration: 0.5, animations: {
       self.focusImageView.alpha = 1
-      self.focusImageView.transform = CGAffineTransformMakeScale(0.6, 0.6)
+      self.focusImageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
     }, completion: { _ in
-      self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self,
+      self.timer = Timer.scheduledTimer(timeInterval: 1, target: self,
         selector: #selector(CameraView.timerFired(_:)), userInfo: nil, repeats: false)
     })
   }
 
   // MARK: - Timer
 
-  func timerFired(timer: NSTimer) {
-    UIView.animateWithDuration(0.3, animations: {
+  func timerFired(_ timer: Timer) {
+    UIView.animate(withDuration: 0.3, animations: {
       self.focusImageView.alpha = 0
     }, completion: { _ in
-      self.focusImageView.transform = CGAffineTransformIdentity
+      self.focusImageView.transform = CGAffineTransform.identity
     })
   }
 
   // MARK: - UIGestureRecognizerDelegate
-  override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-    let point = gestureRecognizer.locationInView(self)
+  override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    let point = gestureRecognizer.location(in: self)
 
     return point.y > closeButton.frame.maxY
       && point.y < bottomContainer.frame.origin.y
@@ -177,8 +149,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   // MARK: - Controls
 
   func makeCloseButton() -> UIButton {
-    let button = UIButton(type: .Custom)
-    button.setImage(Bundle.image("gallery_close"), forState: .Normal)
+    let button = UIButton(type: .custom)
+    button.setImage(Bundle.image("gallery_close"), for: UIControlState())
 
     return button
   }
@@ -196,8 +168,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   }
 
   func makeRotateButton() -> UIButton {
-    let button = UIButton(type: .Custom)
-    button.setImage(Bundle.image("gallery_camera_rotate"), forState: .Normal)
+    let button = UIButton(type: .custom)
+    button.setImage(Bundle.image("gallery_camera_rotate"), for: UIControlState())
 
     return button
   }
@@ -230,11 +202,11 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   }
 
   func makeDoneButton() -> UIButton {
-    let button = UIButton(type: .System)
-    button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    button.setTitleColor(UIColor.lightGrayColor(), forState: .Disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.fontWithSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), forState: .Normal)
+    let button = UIButton(type: .system)
+    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.setTitleColor(UIColor.lightGray, for: .disabled)
+    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
+    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControlState())
 
     return button
   }
@@ -243,7 +215,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     let view = UIImageView()
     view.frame.size = CGSize(width: 110, height: 110)
     view.image = Bundle.image("gallery_camera_focus")
-    view.backgroundColor = .clearColor()
+    view.backgroundColor = .clear
     view.alpha = 0
 
     return view
@@ -266,13 +238,13 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeShutterOverlayView() -> UIView {
     let view = UIView()
     view.alpha = 0
-    view.backgroundColor = UIColor.blackColor()
+    view.backgroundColor = UIColor.black
 
     return view
   }
 
   func makeBlurView() -> UIVisualEffectView {
-    let effect = UIBlurEffect(style: .Dark)
+    let effect = UIBlurEffect(style: .dark)
     let blurView = UIVisualEffectView(effect: effect)
 
     return blurView

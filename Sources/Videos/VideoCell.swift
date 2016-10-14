@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 import Photos
 
 class VideoCell: ImageCell {
@@ -10,11 +9,11 @@ class VideoCell: ImageCell {
 
   // MARK: - Config
 
-  func configure(video: Video) {
+  func configure(_ video: Video) {
     super.configure(video.asset)
 
     video.fetchDuration { duration in
-      Dispatch.main {
+      DispatchQueue.main.async {
         self.durationLabel.text = "\(Utils.format(duration))"
       }
     }
@@ -27,25 +26,16 @@ class VideoCell: ImageCell {
 
     [bottomOverlay, cameraImageView, durationLabel].forEach {
       self.insertSubview($0, belowSubview: self.highlightOverlay)
-      $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(bottomOverlay, cameraImageView, durationLabel) {
-      bottomOverlay, cameraImageView, durationLabel in
+    bottomOverlay.g_pinDownward()
+    bottomOverlay.g_pin(height: 16)
 
-      bottomOverlay.left == bottomOverlay.superview!.left
-      bottomOverlay.right == bottomOverlay.superview!.right
-      bottomOverlay.bottom == bottomOverlay.superview!.bottom
-      bottomOverlay.height == 16
+    cameraImageView.g_pinHorizontally(padding: 5)
+    cameraImageView.g_pin(size: CGSize(width: 12, height: 6))
 
-      cameraImageView.left == cameraImageView.superview!.left + 5
-      cameraImageView.bottom == cameraImageView.superview!.bottom - 5
-      cameraImageView.width == 12
-      cameraImageView.height == 6
-
-      durationLabel.right == durationLabel.superview!.right - 4
-      durationLabel.bottom == durationLabel.superview!.bottom - 2
-    }
+    durationLabel.g_pin(on: .right, constant: -4)
+    durationLabel.g_pin(on: .bottom, constant: -2)
   }
 
   // MARK: - Controls
@@ -59,16 +49,16 @@ class VideoCell: ImageCell {
 
   func makeDurationLabel() -> UILabel {
     let label = UILabel()
-    label.font = Config.Font.Text.bold.fontWithSize(9)
-    label.textColor = UIColor.whiteColor()
-    label.textAlignment = .Right
+    label.font = Config.Font.Text.bold.withSize(9)
+    label.textColor = UIColor.white
+    label.textAlignment = .right
 
     return label
   }
 
   func makeBottomOverlay() -> UIView {
     let view = UIView()
-    view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+    view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
 
     return view
   }

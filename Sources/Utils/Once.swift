@@ -4,7 +4,7 @@ class Once {
 
   var already: Bool = false
 
-  func run(@noescape block: () -> Void) {
+  func run(_ block: () -> Void) {
     guard !already else { return }
 
     block()

@@ -1,9 +1,8 @@
 import UIKit
-import Cartography
 import Photos
 
 protocol DropdownControllerDelegate: class {
-  func dropdownController(controller: DropdownController, didSelect album: Album)
+  func dropdownController(_ controller: DropdownController, didSelect album: Album)
 }
 
 class DropdownController: UIViewController {
@@ -37,22 +36,17 @@ class DropdownController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    view.backgroundColor = UIColor.clearColor()
-    tableView.backgroundColor = UIColor.clearColor()
+    view.backgroundColor = UIColor.clear
+    tableView.backgroundColor = UIColor.clear
     tableView.backgroundView = blurView
 
     [tableView].forEach {
-      $0.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview($0)
     }
 
-    tableView.registerClass(AlbumCell.self, forCellReuseIdentifier: String(AlbumCell.self))
+    tableView.register(AlbumCell.self, forCellReuseIdentifier: String(describing: AlbumCell.self))
 
-    constrain(tableView) {
-      tableView in
-
-      tableView.edges == tableView.superview!.edges
-    }
+    tableView.g_pinEdges()
   }
 
   // MARK: - Logic
@@ -65,7 +59,7 @@ class DropdownController: UIViewController {
 
     self.topConstraint?.constant = expanding ? 1 : view.bounds.size.height
 
-    UIView.animateWithDuration(0.25, delay: 0, options: .CurveEaseInOut, animations: {
+    UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: {
       self.view.superview?.layoutIfNeeded()
     }, completion: { finished in
       self.animating = false
@@ -77,7 +71,7 @@ class DropdownController: UIViewController {
   func makeTableView() -> UITableView {
     let tableView = UITableView()
     tableView.tableFooterView = UIView()
-    tableView.separatorStyle = .None
+    tableView.separatorStyle = .none
     tableView.rowHeight = 84
 
     tableView.dataSource = self
@@ -87,7 +81,7 @@ class DropdownController: UIViewController {
   }
 
   func makeBlurView() -> UIVisualEffectView {
-    let view = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
 
     return view
   }
@@ -97,30 +91,30 @@ extension DropdownController: UITableViewDataSource, UITableViewDelegate {
 
   // MARK: - UITableViewDataSource
 
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return albums.count
   }
 
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(String(AlbumCell.self), forIndexPath: indexPath)
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AlbumCell.self), for: indexPath)
       as! AlbumCell
 
-    let album = albums[indexPath.row]
+    let album = albums[(indexPath as NSIndexPath).row]
     cell.configure(album)
-    cell.backgroundColor = UIColor.clearColor()
+    cell.backgroundColor = UIColor.clear
 
     return cell
   }
 
   // MARK: - UITableViewDelegate
 
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
 
-    let album = albums[indexPath.row]
+    let album = albums[(indexPath as NSIndexPath).row]
     delegate?.dropdownController(self, didSelect: album)
 
-    selectedIndex = indexPath.row
+    selectedIndex = (indexPath as NSIndexPath).row
     tableView.reloadData()
   }
 }

@@ -4,7 +4,7 @@ import Photos
 class ImagesLibrary {
 
   var albums: [Album] = []
-  var albumsFetchResults: [PHFetchResult] = []
+  var albumsFetchResults = [PHFetchResult<PHAssetCollection>]()
 
   // MARK: - Initialization
 
@@ -14,39 +14,37 @@ class ImagesLibrary {
 
   // MARK: - Logic
 
-  func reload(completion: () -> Void) {
-    Dispatch.background {
+  func reload(_ completion: @escaping () -> Void) {
+    DispatchQueue.global().async {
       self.reloadSync()
-      Dispatch.main {
+      DispatchQueue.main.async {
         completion()
       }
     }
   }
 
-  private func reloadSync() {
-    let types: [PHAssetCollectionType] = [.SmartAlbum, .Album]
+  fileprivate func reloadSync() {
+    let types: [PHAssetCollectionType] = [.smartAlbum, .album]
 
     albumsFetchResults = types.map {
-      return PHAssetCollection.fetchAssetCollectionsWithType($0, subtype: .Any, options: nil)
+      return PHAssetCollection.fetchAssetCollections(with: $0, subtype: .any, options: nil)
     }
 
     albums = []
 
     for result in albumsFetchResults {
-      result.enumerateObjectsUsingBlock { collection, _, _ in
-        if let collection = collection as? PHAssetCollection {
-          let album = Album(collection: collection)
-          album.reload()
+      result.enumerateObjects({ (collection, _, _) in
+        let album = Album(collection: collection)
+        album.reload()
 
-          if !album.items.isEmpty {
-            self.albums.append(album)
-          }
+        if !album.items.isEmpty {
+          self.albums.append(album)
         }
-      }
+      })
     }
 
     // Move Camera Roll first
-    if let index = albums.indexOf({ $0.collection.assetCollectionSubtype == . SmartAlbumUserLibrary }) {
+    if let index = albums.index(where: { $0.collection.assetCollectionSubtype == . smartAlbumUserLibrary }) {
       albums.g_moveToFirst(index)
     }
   }
