@@ -80,8 +80,8 @@ class PagesController: UIViewController {
     scrollView.g_pin(on: .bottom, view: pageIndicator, on: .top)
 
     scrollViewContentView.g_pinEdges()
-    scrollViewContentView.g_pin(on: .top)
-    scrollViewContentView.g_pin(on: .bottom)
+    scrollViewContentView.g_pin(on: .top, view: scrollView.superview!)
+    scrollViewContentView.g_pin(on: .bottom, view: scrollView.superview!)
 
     for (i, controller) in controllers.enumerated() {
       addChildViewController(controller)
@@ -90,8 +90,8 @@ class PagesController: UIViewController {
 
       controller.view.g_pin(on: .top)
       controller.view.g_pin(on: .bottom)
-      controller.view.g_pin(on: .width)
-      controller.view.g_pin(on: .height)
+      controller.view.g_pin(on: .width, view: scrollView)
+      controller.view.g_pin(on: .height, view: scrollView)
 
       if i == 0 {
         controller.view.g_pin(on: .left)

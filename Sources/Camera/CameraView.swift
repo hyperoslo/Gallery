@@ -44,12 +44,10 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     addGestureRecognizer(tapGR)
 
     [closeButton, flashButton, rotateButton, bottomContainer].forEach {
-      $0.translatesAutoresizingMaskIntoConstraints = false
       addSubview($0)
     }
 
     [bottomView, shutterButton].forEach {
-      $0.translatesAutoresizingMaskIntoConstraints = false
       bottomContainer.addSubview($0)
     }
 
