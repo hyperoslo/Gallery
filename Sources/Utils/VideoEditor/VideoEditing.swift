@@ -4,13 +4,13 @@ import Photos
 
 public protocol VideoEditing: class {
 
-  func crop(avAsset: AVAsset, completion: (URL?) -> Void)
-  func edit(video: Video, completion: (_ video: Video?, _ tempPath: URL?) -> Void)
+  func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void)
+  func edit(video: Video, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void)
 }
 
 extension VideoEditing {
 
-  public func edit(video: Video, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void) {
+  public func process(video: Video, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void) {
     video.fetchAVAsset { avAsset in
       guard let avAsset = avAsset else {
         completion(nil, nil)

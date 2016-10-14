@@ -2,7 +2,7 @@ import Foundation
 import AVFoundation
 import Photos
 
-open class VideoEditor: VideoEditing {
+public class VideoEditor: VideoEditing {
 
   // MARK: - Initialization
 
@@ -10,8 +10,12 @@ open class VideoEditor: VideoEditing {
 
   }
 
-  // MARK: - Crop
-  
+  // MARK: - Edit
+
+  public func edit(video: Video, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void) {
+    process(video: video, completion: completion)
+  }
+
   open func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
     guard let outputURL = EditInfo.outputURL else {
       completion(nil)

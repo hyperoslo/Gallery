@@ -2,8 +2,7 @@ import Foundation
 import AVFoundation
 import Photos
 
-open class AdvancedVideoEditor: VideoEditing {
-
+public class AdvancedVideoEditor: VideoEditing {
   var writer: AVAssetWriter!
   var videoInput: AVAssetWriterInput?
   var audioInput: AVAssetWriterInput?
@@ -24,9 +23,13 @@ open class AdvancedVideoEditor: VideoEditing {
 
   }
 
-  // MARK: - Crop
+  // MARK: - Edit
 
-  open func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
+  public func edit(video: Video, completion: @escaping (_ video: Video?, _ tempPath: URL?) -> Void) {
+    process(video: video, completion: completion)
+  }
+
+  public func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
     guard let outputURL = EditInfo.outputURL else {
       completion(nil)
       return
@@ -83,7 +86,7 @@ open class AdvancedVideoEditor: VideoEditing {
 
   // MARK: - Finish
 
-  func finish(outputURL: URL, completion: @escaping (URL?) -> Void) {
+  fileprivate func finish(outputURL: URL, completion: @escaping (URL?) -> Void) {
     if reader.status == .failed {
       writer.cancelWriting()
     }
