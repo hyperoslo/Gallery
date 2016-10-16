@@ -7,13 +7,13 @@ protocol CartDelegate: class {
   func cartDidReload(_ cart: Cart)
 }
 
-open class Cart {
+public class Cart {
 
-  open static let shared = Cart()
+  public static let shared = Cart()
 
-  open var images: [Image] = []
+  public var images: [Image] = []
   fileprivate var lightBoxUIImages: [UIImage] = []
-  open var video: Video?
+  public var video: Video?
   var delegates: NSHashTable<AnyObject> = NSHashTable.weakObjects()
 
   // MARK: - Initialization

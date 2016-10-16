@@ -1,7 +1,7 @@
 import UIKit
 import Photos
 
-open class Image: Equatable {
+public class Image: Equatable {
 
   let asset: PHAsset
 

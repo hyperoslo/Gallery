@@ -16,7 +16,7 @@ public class VideoEditor: VideoEditing {
     process(video: video, completion: completion)
   }
 
-  open func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
+  public func crop(avAsset: AVAsset, completion: @escaping (URL?) -> Void) {
     guard let outputURL = EditInfo.outputURL else {
       completion(nil)
       return

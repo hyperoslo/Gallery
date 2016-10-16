@@ -1,7 +1,7 @@
 import UIKit
 import Photos
 
-open class Video: Equatable {
+public class Video: Equatable {
 
   let asset: PHAsset
 
@@ -35,7 +35,7 @@ open class Video: Equatable {
     durationRequestID = Int(id)
   }
 
-  open func fetchPlayerItem(_ completion: @escaping (AVPlayerItem?) -> Void) {
+  public func fetchPlayerItem(_ completion: @escaping (AVPlayerItem?) -> Void) {
     PHImageManager.default().requestPlayerItem(forVideo: asset, options: nil) {
       item, _ in
 
@@ -43,13 +43,13 @@ open class Video: Equatable {
     }
   }
 
-  open func fetchAVAsset(_ completion: @escaping (AVAsset?) -> Void){
+  public func fetchAVAsset(_ completion: @escaping (AVAsset?) -> Void){
     PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { avAsset, _, _ in
       completion(avAsset)
     }
   }
 
-  open func fetchThumbnail(_ size: CGSize = CGSize(width: 100, height: 100), completion: @escaping (UIImage?) -> Void) {
+  public func fetchThumbnail(_ size: CGSize = CGSize(width: 100, height: 100), completion: @escaping (UIImage?) -> Void) {
     PHImageManager.default().requestImage(for: asset, targetSize: size,
                                                          contentMode: .aspectFill, options: nil)
     { image, _ in

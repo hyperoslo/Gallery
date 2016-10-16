@@ -9,7 +9,7 @@ public protocol GalleryControllerDelegate: class {
   func galleryControllerDidCancel(_ controller: GalleryController)
 }
 
-open class GalleryController: UIViewController, PermissionControllerDelegate {
+public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   lazy var imagesController: ImagesController = self.makeImagesController()
   lazy var cameraController: CameraController = self.makeCameraController()
@@ -21,11 +21,11 @@ open class GalleryController: UIViewController, PermissionControllerDelegate {
 
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
-  open weak var delegate: GalleryControllerDelegate?
+  public weak var delegate: GalleryControllerDelegate?
 
   // MARK: - Life cycle
 
-  open override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     setup()
@@ -41,13 +41,13 @@ open class GalleryController: UIViewController, PermissionControllerDelegate {
     Cart.shared.reset()
   }
 
-  open override var prefersStatusBarHidden : Bool {
+  public override var prefersStatusBarHidden : Bool {
     return true
   }
 
   // MARK: - Logic
 
-  open func reload(_ images: [UIImage]) {
+  public func reload(_ images: [UIImage]) {
     Cart.shared.reload(images)
   }
 
