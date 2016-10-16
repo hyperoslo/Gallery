@@ -85,6 +85,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     stackView.g_pin(size: CGSize(width: 56, height: 56))
 
     shutterButton.g_pinCenter()
+    shutterButton.g_pin(size: CGSize(width: 60, height: 60))
+    
     doneButton.g_pin(on: .centerY)
     doneButton.g_pin(on: .right, constant: -38)
 

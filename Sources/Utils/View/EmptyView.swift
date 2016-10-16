@@ -26,7 +26,7 @@ class EmptyView: UIView {
 
     label.g_pinCenter()
     imageView.g_pin(on: .centerX)
-    imageView.g_pin(on: .bottom, view: label, on: .top, constant: 12)
+    imageView.g_pin(on: .bottom, view: label, on: .top, constant: -12)
   }
 
   // MARK: - Controls
