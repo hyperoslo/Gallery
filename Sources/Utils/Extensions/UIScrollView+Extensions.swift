@@ -6,7 +6,7 @@ extension UIScrollView {
     setContentOffset(CGPoint.zero, animated: false)
   }
 
-  func g_updateBottomInset(value: CGFloat) {
+  func g_updateBottomInset(_ value: CGFloat) {
     var inset = contentInset
     inset.bottom = value
 

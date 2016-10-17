@@ -1,22 +1,17 @@
 import UIKit
-import Cartography
 
 extension UIViewController {
 
-  func g_addChildController(controller: UIViewController) {
+  func g_addChildController(_ controller: UIViewController) {
     addChildViewController(controller)
     view.addSubview(controller.view)
-    controller.didMoveToParentViewController(self)
+    controller.didMove(toParentViewController: self)
 
-    controller.view.translatesAutoresizingMaskIntoConstraints = false
-
-    constrain(controller.view) { view in
-      view.edges == view.superview!.edges
-    }
+    controller.view.g_pinEdges()
   }
 
   func g_removeFromParentController() {
-    willMoveToParentViewController(nil)
+    willMove(toParentViewController: nil)
     view.removeFromSuperview()
     removeFromParentViewController()
   }

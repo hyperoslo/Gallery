@@ -1,7 +1,7 @@
 import UIKit
 
 protocol PageIndicatorDelegate: class {
-  func pageIndicator(pageIndicator: PageIndicator, didSelect index: Int)
+  func pageIndicator(_ pageIndicator: PageIndicator, didSelect index: Int)
 }
 
 class PageIndicator: UIView {
@@ -32,7 +32,7 @@ class PageIndicator: UIView {
 
     let width = bounds.size.width / CGFloat(buttons.count)
 
-    for (i, button) in buttons.enumerate() {
+    for (i, button) in buttons.enumerated() {
 
       button.frame = CGRect(x: width * CGFloat(i),
                             y: 0,
@@ -67,13 +67,13 @@ class PageIndicator: UIView {
 
   // MARK: - Controls
 
-  func makeButton(title: String) -> UIButton {
-    let button = UIButton(type: .Custom)
-    button.setTitle(title, forState: .Normal)
-    button.setTitleColor(Config.PageIndicator.textColor, forState: .Normal)
-    button.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
+  func makeButton(_ title: String) -> UIButton {
+    let button = UIButton(type: .custom)
+    button.setTitle(title, for: UIControlState())
+    button.setTitleColor(Config.PageIndicator.textColor, for: UIControlState())
+    button.setTitleColor(UIColor.gray, for: .highlighted)
     button.backgroundColor = Config.PageIndicator.backgroundColor
-    button.addTarget(self, action: #selector(buttonTouched(_:)), forControlEvents: .TouchUpInside)
+    button.addTarget(self, action: #selector(buttonTouched(_:)), for: .touchUpInside)
     button.titleLabel?.font = buttonFont(false)
 
     return button
@@ -87,20 +87,20 @@ class PageIndicator: UIView {
 
   // MARK: - Action
 
-  func buttonTouched(button: UIButton) {
-    let index = buttons.indexOf(button) ?? 0
+  func buttonTouched(_ button: UIButton) {
+    let index = buttons.index(of: button) ?? 0
     delegate?.pageIndicator(self, didSelect: index)
     select(index: index)
   }
 
   // MARK: - Logic
 
-  func select(index index: Int) {
-    for (i, b) in buttons.enumerate() {
+  func select(index: Int) {
+    for (i, b) in buttons.enumerated() {
       b.titleLabel?.font = buttonFont(i == index)
     }
 
-    UIView.animateWithDuration(0.25, delay: 0,
+    UIView.animate(withDuration: 0.25, delay: 0,
                                usingSpringWithDamping: 0.7,
                                initialSpringVelocity: 0.5,
                                options: [],
@@ -112,7 +112,7 @@ class PageIndicator: UIView {
 
   // MARK: - Helper
 
-  func buttonFont(selected: Bool) -> UIFont {
-    return selected ? Config.Font.Main.bold.fontWithSize(14) : Config.Font.Main.regular.fontWithSize(14)
+  func buttonFont(_ selected: Bool) -> UIFont {
+    return selected ? Config.Font.Main.bold.withSize(14) : Config.Font.Main.regular.withSize(14)
   }
 }

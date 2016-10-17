@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 import Photos
 
 class ImageCell: UICollectionViewCell {
@@ -22,20 +21,20 @@ class ImageCell: UICollectionViewCell {
 
   // MARK: - Highlight
 
-  override var highlighted: Bool {
+  override var isHighlighted: Bool {
     didSet {
-      highlightOverlay.hidden = !highlighted
+      highlightOverlay.isHidden = !isHighlighted
     }
   }
 
   // MARK: - Config
 
-  func configure(asset: PHAsset) {
+  func configure(_ asset: PHAsset) {
     imageView.layoutIfNeeded()
     imageView.g_loadImage(asset)
   }
 
-  func configure(image: Image) {
+  func configure(_ image: Image) {
     configure(image.asset)
   }
 
@@ -44,16 +43,11 @@ class ImageCell: UICollectionViewCell {
   func setup() {
     [imageView, frameView, highlightOverlay].forEach {
       self.contentView.addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(imageView, frameView, highlightOverlay) {
-      imageView, frameView, highlightOverlay in
-
-      imageView.edges == imageView.superview!.edges
-      frameView.edges == frameView.superview!.edges
-      highlightOverlay.edges == highlightOverlay.superview!.edges
-    }
+    imageView.g_pinEdges()
+    frameView.g_pinEdges()
+    highlightOverlay.g_pinEdges()
   }
 
   // MARK: - Controls
@@ -61,16 +55,16 @@ class ImageCell: UICollectionViewCell {
   func makeImageView() -> UIImageView {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
-    imageView.contentMode = .ScaleAspectFill
+    imageView.contentMode = .scaleAspectFill
 
     return imageView
   }
 
   func makeHighlightOverlay() -> UIView {
     let view = UIView()
-    view.userInteractionEnabled = false
-    view.backgroundColor = Config.Grid.FrameView.borderColor.colorWithAlphaComponent(0.3)
-    view.hidden = true
+    view.isUserInteractionEnabled = false
+    view.backgroundColor = Config.Grid.FrameView.borderColor.withAlphaComponent(0.3)
+    view.isHidden = true
 
     return view
   }

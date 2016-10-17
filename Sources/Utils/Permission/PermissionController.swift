@@ -1,8 +1,7 @@
 import UIKit
-import Cartography
 
 protocol PermissionControllerDelegate: class {
-  func permissionControllerDidFinish(controller: PermissionController)
+  func permissionControllerDidFinish(_ controller: PermissionController)
 }
 
 class PermissionController: UIViewController {
@@ -19,7 +18,7 @@ class PermissionController: UIViewController {
     setup()
   }
 
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
     requestPermission()
@@ -29,18 +28,11 @@ class PermissionController: UIViewController {
 
   func setup() {
     view.addSubview(permissionView)
-    permissionView.translatesAutoresizingMaskIntoConstraints = false
-
     permissionView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)),
-                                         forControlEvents: .TouchUpInside)
+                                         for: .touchUpInside)
     permissionView.settingButton.addTarget(self, action: #selector(settingButtonTouched(_:)),
-                                           forControlEvents: .TouchUpInside)
-
-    constrain(permissionView) {
-      permissionView in
-
-      permissionView.edges == permissionView.superview!.edges
-    }
+                                           for: .touchUpInside)
+    permissionView.g_pinEdges()
   }
 
   // MARK: - Logic
@@ -57,7 +49,7 @@ class PermissionController: UIViewController {
 
   func check() {
     if Permission.hasPermissions {
-      Dispatch.main {
+      DispatchQueue.main.async {
         self.delegate?.permissionControllerDidFinish(self)
       }
     }
@@ -65,15 +57,15 @@ class PermissionController: UIViewController {
 
   // MARK: - Action
 
-  func settingButtonTouched(button: UIButton) {
-    Dispatch.main {
-      if let settingsURL = NSURL(string: UIApplicationOpenSettingsURLString) {
-        UIApplication.sharedApplication().openURL(settingsURL)
+  func settingButtonTouched(_ button: UIButton) {
+    DispatchQueue.main.async {
+      if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
+        UIApplication.shared.openURL(settingsURL)
       }
     }
   }
 
-  func closeButtonTouched(button: UIButton) {
+  func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
   }
 

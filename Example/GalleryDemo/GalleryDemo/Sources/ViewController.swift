@@ -12,14 +12,14 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = UIColor.whiteColor()
+    view.backgroundColor = UIColor.white
 
     Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
 
-    button = UIButton(type: .System)
+    button = UIButton(type: .system)
     button.frame.size = CGSize(width: 200, height: 50)
-    button.setTitle("Open Gallery", forState: .Normal)
-    button.addTarget(self, action: #selector(buttonTouched(_:)), forControlEvents: .TouchUpInside)
+    button.setTitle("Open Gallery", for: UIControlState())
+    button.addTarget(self, action: #selector(buttonTouched(_:)), for: .touchUpInside)
 
     view.addSubview(button)
   }
@@ -30,58 +30,58 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     button.center = CGPoint(x: view.bounds.size.width/2, y: view.bounds.size.height/2)
   }
 
-  func buttonTouched(button: UIButton) {
+  func buttonTouched(_ button: UIButton) {
     gallery = GalleryController()
     gallery.delegate = self
 
-    presentViewController(gallery, animated: true, completion: nil)
+    present(gallery, animated: true, completion: nil)
   }
 
   // MARK: - LightboxControllerDismissalDelegate
 
-  func lightboxControllerWillDismiss(controller: LightboxController) {
+  func lightboxControllerWillDismiss(_ controller: LightboxController) {
     gallery.reload(controller.images.flatMap({ $0.image }))
   }
 
   // MARK: - GalleryControllerDelegate
 
-  func galleryControllerDidCancel(controller: GalleryController) {
-    controller.dismissViewControllerAnimated(true, completion: nil)
+  func galleryControllerDidCancel(_ controller: GalleryController) {
+    controller.dismiss(animated: true, completion: nil)
     gallery = nil
   }
 
-  func galleryController(controller: GalleryController, didSelectVideo video: Video) {
-    controller.dismissViewControllerAnimated(true, completion: nil)
+  func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
+    controller.dismiss(animated: true, completion: nil)
     gallery = nil
 
 
-    editor.edit(video) { (editedVideo: Video?, tempPath: NSURL?) in
-      dispatch_async(dispatch_get_main_queue()) {
+    editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
+      DispatchQueue.main.async {
         print(editedVideo)
         if let tempPath = tempPath {
-          let data = NSData(contentsOfURL: tempPath)
+          let data = NSData(contentsOf: tempPath)
           print(data?.length)
           let controller = AVPlayerViewController()
-          controller.player = AVPlayer(URL: tempPath)
+          controller.player = AVPlayer(url: tempPath)
 
-          self.presentViewController(controller, animated: true, completion: nil)
+          self.present(controller, animated: true, completion: nil)
         }
       }
     }
   }
 
-  func galleryController(controller: GalleryController, didSelectImages images: [UIImage]) {
-    controller.dismissViewControllerAnimated(true, completion: nil)
+  func galleryController(_ controller: GalleryController, didSelectImages images: [UIImage]) {
+    controller.dismiss(animated: true, completion: nil)
     gallery = nil
   }
 
-  func galleryController(controller: GalleryController, requestLightbox images: [UIImage]) {
+  func galleryController(_ controller: GalleryController, requestLightbox images: [UIImage]) {
     LightboxConfig.DeleteButton.enabled = true
 
     let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
     lightbox.dismissalDelegate = self
 
-    controller.presentViewController(lightbox, animated: true, completion: nil)
+    controller.dismiss(animated: true, completion: nil)
   }
 }
 

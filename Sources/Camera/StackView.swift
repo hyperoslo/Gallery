@@ -43,7 +43,7 @@ class StackView: UIControl{
     let imageViewSize = CGSize(width: frame.width * scale,
                           height: frame.height * scale)
 
-    for (index, imageView) in imageViews.enumerate() {
+    for (index, imageView) in imageViews.enumerated() {
       let origin = CGPoint(x: CGFloat(index) * step,
                            y: CGFloat(imageViews.count - index) * step)
       imageView.frame = CGRect(origin: origin, size: imageViewSize)
@@ -52,8 +52,8 @@ class StackView: UIControl{
 
   // MARK: - Action
 
-  func viewTapped(gr: UITapGestureRecognizer) {
-    sendActionsForControlEvents(.TouchUpInside)
+  func viewTapped(_ gr: UITapGestureRecognizer) {
+    sendActions(for: .touchUpInside)
   }
 
   // MARK: - Logic
@@ -66,9 +66,9 @@ class StackView: UIControl{
     }
 
     indicator.startAnimating()
-    UIView.animateWithDuration(0.3) {
+    UIView.animate(withDuration: 0.3, animations: {
       self.indicator.alpha = 1.0
-    }
+    }) 
   }
 
   func stopLoading() {
@@ -76,10 +76,10 @@ class StackView: UIControl{
     indicator.alpha = 0
   }
 
-  func renderViews(assets: [PHAsset]) {
+  func renderViews(_ assets: [PHAsset]) {
     let photos = Array(assets.suffix(Config.Camera.StackView.imageCount))
 
-    for (index, view) in imageViews.enumerate() {
+    for (index, view) in imageViews.enumerated() {
       if index < photos.count {
         view.g_loadImage(photos[index])
         view.alpha = 1
@@ -90,16 +90,16 @@ class StackView: UIControl{
     }
   }
 
-  private func animate(imageView imageView: UIImageView) {
-    imageView.transform = CGAffineTransformMakeScale(0, 0)
+  fileprivate func animate(imageView: UIImageView) {
+    imageView.transform = CGAffineTransform(scaleX: 0, y: 0)
 
-    UIView.animateKeyframesWithDuration(0.5, delay: 0, options: [], animations: {
-      UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0.6) {
-        imageView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+    UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [], animations: {
+      UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.6) {
+        imageView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
       }
 
-      UIView.addKeyframeWithRelativeStartTime(0.6, relativeDuration: 0.4) {
-        imageView.transform = CGAffineTransformIdentity
+      UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+        imageView.transform = CGAffineTransform.identity
       }
 
     }, completion: { finished in
@@ -109,7 +109,7 @@ class StackView: UIControl{
 
   // MARK: - Reload
 
-  func reload(images: [Image], added: Bool = false) {
+  func reload(_ images: [Image], added: Bool = false) {
     // Animate empty view
     if added {
       if let emptyView = imageViews.filter({ $0.image == nil }).first {
@@ -121,7 +121,7 @@ class StackView: UIControl{
     renderViews(images.map { $0.asset })
 
     // Update count label
-    if let topVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last where images.count > 1 {
+    if let topVisibleView = imageViews.filter({ $0.alpha == 1.0 }).last , images.count > 1 {
       countLabel.text = "\(images.count)"
       countLabel.sizeToFit()
       countLabel.center = topVisibleView.center
@@ -144,7 +144,7 @@ class StackView: UIControl{
     return Array(0..<Config.Camera.StackView.imageCount).map { _ in
       let imageView = UIImageView()
 
-      imageView.contentMode = .ScaleAspectFill
+      imageView.contentMode = .scaleAspectFill
       imageView.alpha = 0
       imageView.g_addRoundBorder()
 
@@ -154,9 +154,9 @@ class StackView: UIControl{
 
   func makeCountLabel() -> UILabel {
     let label = UILabel()
-    label.textColor = UIColor.whiteColor()
-    label.font = Config.Font.Main.regular.fontWithSize(20)
-    label.textAlignment = .Center
+    label.textColor = UIColor.white
+    label.font = Config.Font.Main.regular.withSize(20)
+    label.textAlignment = .center
     label.g_addShadow()
     label.alpha = 0
 

@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 
 protocol PageAware: class {
   func pageDidShow()
@@ -50,7 +49,7 @@ class PagesController: UIViewController {
 
   func makeScrollView() -> UIScrollView {
     let scrollView = UIScrollView()
-    scrollView.pagingEnabled = true
+    scrollView.isPagingEnabled = true
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.alwaysBounceHorizontal = false
     scrollView.bounces = false
@@ -74,49 +73,34 @@ class PagesController: UIViewController {
     view.addSubview(scrollView)
     scrollView.addSubview(scrollViewContentView)
 
-    pageIndicator.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollViewContentView.translatesAutoresizingMaskIntoConstraints = false
+    pageIndicator.g_pinDownward()
+    pageIndicator.g_pin(height: 40)
 
-    constrain(scrollView, scrollViewContentView, pageIndicator) {
-      scrollView, scrollViewContentView, pageIndicator in
+    scrollView.g_pinUpward()
+    scrollView.g_pin(on: .bottom, view: pageIndicator, on: .top)
 
-      pageIndicator.left == pageIndicator.superview!.left
-      pageIndicator.right == pageIndicator.superview!.right
-      pageIndicator.bottom == pageIndicator.superview!.bottom
-      pageIndicator.height == 40
+    scrollViewContentView.g_pinEdges()
+    scrollViewContentView.g_pin(on: .top, view: scrollView.superview!)
+    scrollViewContentView.g_pin(on: .bottom, view: scrollView.superview!)
 
-      scrollView.top == scrollView.superview!.top
-      scrollView.left == scrollView.superview!.left
-      scrollView.right == scrollView.superview!.right
-      scrollView.bottom == pageIndicator.top
-
-      scrollViewContentView.edges == scrollViewContentView.superview!.edges
-
-      scrollViewContentView.top == scrollView.superview!.top
-      scrollViewContentView.bottom == scrollViewContentView.superview!.bottom
-    }
-
-    for (i, controller) in controllers.enumerate() {
+    for (i, controller) in controllers.enumerated() {
       addChildViewController(controller)
       scrollViewContentView.addSubview(controller.view)
-      controller.didMoveToParentViewController(self)
+      controller.didMove(toParentViewController: self)
 
-      controller.view.translatesAutoresizingMaskIntoConstraints = false
-
-      scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Top, relatedBy: .Equal, toItem: scrollViewContentView, attribute: .Top, multiplier: 1, constant: 0))
-      scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Bottom, relatedBy: .Equal, toItem: scrollViewContentView, attribute: .Bottom, multiplier: 1, constant: 0))
-      scrollView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Width, relatedBy: .Equal, toItem: scrollView, attribute: .Width, multiplier: 1, constant: 0))
-      scrollView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Height, relatedBy: .Equal, toItem: scrollView, attribute: .Height, multiplier: 1, constant: 0))
+      controller.view.g_pin(on: .top)
+      controller.view.g_pin(on: .bottom)
+      controller.view.g_pin(on: .width, view: scrollView)
+      controller.view.g_pin(on: .height, view: scrollView)
 
       if i == 0 {
-        scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Left, relatedBy: .Equal, toItem: scrollViewContentView, attribute: .Left, multiplier: 1, constant: 0))
+        controller.view.g_pin(on: .left)
       } else {
-        scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Left, relatedBy: .Equal, toItem: self.controllers[i-1].view, attribute: .Right, multiplier: 1, constant: 0))
+        controller.view.g_pin(on: .left, view: self.controllers[i-1].view, on: .right)
       }
 
       if i == self.controllers.count - 1 {
-        scrollViewContentView.addConstraint(NSLayoutConstraint(item: controller.view, attribute: .Right, relatedBy: .Equal, toItem: scrollViewContentView, attribute: .Right, multiplier: 1, constant: 0))
+        controller.view.g_pin(on: .right)
       }
     }
   }
@@ -126,14 +110,14 @@ class PagesController: UIViewController {
   func goAndNotify() {
     let point = CGPoint(x: scrollView.frame.size.width * CGFloat(selectedIndex), y: scrollView.contentOffset.y)
 
-    Dispatch.main {
+    DispatchQueue.main.async {
       self.scrollView.setContentOffset(point, animated: false)
     }
 
     notify()
   }
 
-  func updateAndNotify(index: Int) {
+  func updateAndNotify(_ index: Int) {
     guard selectedIndex != index else { return }
 
     selectedIndex = index
@@ -149,7 +133,7 @@ class PagesController: UIViewController {
 
 extension PagesController: PageIndicatorDelegate {
 
-  func pageIndicator(pageIndicator: PageIndicator, didSelect index: Int) {
+  func pageIndicator(_ pageIndicator: PageIndicator, didSelect index: Int) {
     let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
     scrollView.setContentOffset(point, animated: false)
     updateAndNotify(index)
@@ -159,7 +143,7 @@ extension PagesController: PageIndicatorDelegate {
 
 extension PagesController: UIScrollViewDelegate {
 
-  func scrollViewDidScroll(scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
     pageIndicator.select(index: index)
     updateAndNotify(index)

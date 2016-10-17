@@ -5,50 +5,50 @@ import Photos
 struct Utils {
 
   static func rotationTransform() -> CGAffineTransform {
-    switch UIDevice.currentDevice().orientation {
-    case .LandscapeLeft:
-      return CGAffineTransformMakeRotation(CGFloat(M_PI_2))
-    case .LandscapeRight:
-      return CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
-    case .PortraitUpsideDown:
-      return CGAffineTransformMakeRotation(CGFloat(M_PI))
+    switch UIDevice.current.orientation {
+    case .landscapeLeft:
+      return CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
+    case .landscapeRight:
+      return CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
+    case .portraitUpsideDown:
+      return CGAffineTransform(rotationAngle: CGFloat(M_PI))
     default:
-      return CGAffineTransformIdentity
+      return CGAffineTransform.identity
     }
   }
 
   static func videoOrientation() -> AVCaptureVideoOrientation {
-    switch UIDevice.currentDevice().orientation {
-    case .Portrait:
-      return .Portrait
-    case .LandscapeLeft:
-      return .LandscapeRight
-    case .LandscapeRight:
-      return .LandscapeLeft
-    case .PortraitUpsideDown:
-      return .PortraitUpsideDown
+    switch UIDevice.current.orientation {
+    case .portrait:
+      return .portrait
+    case .landscapeLeft:
+      return .landscapeRight
+    case .landscapeRight:
+      return .landscapeLeft
+    case .portraitUpsideDown:
+      return .portraitUpsideDown
     default:
-      return .Portrait
+      return .portrait
     }
   }
 
   static func fetchOptions() -> PHFetchOptions {
-    var options = PHFetchOptions()
+    let options = PHFetchOptions()
     options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
     return options
   }
 
-  static func format(duration: NSTimeInterval) -> String {
-    let formatter = NSDateComponentsFormatter()
-    formatter.zeroFormattingBehavior = .Pad
+  static func format(_ duration: TimeInterval) -> String {
+    let formatter = DateComponentsFormatter()
+    formatter.zeroFormattingBehavior = .pad
 
     if duration >= 3600 {
-      formatter.allowedUnits = [.Hour, .Minute, .Second]
+      formatter.allowedUnits = [.hour, .minute, .second]
     } else {
-      formatter.allowedUnits = [.Minute, .Second]
+      formatter.allowedUnits = [.minute, .second]
     }
 
-    return formatter.stringFromTimeInterval(duration) ?? ""
+    return formatter.string(from: duration) ?? ""
   }
 }

@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 
 class PermissionView: UIView {
 
@@ -13,7 +12,7 @@ class PermissionView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = UIColor.whiteColor()
+    backgroundColor = UIColor.white
     setup()
 
   }
@@ -27,27 +26,20 @@ class PermissionView: UIView {
   func setup() {
     [label, settingButton, closeButton, imageView].forEach {
       addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    constrain(closeButton, label, settingButton, imageView) {
-      closeButton, label, settingButton, imageView in
+    closeButton.g_pin(on: .top)
+    closeButton.g_pin(on: .left)
+    closeButton.g_pin(size: CGSize(width: 44, height: 44))
 
-      closeButton.top == closeButton.superview!.top
-      closeButton.left == closeButton.superview!.left
-      closeButton.height == 44
-      closeButton.width == 44
+    settingButton.g_pinCenter()
+    settingButton.g_pin(height: 44)
 
-      settingButton.center == settingButton.superview!.center
-      settingButton.height == 44
+    label.g_pin(on: .bottom, view: settingButton, on: .top, constant: -33)
+    label.g_pinHorizontally(padding: 50)
 
-      label.bottom == settingButton.top - 33
-      label.left == label.superview!.left + 50
-      label.right == label.superview!.right - 50
-
-      imageView.centerX == imageView.superview!.centerX
-      imageView.bottom == label.top - 12
-    }
+    imageView.g_pinCenter()
+    imageView.g_pin(on: .bottom, view: label, on: .top, constant: -12)
   }
 
   // MARK: - Controls
@@ -55,22 +47,22 @@ class PermissionView: UIView {
   func makeLabel() -> UILabel {
     let label = UILabel()
     label.textColor = Config.Permission.textColor
-    label.font = Config.Font.Text.regular.fontWithSize(14)
+    label.font = Config.Font.Text.regular.withSize(14)
     label.text = "Gallery.Permission.Info".g_localize(fallback: "Please enable photos and camera")
-    label.textAlignment = .Center
+    label.textAlignment = .center
     label.numberOfLines = 0
 
     return label
   }
 
   func makeSettingButton() -> UIButton {
-    let button = UIButton(type: .Custom)
-    button.setTitle("Gallery.Permission.Button".g_localize(fallback: "Go to Settings").uppercaseString,
-                    forState: .Normal)
+    let button = UIButton(type: .custom)
+    button.setTitle("Gallery.Permission.Button".g_localize(fallback: "Go to Settings").uppercased(),
+                    for: UIControlState())
     button.backgroundColor = Config.Permission.Button.backgroundColor
-    button.titleLabel?.font = Config.Font.Main.medium.fontWithSize(16)
-    button.setTitleColor(Config.Permission.Button.textColor, forState: .Normal)
-    button.setTitleColor(Config.Permission.Button.highlightedTextColor, forState: .Highlighted)
+    button.titleLabel?.font = Config.Font.Main.medium.withSize(16)
+    button.setTitleColor(Config.Permission.Button.textColor, for: UIControlState())
+    button.setTitleColor(Config.Permission.Button.highlightedTextColor, for: .highlighted)
     button.layer.cornerRadius = 22
     button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
@@ -78,8 +70,8 @@ class PermissionView: UIView {
   }
 
   func makeCloseButton() -> UIButton {
-    let button = UIButton(type: .Custom)
-    button.setImage(Bundle.image("gallery_close")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+    let button = UIButton(type: .custom)
+    button.setImage(Bundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button

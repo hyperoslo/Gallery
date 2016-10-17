@@ -14,7 +14,7 @@ public class Video: Equatable {
     self.asset = asset
   }
 
-  func fetchDuration(completion: Double -> Void) {
+  func fetchDuration(_ completion: @escaping (Double) -> Void) {
     guard duration == 0
     else {
       completion(duration)
@@ -22,10 +22,10 @@ public class Video: Equatable {
     }
 
     if durationRequestID != 0 {
-      PHImageManager.defaultManager().cancelImageRequest(PHImageRequestID(durationRequestID))
+      PHImageManager.default().cancelImageRequest(PHImageRequestID(durationRequestID))
     }
 
-    let id = PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: nil) {
+    let id = PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) {
       asset, mix, _ in
 
       self.duration = asset?.duration.seconds ?? 0
@@ -35,23 +35,23 @@ public class Video: Equatable {
     durationRequestID = Int(id)
   }
 
-  public func fetchPlayerItem(completion: AVPlayerItem? -> Void) {
-    PHImageManager.defaultManager().requestPlayerItemForVideo(asset, options: nil) {
+  public func fetchPlayerItem(_ completion: @escaping (AVPlayerItem?) -> Void) {
+    PHImageManager.default().requestPlayerItem(forVideo: asset, options: nil) {
       item, _ in
 
       completion(item)
     }
   }
 
-  public func fetchAVAsset(completion: (AVAsset?) -> Void){
-    PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: nil) { avAsset, _, _ in
+  public func fetchAVAsset(_ completion: @escaping (AVAsset?) -> Void){
+    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { avAsset, _, _ in
       completion(avAsset)
     }
   }
 
-  public func fetchThumbnail(size: CGSize = CGSize(width: 100, height: 100), completion: (UIImage?) -> Void) {
-    PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size,
-                                                         contentMode: .AspectFill, options: nil)
+  public func fetchThumbnail(_ size: CGSize = CGSize(width: 100, height: 100), completion: @escaping (UIImage?) -> Void) {
+    PHImageManager.default().requestImage(for: asset, targetSize: size,
+                                                         contentMode: .aspectFill, options: nil)
     { image, _ in
       completion(image)
     }

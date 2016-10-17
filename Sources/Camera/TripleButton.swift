@@ -25,28 +25,28 @@ class TripleButton: UIButton {
   // MARK: - Setup
 
   func setup() {
-    titleLabel?.font = Config.Font.Text.semibold.fontWithSize(12)
+    titleLabel?.font = Config.Font.Text.semibold.withSize(12)
     imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
-    setTitleColor(UIColor.grayColor(), forState: .Highlighted)
+    setTitleColor(UIColor.gray, for: .highlighted)
 
     select(index: selectedIndex)
   }
 
   // MARK: - Logic
 
-  func toggle() -> Int {
+  @discardableResult func toggle() -> Int {
     selectedIndex = (selectedIndex + 1) % states.count
     select(index: selectedIndex)
 
     return selectedIndex
   }
 
-  func select(index index: Int) {
+  func select(index: Int) {
     guard index < states.count else { return }
 
     let state = states[index]
 
-    setTitle(state.title, forState: .Normal)
-    setImage(state.image, forState: .Normal)
+    setTitle(state.title, for: UIControlState())
+    setImage(state.image, for: UIControlState())
   }
 }

@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 import Photos
 import AVKit
 
@@ -24,53 +23,42 @@ class VideosController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    view.backgroundColor = UIColor.whiteColor()
+    view.backgroundColor = UIColor.white
 
     view.addSubview(gridView)
-    gridView.translatesAutoresizingMaskIntoConstraints = false
 
     [videoBox, infoLabel].forEach {
-      self.gridView.bottomView.addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
+      gridView.bottomView.addSubview($0)
     }
 
-    constrain(gridView) {
-      gridView in
+    gridView.g_pinEdges()
 
-      gridView.edges == gridView.superview!.edges
-    }
+    videoBox.g_pin(size: CGSize(width: 44, height: 44))
+    videoBox.g_pin(on: .centerY)
+    videoBox.g_pin(on: .left, constant: 38)
 
-    constrain(videoBox, infoLabel) {
-      videoBox, infoLabel in
+    infoLabel.g_pin(on: .centerY)
+    infoLabel.g_pin(on: .left, view: videoBox, on: .right, constant: 11)
+    infoLabel.g_pin(on: .right, constant: -50)
 
-      videoBox.width == 44
-      videoBox.height == 44
-      videoBox.centerY == videoBox.superview!.centerY
-      videoBox.left == videoBox.superview!.left + 38
-
-      infoLabel.centerY == infoLabel.superview!.centerY
-      infoLabel.left == videoBox.right + 11
-      infoLabel.right == infoLabel.superview!.right - 50
-    }
-
-    gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
+    gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
+    gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
 
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
-    gridView.collectionView.registerClass(VideoCell.self, forCellWithReuseIdentifier: String(VideoCell.self))
+    gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
 
     gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
-    gridView.arrowButton.arrow.hidden = true
+    gridView.arrowButton.arrow.isHidden = true
   }
 
   // MARK: - Action
 
-  func closeButtonTouched(button: UIButton) {
+  func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
   }
 
-  func doneButtonTouched(button: UIButton) {
+  func doneButtonTouched(_ button: UIButton) {
     EventHub.shared.doneWithVideos?()
   }
 
@@ -88,7 +76,7 @@ class VideosController: UIViewController {
     gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
 
     Cart.shared.video?.fetchDuration { [weak self] duration in
-      self?.infoLabel.hidden = duration <= Config.VideoEditor.maximumDuration
+      self?.infoLabel.isHidden = duration <= Config.VideoEditor.maximumDuration
     }
   }
 
@@ -110,8 +98,8 @@ class VideosController: UIViewController {
 
   func makeInfoLabel() -> UILabel {
     let label = UILabel()
-    label.textColor = UIColor.whiteColor()
-    label.font = Config.Font.Text.regular.fontWithSize(12)
+    label.textColor = UIColor.white
+    label.font = Config.Font.Text.regular.withSize(12)
     label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
                         (Int(Config.VideoEditor.maximumDuration)))
 
@@ -126,7 +114,7 @@ extension VideosController: PageAware {
       library.reload {
         self.items = self.library.items
         self.gridView.collectionView.reloadData()
-        self.gridView.emptyView.hidden = !self.items.isEmpty
+        self.gridView.emptyView.isHidden = !self.items.isEmpty
       }
     }
   }
@@ -134,16 +122,16 @@ extension VideosController: PageAware {
 
 extension VideosController: VideoBoxDelegate {
 
-  func videoBoxDidTap(videoBox: VideoBox) {
+  func videoBoxDidTap(_ videoBox: VideoBox) {
     Cart.shared.video?.fetchPlayerItem { item in
       guard let item = item else { return }
 
-      Dispatch.main {
+      DispatchQueue.main.async {
         let controller = AVPlayerViewController()
         let player = AVPlayer(playerItem: item)
         controller.player = player
 
-        self.presentViewController(controller, animated: true) {
+        self.present(controller, animated: true) {
           player.play()
         }
       }
@@ -155,18 +143,18 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
 
   // MARK: - UICollectionViewDataSource
 
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return items.count
   }
 
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(VideoCell.self), forIndexPath: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: VideoCell.self), for: indexPath)
       as! VideoCell
-    let item = items[indexPath.item]
+    let item = items[(indexPath as NSIndexPath).item]
 
     cell.configure(item)
-    cell.frameView.label.hidden = true
+    cell.frameView.label.isHidden = true
     configureFrameView(cell, indexPath: indexPath)
 
     return cell
@@ -174,17 +162,17 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
 
   // MARK: - UICollectionViewDelegateFlowLayout
 
-  func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
     let size = (collectionView.bounds.size.width - (Config.Grid.Dimension.columnCount - 1) * Config.Grid.Dimension.cellSpacing)
       / Config.Grid.Dimension.columnCount
     return CGSize(width: size, height: size)
   }
 
-  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let item = items[(indexPath as NSIndexPath).item]
 
-    if let selectedItem = Cart.shared.video where selectedItem == item {
+    if let selectedItem = Cart.shared.video , selectedItem == item {
       Cart.shared.video = nil
     } else {
       Cart.shared.video = item
@@ -195,17 +183,17 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
   }
 
   func configureFrameViews() {
-    for case let cell as VideoCell in gridView.collectionView.visibleCells() {
-      if let indexPath = gridView.collectionView.indexPathForCell(cell) {
+    for case let cell as VideoCell in gridView.collectionView.visibleCells {
+      if let indexPath = gridView.collectionView.indexPath(for: cell) {
         configureFrameView(cell, indexPath: indexPath)
       }
     }
   }
 
-  func configureFrameView(cell: VideoCell, indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
+  func configureFrameView(_ cell: VideoCell, indexPath: IndexPath) {
+    let item = items[(indexPath as NSIndexPath).item]
 
-    if let selectedItem = Cart.shared.video where selectedItem == item {
+    if let selectedItem = Cart.shared.video , selectedItem == item {
       cell.frameView.g_quickFade()
     } else {
       cell.frameView.alpha = 0

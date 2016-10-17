@@ -1,6 +1,5 @@
 import UIKit
 import Photos
-import Cartography
 
 class GridView: UIView {
 
@@ -30,75 +29,49 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
-    backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+    backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
 
     [collectionView, bottomView, topView, emptyView].forEach {
       addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
     [closeButton, arrowButton].forEach {
       topView.addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
     [bottomBlurView, doneButton].forEach {
-      bottomView.addSubview($0)
-      $0.translatesAutoresizingMaskIntoConstraints = false
+      bottomView.addSubview($0 as! UIView)
     }
 
-    constrain(topView, collectionView, bottomView, emptyView) {
-      topView, collectionView, bottomView, emptyView in
+    topView.g_pinUpward()
+    topView.g_pin(height: 40)
+    bottomView.g_pinDownward()
+    bottomView.g_pin(height: 80)
 
-      topView.left == topView.superview!.left
-      topView.top == topView.superview!.top
-      topView.right == topView.superview!.right
-      topView.height == 40
+    emptyView.g_pinEdges()
+    collectionView.g_pin(on: .left)
+    collectionView.g_pin(on: .right)
+    collectionView.g_pin(on: .bottom)
+    collectionView.g_pin(on: .top, view: topView, on: .bottom, constant: 1)
 
-      collectionView.top == topView.bottom + 1
-      collectionView.left == collectionView.superview!.left
-      collectionView.right == collectionView.superview!.right
-      collectionView.bottom == collectionView.superview!.bottom
+    bottomBlurView.g_pinEdges()
 
-      bottomView.left == bottomView.superview!.left
-      bottomView.right == bottomView.superview!.right
-      bottomView.bottom == bottomView.superview!.bottom
-      bottomView.height == 80
+    closeButton.g_pin(on: .top)
+    closeButton.g_pin(on: .left)
+    closeButton.g_pin(size: CGSize(width: 40, height: 40))
 
-      emptyView.edges == collectionView.edges
-    }
+    arrowButton.g_pinCenter()
+    arrowButton.g_pin(height: 40)
 
-    constrain(bottomBlurView) {
-      bottomBlurView in
-
-      bottomBlurView.edges == bottomBlurView.superview!.edges
-    }
-
-    constrain(closeButton, arrowButton) {
-      closeButton, arrowButton in
-
-      closeButton.top == closeButton.superview!.top
-      closeButton.left == closeButton.superview!.left
-      closeButton.width == 40
-      closeButton.height == 40
-
-      arrowButton.center == arrowButton.superview!.center
-      arrowButton.height == 40
-    }
-
-    constrain(doneButton) {
-      doneButton in
-
-      doneButton.centerY == doneButton.superview!.centerY
-      doneButton.right == doneButton.superview!.right - 38
-    }
+    doneButton.g_pin(on: .centerY)
+    doneButton.g_pin(on: .right, constant: -38)
   }
 
   // MARK: - Controls
 
   func makeTopView() -> UIView {
     let view = UIView()
-    view.backgroundColor = UIColor.whiteColor()
+    view.backgroundColor = UIColor.white
 
     return view
   }
@@ -110,7 +83,7 @@ class GridView: UIView {
   }
 
   func makeBottomBlurView() -> UIVisualEffectView {
-    let view = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
 
     return view
   }
@@ -129,19 +102,19 @@ class GridView: UIView {
   }
 
   func makeCloseButton() -> UIButton {
-    let button = UIButton(type: .Custom)
-    button.setImage(Bundle.image("gallery_close")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+    let button = UIButton(type: .custom)
+    button.setImage(Bundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button
   }
 
   func makeDoneButton() -> UIButton {
-    let button = UIButton(type: .System)
-    button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    button.setTitleColor(UIColor.lightGrayColor(), forState: .Disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.fontWithSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), forState: .Normal)
+    let button = UIButton(type: .system)
+    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.setTitleColor(UIColor.lightGray, for: .disabled)
+    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
+    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControlState())
     
     return button
   }
@@ -152,14 +125,14 @@ class GridView: UIView {
     layout.minimumLineSpacing = 2
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    view.backgroundColor = UIColor.whiteColor()
+    view.backgroundColor = UIColor.white
 
     return view
   }
 
   func makeEmptyView() -> EmptyView {
     let view = EmptyView()
-    view.hidden = true
+    view.isHidden = true
 
     return view
   }

@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 
 class EmptyView: UIView {
 
@@ -22,18 +21,12 @@ class EmptyView: UIView {
 
   func setup() {
     [label, imageView].forEach {
-      $0.translatesAutoresizingMaskIntoConstraints = false
-      addSubview($0)
+      addSubview($0 as! UIView)
     }
 
-    constrain(imageView, label) {
-      imageView, label in
-
-      label.center == label.superview!.center
-
-      imageView.centerX == imageView.superview!.centerX
-      imageView.bottom == label.top - 12
-    }
+    label.g_pinCenter()
+    imageView.g_pin(on: .centerX)
+    imageView.g_pin(on: .bottom, view: label, on: .top, constant: -12)
   }
 
   // MARK: - Controls
@@ -41,7 +34,7 @@ class EmptyView: UIView {
   func makeLabel() -> UILabel {
     let label = UILabel()
     label.textColor = Config.EmptyView.textColor
-    label.font = Config.Font.Text.regular.fontWithSize(14)
+    label.font = Config.Font.Text.regular.withSize(14)
     label.text = "Gallery.EmptyView.Text".g_localize(fallback: "Nothing to show")
 
     return label

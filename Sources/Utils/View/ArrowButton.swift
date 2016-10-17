@@ -33,8 +33,8 @@ class ArrowButton: UIButton {
   }
 
 
-  override func intrinsicContentSize() -> CGSize {
-    let size = super.intrinsicContentSize()
+  override var intrinsicContentSize : CGSize {
+    let size = super.intrinsicContentSize
     label.sizeToFit()
 
     return CGSize(width: label.frame.size.width + arrowSize*2 + padding,
@@ -43,19 +43,19 @@ class ArrowButton: UIButton {
 
   // MARK: - Logic
 
-  func updateText(text: String) {
-    label.text = text.uppercaseString
+  func updateText(_ text: String) {
+    label.text = text.uppercased()
     arrow.alpha = text.isEmpty ? 0 : 1
     invalidateIntrinsicContentSize()
   }
 
-  func toggle(expanding: Bool) {
+  func toggle(_ expanding: Bool) {
     let transform = expanding
-      ? CGAffineTransformMakeRotation(CGFloat(M_PI)) : CGAffineTransformIdentity
+      ? CGAffineTransform(rotationAngle: CGFloat(M_PI)) : CGAffineTransform.identity
     
-    UIView.animateWithDuration(0.25) {
+    UIView.animate(withDuration: 0.25, animations: {
       self.arrow.transform = transform
-    }
+    }) 
   }
 
   // MARK: - Controls
@@ -63,15 +63,15 @@ class ArrowButton: UIButton {
   func makeLabel() -> UILabel {
     let label = UILabel()
     label.textColor = Config.Grid.ArrowButton.tintColor
-    label.font = Config.Font.Main.regular.fontWithSize(16)
-    label.textAlignment = .Center
+    label.font = Config.Font.Main.regular.withSize(16)
+    label.textAlignment = .center
 
     return label
   }
 
   func makeArrow() -> UIImageView {
     let arrow = UIImageView()
-    arrow.image = Bundle.image("gallery_title_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
+    arrow.image = Bundle.image("gallery_title_arrow")?.withRenderingMode(.alwaysTemplate)
     arrow.tintColor = Config.Grid.ArrowButton.tintColor
     arrow.alpha = 0
 
@@ -80,10 +80,10 @@ class ArrowButton: UIButton {
 
   // MARK: - Touch
 
-  override var highlighted: Bool {
+  override var isHighlighted: Bool {
     didSet {
-      label.textColor = highlighted ? UIColor.lightGrayColor() : Config.Grid.ArrowButton.tintColor
-      arrow.tintColor = highlighted ? UIColor.lightGrayColor() : Config.Grid.ArrowButton.tintColor
+      label.textColor = isHighlighted ? UIColor.lightGray : Config.Grid.ArrowButton.tintColor
+      arrow.tintColor = isHighlighted ? UIColor.lightGray : Config.Grid.ArrowButton.tintColor
     }
   }
 }

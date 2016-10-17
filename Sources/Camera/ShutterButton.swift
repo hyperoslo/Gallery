@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 
 class ShutterButton: UIButton {
 
@@ -23,17 +22,17 @@ class ShutterButton: UIButton {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    overlayView.frame = CGRectInset(bounds, 3, 3)
+    overlayView.frame = bounds.insetBy(dx: 3, dy: 3)
     overlayView.layer.cornerRadius = overlayView.frame.size.width/2
 
-    roundLayer.path = UIBezierPath(ovalInRect: CGRectInset(bounds, 3, 3)).CGPath
+    roundLayer.path = UIBezierPath(ovalIn: bounds.insetBy(dx: 3, dy: 3)).cgPath
     layer.cornerRadius = bounds.size.width/2
   }
 
   // MARK: - Setup
 
   func setup() {
-    backgroundColor = UIColor.whiteColor()
+    backgroundColor = UIColor.white
 
     addSubview(overlayView)
     layer.addSublayer(roundLayer)
@@ -43,15 +42,15 @@ class ShutterButton: UIButton {
 
   func makeOverlayView() -> UIView {
     let view = UIView()
-    view.backgroundColor = UIColor.whiteColor()
-    view.userInteractionEnabled = false
+    view.backgroundColor = UIColor.white
+    view.isUserInteractionEnabled = false
 
     return view
   }
 
   func makeRoundLayer() -> CAShapeLayer {
     let layer = CAShapeLayer()
-    layer.strokeColor = Config.Camera.ShutterButton.numberColor.CGColor
+    layer.strokeColor = Config.Camera.ShutterButton.numberColor.cgColor
     layer.lineWidth = 2
     layer.fillColor = nil
 
@@ -60,9 +59,9 @@ class ShutterButton: UIButton {
 
   // MARK: - Highlight
 
-  override var highlighted: Bool {
+  override var isHighlighted: Bool {
     didSet {
-      overlayView.backgroundColor = highlighted ? UIColor.grayColor() : UIColor.whiteColor()
+      overlayView.backgroundColor = isHighlighted ? UIColor.gray : UIColor.white
     }
   }
 }

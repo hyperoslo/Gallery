@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 import Photos
 
 class ImagesController: UIViewController {
@@ -24,79 +23,66 @@ class ImagesController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    view.backgroundColor = UIColor.whiteColor()
+    view.backgroundColor = UIColor.white
 
     view.addSubview(gridView)
-    gridView.translatesAutoresizingMaskIntoConstraints = false
 
     addChildViewController(dropdownController)
     gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
-    dropdownController.didMoveToParentViewController(self)
+    dropdownController.didMove(toParentViewController: self)
 
     gridView.bottomView.addSubview(stackView)
-    stackView.translatesAutoresizingMaskIntoConstraints = false
 
-    constrain(gridView) {
-      gridView in
+    gridView.g_pinEdges()
 
-      gridView.edges == gridView.superview!.edges
-    }
+    dropdownController.view.g_pin(on: .left)
+    dropdownController.view.g_pin(on: .right)
+    dropdownController.view.g_pin(on: .height, constant: -40)
+    dropdownController.topConstraint = dropdownController.view.g_pin(on: .top,
+                                                                     view: gridView.topView, on: .bottom,
+                                                                     constant: view.frame.size.height, priority: 999)
 
-    constrain(dropdownController.view, gridView.topView) {
-      dropdown, topView in
+    stackView.g_pin(on: .centerY, constant: -4)
+    stackView.g_pin(on: .left, constant: 38)
+    stackView.g_pin(size: CGSize(width: 56, height: 56))
 
-      dropdown.left == dropdown.superview!.left
-      dropdown.right == dropdown.superview!.right
-      dropdown.height == dropdown.superview!.height - 40
-      self.dropdownController.topConstraint = (dropdown.top == topView.bottom + self.view.frame.size.height ~ 999 )
-    }
-
-    constrain(stackView, gridView.bottomView) {
-      stackView, bottomView in
-
-      stackView.centerY == stackView.superview!.centerY - 4
-      stackView.left == stackView.superview!.left + 38
-      stackView.width == 56
-      stackView.height == 56
-    }
-
-    gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), forControlEvents: .TouchUpInside)
-    stackView.addTarget(self, action: #selector(stackViewTouched(_:)), forControlEvents: .TouchUpInside)
+    gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
+    gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+    gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
+    stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
 
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
-    gridView.collectionView.registerClass(ImageCell.self, forCellWithReuseIdentifier: String(ImageCell.self))
+    gridView.collectionView.register(ImageCell.self, forCellWithReuseIdentifier: String(describing: ImageCell.self))
   }
 
   // MARK: - Action
 
-  func closeButtonTouched(button: UIButton) {
+  func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
   }
 
-  func doneButtonTouched(button: UIButton) {
+  func doneButtonTouched(_ button: UIButton) {
     EventHub.shared.doneWithImages?()
   }
 
-  func arrowButtonTouched(button: ArrowButton) {
+  func arrowButtonTouched(_ button: ArrowButton) {
     dropdownController.toggle()
     button.toggle(dropdownController.expanding)
   }
 
-  func stackViewTouched(stackView: StackView) {
+  func stackViewTouched(_ stackView: StackView) {
     EventHub.shared.stackViewTouched?()
   }
 
   // MARK: - Logic
 
-  func show(album album: Album) {
+  func show(album: Album) {
     gridView.arrowButton.updateText(album.collection.localizedTitle ?? "")
     items = album.items
     gridView.collectionView.reloadData()
     gridView.collectionView.g_scrollToTop()
-    gridView.emptyView.hidden = !items.isEmpty
+    gridView.emptyView.isHidden = !items.isEmpty
   }
 
   func refreshSelectedAlbum() {
@@ -156,7 +142,7 @@ extension ImagesController: PageAware {
 
 extension ImagesController: CartDelegate {
 
-  func cart(cart: Cart, didAdd image: Image, newlyTaken: Bool) {
+  func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
     stackView.reload(cart.images, added: true)
     refreshView()
 
@@ -165,12 +151,12 @@ extension ImagesController: CartDelegate {
     }
   }
 
-  func cart(cart: Cart, didRemove image: Image) {
+  func cart(_ cart: Cart, didRemove image: Image) {
     stackView.reload(cart.images)
     refreshView()
   }
 
-  func cartDidReload(cart: Cart) {
+  func cartDidReload(_ cart: Cart) {
     stackView.reload(cart.images)
     refreshView()
     refreshSelectedAlbum()
@@ -179,7 +165,7 @@ extension ImagesController: CartDelegate {
 
 extension ImagesController: DropdownControllerDelegate {
 
-  func dropdownController(controller: DropdownController, didSelect album: Album) {
+  func dropdownController(_ controller: DropdownController, didSelect album: Album) {
     selectedAlbum = album
     show(album: album)
 
@@ -192,15 +178,15 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
 
   // MARK: - UICollectionViewDataSource
 
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return items.count
   }
 
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(ImageCell.self), forIndexPath: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImageCell.self), for: indexPath)
       as! ImageCell
-    let item = items[indexPath.item]
+    let item = items[(indexPath as NSIndexPath).item]
 
     cell.configure(item)
     configureFrameView(cell, indexPath: indexPath)
@@ -210,15 +196,15 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
 
   // MARK: - UICollectionViewDelegateFlowLayout
 
-  func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
     let size = (collectionView.bounds.size.width - (Config.Grid.Dimension.columnCount - 1) * Config.Grid.Dimension.cellSpacing)
       / Config.Grid.Dimension.columnCount
     return CGSize(width: size, height: size)
   }
 
-  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let item = items[(indexPath as NSIndexPath).item]
 
     if Cart.shared.images.contains(item) {
       Cart.shared.remove(item)
@@ -230,17 +216,17 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
   }
 
   func configureFrameViews() {
-    for case let cell as ImageCell in gridView.collectionView.visibleCells() {
-      if let indexPath = gridView.collectionView.indexPathForCell(cell) {
+    for case let cell as ImageCell in gridView.collectionView.visibleCells {
+      if let indexPath = gridView.collectionView.indexPath(for: cell) {
         configureFrameView(cell, indexPath: indexPath)
       }
     }
   }
 
-  func configureFrameView(cell: ImageCell, indexPath: NSIndexPath) {
-    let item = items[indexPath.item]
+  func configureFrameView(_ cell: ImageCell, indexPath: IndexPath) {
+    let item = items[(indexPath as NSIndexPath).item]
 
-    if let index = Cart.shared.images.indexOf(item) {
+    if let index = Cart.shared.images.index(of: item) {
       cell.frameView.g_quickFade()
       cell.frameView.label.text = "\(index + 1)"
     } else {

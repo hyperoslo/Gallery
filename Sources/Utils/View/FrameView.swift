@@ -1,5 +1,4 @@
 import UIKit
-import Cartography
 
 class FrameView: UIView {
 
@@ -22,17 +21,11 @@ class FrameView: UIView {
 
   func setup() {
     layer.addSublayer(gradientLayer)
-    layer.borderColor = Config.Grid.FrameView.borderColor.CGColor
+    layer.borderColor = Config.Grid.FrameView.borderColor.cgColor
     layer.borderWidth = 3
 
     addSubview(label)
-    label.translatesAutoresizingMaskIntoConstraints = false
-
-    constrain(label) {
-      label in
-
-      label.center == label.superview!.center
-    }
+    label.g_pinCenter()
   }
 
   // MARK: - Layout
@@ -47,8 +40,8 @@ class FrameView: UIView {
 
   func makeLabel() -> UILabel {
     let label = UILabel()
-    label.font = Config.Font.Main.regular.fontWithSize(40)
-    label.textColor = UIColor.whiteColor()
+    label.font = Config.Font.Main.regular.withSize(40)
+    label.textColor = UIColor.white
 
     return label
   }
@@ -56,8 +49,8 @@ class FrameView: UIView {
   func makeGradientLayer() -> CAGradientLayer {
     let layer = CAGradientLayer()
     layer.colors = [
-      Config.Grid.FrameView.fillColor.colorWithAlphaComponent(0.25).CGColor,
-      Config.Grid.FrameView.fillColor.colorWithAlphaComponent(0.4).CGColor
+      Config.Grid.FrameView.fillColor.withAlphaComponent(0.25).cgColor,
+      Config.Grid.FrameView.fillColor.withAlphaComponent(0.4).cgColor
     ]
 
     return layer

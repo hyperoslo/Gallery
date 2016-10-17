@@ -4,7 +4,7 @@ import Photos
 class VideosLibrary {
 
   var items: [Video] = []
-  var fetchResults: PHFetchResult?
+  var fetchResults: PHFetchResult<PHAsset>?
 
   // MARK: - Initialization
 
@@ -14,24 +14,22 @@ class VideosLibrary {
 
   // MARK: - Logic
 
-  func reload(completion: () -> Void) {
-    Dispatch.background {
+  func reload(_ completion: @escaping () -> Void) {
+    DispatchQueue.global().async {
       self.reloadSync()
-      Dispatch.main {
+      DispatchQueue.main.async {
         completion()
       }
     }
   }
 
-  private func reloadSync() {
-    fetchResults = PHAsset.fetchAssetsWithMediaType(.Video, options: Utils.fetchOptions())
+  fileprivate func reloadSync() {
+    fetchResults = PHAsset.fetchAssets(with: .video, options: Utils.fetchOptions())
 
     items = []
-    fetchResults?.enumerateObjectsUsingBlock { asset, _, _ in
-      if let asset = asset as? PHAsset {
-        self.items.append(Video(asset: asset))
-      }
-    }
+    fetchResults?.enumerateObjects({ (asset, _, _) in
+      self.items.append(Video(asset: asset))
+    })
   }
 }
 
