@@ -48,7 +48,7 @@ class GridView: UIView {
     bottomView.g_pinDownward()
     bottomView.g_pin(height: 80)
 
-    emptyView.g_pinEdges()
+    emptyView.g_pinEdges(view: collectionView)
     collectionView.g_pin(on: .left)
     collectionView.g_pin(on: .right)
     collectionView.g_pin(on: .bottom)
