@@ -63,7 +63,9 @@
 				1C1FA6DF13B95F286F3DECD3 /* Pods */,
 				5161BA177581E9E79A75089C /* Frameworks */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		D5C7F7411C3BC9CE008CDDBA /* Products */ = {
 			isa = PBXGroup;
