@@ -39,11 +39,8 @@ class DropdownController: UIViewController {
     view.backgroundColor = UIColor.clear
     tableView.backgroundColor = UIColor.clear
     tableView.backgroundView = blurView
-
-    [tableView].forEach {
-      view.addSubview($0)
-    }
-
+    
+    view.addSubview(tableView)
     tableView.register(AlbumCell.self, forCellReuseIdentifier: String(describing: AlbumCell.self))
 
     tableView.g_pinEdges()
