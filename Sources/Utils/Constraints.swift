@@ -66,6 +66,11 @@ extension UIView {
     translatesAutoresizingMaskIntoConstraints = false
     addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height))
   }
+  
+  func g_pin(greaterThanHeight height: CGFloat) {
+    translatesAutoresizingMaskIntoConstraints = false
+    addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height))
+  }
 
   func g_pinHorizontally(view: UIView? = nil, padding: CGFloat) {
     g_pin(on: .left, view: view, constant: padding)
