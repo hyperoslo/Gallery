@@ -91,7 +91,7 @@ struct EditInfo {
   static var outputURL: URL? {
     return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
       .appendingPathComponent(UUID().uuidString)
-      .appendingPathComponent(file.pathExtension)
+      .appendingPathExtension(file.pathExtension)
   }
 
   // MARK: - Advanced
