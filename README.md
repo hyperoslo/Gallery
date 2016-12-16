@@ -73,7 +73,7 @@ Config.Camera.recordLocation = true
 
 ### Video Editor
 
-`Galery` cares more about video with its editing functionalities. We have `VideoEditor` and `AdvancedVideoEditor` to trim, resize, scale and defines quality of the selected video
+`Galery` cares more about video with its editing functionalities. We have `VideoEditor` and `AdvancedVideoEditor` to trim, resize, scale and define quality of the selected video
 
 ```swift
 func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
@@ -91,14 +91,18 @@ func galleryController(_ controller: GalleryController, didSelectVideo video: Vi
     }
   }
 }
-``` 
+```
 
-Of course, you can customize too
+With the `Video` object, you can `fetchPlayerItem`, `fetchAVAsset` and `fetchThumbnail` as well
+
+And, of course, you have the ability to customize it
 
 ```swift
 Config.VideoEditor.maximumDuration = 30
 Config.VideoEditor.savesEditedVideoToLibrary = true
 ```
+
+
 
 ## Installation
 
