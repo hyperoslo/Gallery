@@ -1,5 +1,3 @@
-# Gallery
-
 <img src="Screenshots/Banner.png" alt="Gallery Banner" align="center" />
 
 [![CI Status](http://img.shields.io/travis/hyperoslo/Gallery.svg?style=flat)](https://travis-ci.org/hyperoslo/Gallery)
