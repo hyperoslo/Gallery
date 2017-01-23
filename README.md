@@ -1,6 +1,6 @@
 # Gallery
 
-<img src="https://github.com/hyperoslo/Gallery/blob/master/Screenshots/Banner.png" alt="Gallery Banner" align="center" />
+<img src="Screenshots/Banner.png" alt="Gallery Banner" align="center" />
 
 [![CI Status](http://img.shields.io/travis/hyperoslo/Gallery.svg?style=flat)](https://travis-ci.org/hyperoslo/Gallery)
 [![Version](https://img.shields.io/cocoapods/v/Gallery.svg?style=flat)](http://cocoadocs.org/docsets/Gallery)
@@ -11,7 +11,7 @@
 
 ## Description
 
-<img src="https://github.com/hyperoslo/Gallery/blob/master/Screenshots/Icon.png" alt="Gallery Icon" align="right" />
+<img src="Screenshots/Icon.png" alt="Gallery Icon" align="right" />
 
 We all love image pickers, don't we? You may already know of [ImagePicker](https://github.com/hyperoslo/ImagePicker), the all in one solution for capturing pictures and selecting images. Well, it has a sibling too, called `Gallery`. Based on the same engine that powers ImagePicker, Gallery has a clearer flow based on albums and focuses on the use case of selecting video. If this suits your need, give it a try 😉
 
