@@ -39,7 +39,6 @@ public class Cart {
 			delegate.cart(self, didAdd: image, newlyTaken: newlyTaken)
 
 		}}
-
   }
 
   func remove(_ image: Image) {
