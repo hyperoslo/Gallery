@@ -32,12 +32,12 @@ public class Cart {
 
   func add(_ image: Image, newlyTaken: Bool = false) {
     guard !images.contains(image) else { return }
-
-    images.append(image)
-
-    for case let delegate as CartDelegate in delegates.allObjects {
-      delegate.cart(self, didAdd: image, newlyTaken: newlyTaken)
-    }
+	if images.count < Config.Camera.imageLimit  || Config.Camera.imageLimit == 0 {
+		images.append(image)
+		for case let delegate as CartDelegate in delegates.allObjects {
+		delegate.cart(self, didAdd: image, newlyTaken: newlyTaken)
+		}
+	}
   }
 
   func remove(_ image: Image) {
