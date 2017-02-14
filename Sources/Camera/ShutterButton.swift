@@ -64,4 +64,12 @@ class ShutterButton: UIButton {
       overlayView.backgroundColor = isHighlighted ? UIColor.gray : UIColor.white
     }
   }
+
+	// MARK: - Disabled
+
+	override var isEnabled: Bool {
+		didSet {
+			overlayView.backgroundColor = !isEnabled ? UIColor.gray : UIColor.white
+		}
+	}
 }
