@@ -11,7 +11,7 @@ public struct Config {
   public struct Camera {
 
     public static var recordLocation: Bool = false
-	public static var imageLimit : Int = 0
+	public static var imageLimit : Int?
 
     public struct ShutterButton {
       public static var numberColor: UIColor = UIColor(red: 54/255, green: 56/255, blue: 62/255, alpha: 1)
