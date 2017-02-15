@@ -33,6 +33,7 @@ gallery.delegate = self
 present(gallery, animated: true, completion: nil)
 ```
 
+
 The content controller is not loaded until the users navigate to, which offers a much faster experience.
 
 ### Delegate
@@ -125,8 +126,7 @@ github "hyperoslo/Gallery"
   gallery.rx.selectedImages.do(onNext: { controller, _ in controller.dismiss(animated: true)})
             .map { $1.first!.resizedImageWithinRect(rectSize: CGSize(width:320, height:650)) }.bindTo((viewModel?.incidentImage)!).addDisposableTo(disposeBag)
         }
-
-
+```
 ## Author
 
 Hyper Interaktiv AS, ios@hyper.no
