@@ -33,6 +33,7 @@ gallery.delegate = self
 present(gallery, animated: true, completion: nil)
 ```
 
+
 The content controller is not loaded until the users navigate to, which offers a much faster experience.
 
 ### Delegate
@@ -47,6 +48,14 @@ func galleryControllerDidCancel(_ controller: GalleryController)
 ```
 
 The lightbox delegate method is your chance to display selected images. If you're looking for a nice solution, here is the [Lightbox](https://github.com/hyperoslo/Lightbox) that we use and love
+
+
+If you're using RxSwift in your project you check this link [Gallery+Rx](https://goo.gl/Y6cP7Y). Usage:
+```swift
+  gallery.rx.selectedImages.do(onNext: { controller, _ in controller.dismiss(animated: true)})
+            .map { $1.first!.resizedImageWithinRect(rectSize: CGSize(width:320, height:650)) }.bindTo((viewModel?.incidentImage)!).addDisposableTo(disposeBag)
+        }
+```
 
 ### Permission
 
@@ -119,6 +128,7 @@ github "hyperoslo/Gallery"
 ```
 
 **Gallery** can also be installed manually. Just download and drop `Sources` folders in your project.
+
 
 ## Author
 
