@@ -120,6 +120,13 @@ github "hyperoslo/Gallery"
 
 **Gallery** can also be installed manually. Just download and drop `Sources` folders in your project.
 
+**Gallery + RxSwift Extension** if you're using RxSwift in your project, you check this link [Gallery+Rx](https://goo.gl/Y6cP7Y). Usage:
+```swift
+  gallery.rx.selectedImages.do(onNext: { controller, _ in controller.dismiss(animated: true)})
+            .map { $1.first!.resizedImageWithinRect(rectSize: CGSize(width:320, height:650)) }.bindTo((viewModel?.incidentImage)!).addDisposableTo(disposeBag)
+        }
+
+
 ## Author
 
 Hyper Interaktiv AS, ios@hyper.no
