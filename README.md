@@ -49,6 +49,14 @@ func galleryControllerDidCancel(_ controller: GalleryController)
 
 The lightbox delegate method is your chance to display selected images. If you're looking for a nice solution, here is the [Lightbox](https://github.com/hyperoslo/Lightbox) that we use and love
 
+
+**Gallery + RxSwift Extension** if you're using RxSwift in your project, you check this link [Gallery+Rx](https://goo.gl/Y6cP7Y). Usage:
+```swift
+  gallery.rx.selectedImages.do(onNext: { controller, _ in controller.dismiss(animated: true)})
+            .map { $1.first!.resizedImageWithinRect(rectSize: CGSize(width:320, height:650)) }.bindTo((viewModel?.incidentImage)!).addDisposableTo(disposeBag)
+        }
+```
+
 ### Permission
 
 `Gallery` handles permissions for you. It checks and askes for photo and camera usage permissions at first launch. As of iOS 10, we need to explicitly declare usage descriptions in plist files
@@ -121,12 +129,7 @@ github "hyperoslo/Gallery"
 
 **Gallery** can also be installed manually. Just download and drop `Sources` folders in your project.
 
-**Gallery + RxSwift Extension** if you're using RxSwift in your project, you check this link [Gallery+Rx](https://goo.gl/Y6cP7Y). Usage:
-```swift
-  gallery.rx.selectedImages.do(onNext: { controller, _ in controller.dismiss(animated: true)})
-            .map { $1.first!.resizedImageWithinRect(rectSize: CGSize(width:320, height:650)) }.bindTo((viewModel?.incidentImage)!).addDisposableTo(disposeBag)
-        }
-```
+
 ## Author
 
 Hyper Interaktiv AS, ios@hyper.no
