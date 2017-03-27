@@ -80,6 +80,7 @@ class CameraController: UIViewController {
   }
 
   func shutterButtonTouched(_ button: ShutterButton) {
+    guard isBelowImageLimit() else { return }
     guard let previewLayer = cameraView.previewLayer else { return }
 
     button.isEnabled = false
@@ -105,7 +106,11 @@ class CameraController: UIViewController {
   func doneButtonTouched(_ button: UIButton) {
     EventHub.shared.doneWithImages?()
   }
-
+    
+  fileprivate func isBelowImageLimit() -> Bool {
+    return (Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > Cart.shared.images.count)
+    }
+    
   // MARK: - View
 
   func refreshView() {
