@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Hyper Interaktiv AS" => "ios@hyper.no" }
   s.source           = {
-    :git => "https://github.com/hyperoslo/Gallery.git",
+    :git => "https://github.com/telip007/Gallery.git",
     :tag => s.version.to_s
   }
   s.social_media_url = 'https://twitter.com/hyperoslo'
