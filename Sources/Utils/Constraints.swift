@@ -2,33 +2,13 @@ import UIKit
 
 extension UIView {
 
-  func g_ancestors() -> [UIView] {
-    var current = self
-    var views = [current]
-    while let superview = current.superview {
-      views.append(superview)
-      current = superview
-    }
-
-    return views
-  }
-
-  func g_commonAncestor(view: UIView) -> UIView? {
-    let viewAncestors = view.g_ancestors()
-
-    return g_ancestors()
-      .filter {
-        return viewAncestors.contains($0)
-      }.first
-  }
-
   @discardableResult func g_pin(on type1: NSLayoutAttribute,
              view: UIView? = nil, on type2: NSLayoutAttribute? = nil,
              constant: CGFloat = 0,
              priority: Float? = nil) -> NSLayoutConstraint? {
-    guard let view = view ?? superview,
-      let commonAncestor = g_commonAncestor(view: view)
-    else { return nil }
+    guard let view = view ?? superview else {
+      return nil
+    }
 
     translatesAutoresizingMaskIntoConstraints = false
     let type2 = type2 ?? type1
@@ -40,7 +20,7 @@ extension UIView {
       constraint.priority = priority
     }
 
-    commonAncestor.addConstraint(constraint)
+    constraint.isActive = true
 
     return constraint
   }

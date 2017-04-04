@@ -81,7 +81,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
     lightbox.dismissalDelegate = self
 
-    controller.dismiss(animated: true, completion: nil)
+    controller.present(lightbox, animated: true, completion: nil)
   }
 }
 

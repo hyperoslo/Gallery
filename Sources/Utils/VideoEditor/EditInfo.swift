@@ -41,16 +41,16 @@ struct EditInfo {
     switch avAsset.g_orientation {
     case .landscapeLeft:
       offset = CGPoint(x: avAsset.g_correctSize.width, y: avAsset.g_correctSize.height)
-      angle = M_PI
+      angle = Double.pi
     case .landscapeRight:
       offset = CGPoint.zero
       angle = 0
     case .portraitUpsideDown:
       offset = CGPoint(x: 0, y: avAsset.g_correctSize.height)
-      angle = -M_PI_2
+      angle = -Double.pi/2
     default:
       offset = CGPoint(x: avAsset.g_correctSize.width, y: 0)
-      angle = M_PI_2
+      angle = Double.pi/2
     }
 
     let scaleTransform = CGAffineTransform(scaleX: scale, y: scale)

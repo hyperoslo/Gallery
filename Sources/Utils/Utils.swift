@@ -7,11 +7,11 @@ struct Utils {
   static func rotationTransform() -> CGAffineTransform {
     switch UIDevice.current.orientation {
     case .landscapeLeft:
-      return CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
+      return CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
     case .landscapeRight:
-      return CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
+      return CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
     case .portraitUpsideDown:
-      return CGAffineTransform(rotationAngle: CGFloat(M_PI))
+      return CGAffineTransform(rotationAngle: CGFloat(Double.pi))
     default:
       return CGAffineTransform.identity
     }
