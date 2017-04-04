@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D24CF7321E93D1FB002E6484 /* Gallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D24CF7311E93D1FB002E6484 /* Gallery.bundle */; };
 		D27B72ED1D6EEEC80093318F /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EC1D6EEEC80093318F /* Tests.swift */; };
 		D27B72FD1D6EEED10093318F /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EF1D6EEED10093318F /* CameraController.swift */; };
 		D27B72FE1D6EEED10093318F /* ImagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72F11D6EEED10093318F /* ImagesController.swift */; };
-		D27B73081D6EEEE50093318F /* Gallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D27B73071D6EEEE50093318F /* Gallery.bundle */; };
 		D27B730B1D6EEFDB0093318F /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B730A1D6EEFDB0093318F /* GalleryController.swift */; };
 		D2E0215C1DAF6E2C00984B5A /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E021571DAF6E2C00984B5A /* Video.swift */; };
 		D2E0215D1DAF6E2C00984B5A /* VideoBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E021581DAF6E2C00984B5A /* VideoBox.swift */; };
@@ -71,10 +71,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D24CF7311E93D1FB002E6484 /* Gallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Gallery.bundle; sourceTree = "<group>"; };
 		D27B72EC1D6EEEC80093318F /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		D27B72EF1D6EEED10093318F /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		D27B72F11D6EEED10093318F /* ImagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesController.swift; sourceTree = "<group>"; };
-		D27B73071D6EEEE50093318F /* Gallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Gallery.bundle; sourceTree = "<group>"; };
 		D27B730A1D6EEFDB0093318F /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		D27B730C1D6EF04D0093318F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
 		D2E021571DAF6E2C00984B5A /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Video.swift; path = Sources/Videos/Video.swift; sourceTree = SOURCE_ROOT; };
@@ -149,6 +149,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D24CF7301E93D1FB002E6484 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D24CF7311E93D1FB002E6484 /* Gallery.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		D27B72EE1D6EEED10093318F /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +299,7 @@
 		D5B2E8951C3A780C00C0327D = {
 			isa = PBXGroup;
 			children = (
+				D24CF7301E93D1FB002E6484 /* Resources */,
 				D27B730E1D6EF0640093318F /* Frameworks */,
 				D500FD111C3AABED00782D78 /* Playground-iOS.playground */,
 				D5C629691C3A809D007F7B7C /* Sources */,
@@ -322,7 +331,6 @@
 			isa = PBXGroup;
 			children = (
 				D27B73091D6EEFDB0093318F /* Gallery */,
-				D27B73071D6EEEE50093318F /* Gallery.bundle */,
 				D27B72EE1D6EEED10093318F /* Camera */,
 				D27B72F01D6EEED10093318F /* Images */,
 				D27B72F61D6EEED10093318F /* Utils */,
@@ -432,7 +440,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D27B73081D6EEEE50093318F /* Gallery.bundle in Resources */,
+				D24CF7321E93D1FB002E6484 /* Gallery.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
