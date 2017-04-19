@@ -57,10 +57,10 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
     editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
       DispatchQueue.main.async {
-        print(editedVideo)
+        print(editedVideo ?? "video nil")
         if let tempPath = tempPath {
           let data = NSData(contentsOf: tempPath)
-          print(data?.length)
+          print(data?.length ?? "data nil")
           let controller = AVPlayerViewController()
           controller.player = AVPlayer(url: tempPath)
 

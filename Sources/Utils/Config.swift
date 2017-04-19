@@ -23,8 +23,13 @@ public struct Config {
     public struct StackView {
       public static let imageCount: Int = 4
     }
+    
+    public static let imageLimit: Int = 0
+    
   }
 
+    
+    
   public struct Grid {
 
     public struct CloseButton {

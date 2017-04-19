@@ -55,7 +55,7 @@ extension AVAsset {
 
   var g_videoDescription: CMFormatDescription? {
     if let object = tracks(withMediaType: AVMediaTypeVideo).first?.formatDescriptions.first {
-      return object as! CMFormatDescription
+      return (object as! CMFormatDescription)
     }
 
     return nil
@@ -63,7 +63,7 @@ extension AVAsset {
 
   var g_audioDescription: CMFormatDescription? {
     if let object = tracks(withMediaType: AVMediaTypeAudio).first?.formatDescriptions.first {
-      return object as! CMFormatDescription
+      return (object as! CMFormatDescription)
     }
 
     return nil
