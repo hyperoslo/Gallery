@@ -15,7 +15,9 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     view.backgroundColor = UIColor.white
 
     Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
-
+    Gallery.Config.Camera.imageLimit = 4
+    
+    
     button = UIButton(type: .system)
     button.frame.size = CGSize(width: 200, height: 50)
     button.setTitle("Open Gallery", for: UIControlState())
@@ -31,9 +33,9 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   }
 
   func buttonTouched(_ button: UIButton) {
-    gallery = GalleryController()
+    gallery = GalleryController(isVideoShow: false)
     gallery.delegate = self
-
+    gallery.selectedIndex = .images
     present(gallery, animated: true, completion: nil)
   }
 
@@ -57,10 +59,10 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
     editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
       DispatchQueue.main.async {
-        print(editedVideo)
+        print(editedVideo ?? "video nil")
         if let tempPath = tempPath {
           let data = NSData(contentsOf: tempPath)
-          print(data?.length)
+          print(data?.length ?? "data nil")
           let controller = AVPlayerViewController()
           controller.player = AVPlayer(url: tempPath)
 

@@ -15,16 +15,30 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
 
-  enum Page: Int {
+  public enum Page: Int {
     case images, camera, videos
   }
 
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
   public weak var delegate: GalleryControllerDelegate?
-
+    
+   public var isVideoShow = true
+    public var selectedIndex:Page = .camera
+    
   // MARK: - Life cycle
-
+    
+    
+    
+    public init(isVideoShow:Bool = true) {
+        super.init(nibName: nil, bundle: nil)
+        self.isVideoShow = isVideoShow
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
   public override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -85,8 +99,8 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   func makePagesController() -> PagesController {
-    let controller = PagesController(controllers: [imagesController, cameraController, videosController])
-    controller.selectedIndex = Page.camera.rawValue
+    let controller = self.isVideoShow ? PagesController(controllers: [imagesController, cameraController, videosController]) : PagesController(controllers: [imagesController, cameraController])
+    controller.selectedIndex = selectedIndex.rawValue
 
     return controller
   }
