@@ -50,7 +50,7 @@ public class Cart {
     }
   }
 
-  func reload(_ images: [Image]) {
+  public func reload(_ images: [Image]) {
     self.images = images
 
     for case let delegate as CartDelegate in delegates.allObjects {
