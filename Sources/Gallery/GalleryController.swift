@@ -22,7 +22,8 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
   public weak var delegate: GalleryControllerDelegate?
-
+    
+   public var isVideoShow = false
   // MARK: - Life cycle
 
   public override func viewDidLoad() {
@@ -85,7 +86,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   func makePagesController() -> PagesController {
-    let controller = PagesController(controllers: [imagesController, cameraController, videosController])
+    let controller = self.isVideoShow ? PagesController(controllers: [imagesController, cameraController, videosController]) : PagesController(controllers: [imagesController, cameraController])
     controller.selectedIndex = Page.camera.rawValue
 
     return controller
