@@ -24,7 +24,7 @@ public struct Config {
       public static let imageCount: Int = 4
     }
     
-    public static let imageLimit: Int = 0
+    public static var imageLimit: Int = 0
     
   }
 
