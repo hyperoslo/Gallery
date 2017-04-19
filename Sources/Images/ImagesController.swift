@@ -203,14 +203,16 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     return CGSize(width: size, height: size)
   }
 
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let item = items[(indexPath as NSIndexPath).item]
-
-    if Cart.shared.images.contains(item) {
-      Cart.shared.remove(item)
-    } else {
-      Cart.shared.add(item)
-    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = items[(indexPath as NSIndexPath).item]
+        
+        if Cart.shared.images.contains(item) {
+            Cart.shared.remove(item)
+        } else {
+            if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > Cart.shared.images.count{
+                Cart.shared.add(item)
+            }
+        }
 
     configureFrameViews()
   }
