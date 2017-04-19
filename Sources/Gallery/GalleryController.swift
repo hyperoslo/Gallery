@@ -15,7 +15,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
 
-  enum Page: Int {
+  public enum Page: Int {
     case images, camera, videos
   }
 
@@ -24,6 +24,8 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   public weak var delegate: GalleryControllerDelegate?
     
    public var isVideoShow = true
+    public var selectedIndex:Page = .camera
+    
   // MARK: - Life cycle
     
     
@@ -98,7 +100,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   func makePagesController() -> PagesController {
     let controller = self.isVideoShow ? PagesController(controllers: [imagesController, cameraController, videosController]) : PagesController(controllers: [imagesController, cameraController])
-    controller.selectedIndex = Page.camera.rawValue
+    controller.selectedIndex = selectedIndex.rawValue
 
     return controller
   }
