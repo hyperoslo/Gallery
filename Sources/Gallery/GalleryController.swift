@@ -1,135 +1,183 @@
 import UIKit
 import AVFoundation
 
-public protocol GalleryControllerDelegate: class {
+class CameraController: UIViewController {
 
-  func galleryController(_ controller: GalleryController, didSelectImages images: [UIImage])
-  func galleryController(_ controller: GalleryController, didSelectVideo video: Video)
-  func galleryController(_ controller: GalleryController, requestLightbox images: [UIImage])
-  func galleryControllerDidCancel(_ controller: GalleryController)
-}
-
-public class GalleryController: UIViewController, PermissionControllerDelegate {
-
-  lazy var imagesController: ImagesController = self.makeImagesController()
-  lazy var cameraController: CameraController = self.makeCameraController()
-  lazy var videosController: VideosController = self.makeVideosController()
-
-  enum Page: Int {
-    case images, camera, videos
-  }
-
-  lazy var pagesController: PagesController = self.makePagesController()
-  lazy var permissionController: PermissionController = self.makePermissionController()
-  public weak var delegate: GalleryControllerDelegate?
+  var locationManager: LocationManager?
+  lazy var cameraMan: CameraMan = self.makeCameraMan()
+  lazy var cameraView: CameraView = self.makeCameraView()
+  let once = Once()
 
   // MARK: - Life cycle
 
-  public override func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
 
     setup()
-
-    if Permission.hasPermissions {
-      showMain()
-    } else {
-      showPermissionView()
-    }
+    setupLocation()
   }
 
-  deinit {
-    Cart.shared.reset()
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    locationManager?.start()
   }
 
-  public override var prefersStatusBarHidden : Bool {
-    return true
-  }
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
 
-  // MARK: - Logic
-
-  public func reload(_ images: [UIImage]) {
-    Cart.shared.reload(images)
-  }
-
-  func showMain() {
-    g_addChildController(pagesController)
-  }
-
-  func showPermissionView() {
-    g_addChildController(permissionController)
-  }
-
-  // MARK: - Child view controller
-
-  func makeImagesController() -> ImagesController {
-    let controller = ImagesController()
-    controller.title = "Gallery.Images.Title".g_localize(fallback: "PHOTOS")
-    Cart.shared.add(delegate: controller)
-
-    return controller
-  }
-
-  func makeCameraController() -> CameraController {
-    let controller = CameraController()
-    controller.title = "Gallery.Camera.Title".g_localize(fallback: "CAMERA")
-    Cart.shared.add(delegate: controller)
-
-    return controller
-  }
-
-  func makeVideosController() -> VideosController {
-    let controller = VideosController()
-    controller.title = "Gallery.Videos.Title".g_localize(fallback: "VIDEOS")
-
-    return controller
-  }
-
-  func makePagesController() -> PagesController {
-    let controller = PagesController(controllers: [imagesController, cameraController, videosController])
-    controller.selectedIndex = Page.camera.rawValue
-
-    return controller
-  }
-
-  func makePermissionController() -> PermissionController {
-    let controller = PermissionController()
-    controller.delegate = self
-
-    return controller
+    locationManager?.stop()
   }
 
   // MARK: - Setup
 
   func setup() {
-    EventHub.shared.close = { [weak self] in
-      if let strongSelf = self {
-        strongSelf.delegate?.galleryControllerDidCancel(strongSelf)
-      }
-    }
+    view.addSubview(cameraView)
+    cameraView.g_pinEdges()
 
-    EventHub.shared.doneWithImages = { [weak self] in
-      if let strongSelf = self {
-        strongSelf.delegate?.galleryController(strongSelf, didSelectImages: Cart.shared.UIImages())
-      }
-    }
+    cameraView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
+    cameraView.flashButton.addTarget(self, action: #selector(flashButtonTouched(_:)), for: .touchUpInside)
+    cameraView.rotateButton.addTarget(self, action: #selector(rotateButtonTouched(_:)), for: .touchUpInside)
+    cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
+    cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
+    cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+  }
 
-    EventHub.shared.doneWithVideos = { [weak self] in
-      if let strongSelf = self, let video = Cart.shared.video {
-        strongSelf.delegate?.galleryController(strongSelf, didSelectVideo: video)
-      }
+  func setupLocation() {
+    if Config.Camera.recordLocation {
+      locationManager = LocationManager()
     }
+  }
 
-    EventHub.shared.stackViewTouched = { [weak self] in
-      if let strongSelf = self {
-        strongSelf.delegate?.galleryController(strongSelf, requestLightbox: Cart.shared.UIImages())
+  // MARK: - Action
+
+  func closeButtonTouched(_ button: UIButton) {
+    EventHub.shared.close?()
+  }
+
+  func flashButtonTouched(_ button: UIButton) {
+    cameraView.flashButton.toggle()
+
+    if let flashMode = AVCaptureFlashMode(rawValue: cameraView.flashButton.selectedIndex) {
+      cameraMan.flash(flashMode)
+    }
+  }
+
+  func rotateButtonTouched(_ button: UIButton) {
+    UIView.animate(withDuration: 0.3, animations: {
+      self.cameraView.rotateOverlayView.alpha = 1
+    }, completion: { _ in
+      self.cameraMan.switchCamera {
+        UIView.animate(withDuration: 0.7, animations: {
+          self.cameraView.rotateOverlayView.alpha = 0
+        })
+      }
+    })
+  }
+
+  func stackViewTouched(_ stackView: StackView) {
+    EventHub.shared.stackViewTouched?()
+  }
+
+  func shutterButtonTouched(_ button: ShutterButton) {
+    guard let previewLayer = cameraView.previewLayer else { return }
+
+    button.isEnabled = false
+    UIView.animate(withDuration: 0.1, animations: {
+      self.cameraView.shutterOverlayView.alpha = 1
+    }, completion: { _ in
+      UIView.animate(withDuration: 0.1, animations: {
+        self.cameraView.shutterOverlayView.alpha = 0
+      })
+    })
+
+    self.cameraView.stackView.startLoading()
+    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { asset in
+      button.isEnabled = true
+      self.cameraView.stackView.stopLoading()
+
+      if let asset = asset {
+        Cart.shared.add(Image(asset: asset), newlyTaken: true)
       }
     }
   }
 
-  // MARK: - PermissionControllerDelegate
-
-  func permissionControllerDidFinish(_ controller: PermissionController) {
-    showMain()
-    permissionController.g_removeFromParentController()
+  func doneButtonTouched(_ button: UIButton) {
+    EventHub.shared.doneWithImages?()
   }
+
+  // MARK: - View
+
+  func refreshView() {
+	let limit = Config.Camera.imageLimit ?? 0
+	if limit > Cart.shared.images.count || limit == 0 { cameraView.shutterButton.isEnabled = true } else { cameraView.shutterButton.isEnabled = false }
+    let hasImages = !Cart.shared.images.isEmpty
+    cameraView.bottomView.g_fade(visible: hasImages)
+  }
+
+  // MARK: - Controls
+
+  func makeCameraMan() -> CameraMan {
+    let man = CameraMan()
+    man.delegate = self
+
+    return man
+  }
+
+  func makeCameraView() -> CameraView {
+    let view = CameraView()
+    view.delegate = self
+
+    return view
+  }
+}
+
+extension CameraController: CartDelegate {
+
+  func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
+    cameraView.stackView.reload(cart.images, added: true)
+    refreshView()
+  }
+
+  func cart(_ cart: Cart, didRemove image: Image) {
+    cameraView.stackView.reload(cart.images)
+    refreshView()
+  }
+
+  func cartDidReload(_ cart: Cart) {
+    cameraView.stackView.reload(cart.images)
+    refreshView()
+  }
+}
+
+extension CameraController: PageAware {
+
+  func pageDidShow() {
+    once.run {
+      cameraMan.setup()
+    }
+  }
+}
+
+extension CameraController: CameraViewDelegate {
+
+  func cameraView(_ cameraView: CameraView, didTouch point: CGPoint) {
+    cameraMan.focus(point)
+  }
+}
+
+extension CameraController: CameraManDelegate {
+
+  func cameraManDidStart(_ cameraMan: CameraMan) {
+    cameraView.setupPreviewLayer(cameraMan.session)
+  }
+
+  func cameraManNotAvailable(_ cameraMan: CameraMan) {
+    cameraView.focusImageView.isHidden = true
+  }
+
+  func cameraMan(_ cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
+    cameraView.flashButton.isHidden = !input.device.hasFlash
+  }
+
 }
