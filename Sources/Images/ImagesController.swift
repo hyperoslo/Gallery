@@ -209,7 +209,9 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     if Cart.shared.images.contains(item) {
       Cart.shared.remove(item)
     } else {
-      Cart.shared.add(item)
+        if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > Cart.shared.images.count{
+            Cart.shared.add(item)
+        }
     }
 
     configureFrameViews()
