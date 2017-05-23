@@ -7,7 +7,6 @@ class CameraController: UIViewController {
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
   let once = Once()
-
   let cart: Cart
 
   // MARK: - Init

@@ -11,7 +11,6 @@ class VideosController: UIViewController {
   var items: [Video] = []
   let library = VideosLibrary()
   let once = Once()
-
   let cart: Cart
 
   // MARK: - Init

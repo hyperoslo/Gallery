@@ -11,7 +11,6 @@ class ImagesController: UIViewController {
   let library = ImagesLibrary()
   var selectedAlbum: Album?
   let once = Once()
-
   let cart: Cart
 
   // MARK: - Init
