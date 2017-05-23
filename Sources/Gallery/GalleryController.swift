@@ -92,7 +92,12 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   func makePagesController() -> PagesController {
-    let controller = PagesController(controllers: [imagesController, cameraController, videosController])
+    var controllers: [UIViewController] = [imagesController, cameraController]
+    if Config.showsVideoTab {
+      controllers.append(videosController)
+    }
+
+    let controller = PagesController(controllers: controllers)
     controller.selectedIndex = Page.camera.rawValue
 
     return controller
