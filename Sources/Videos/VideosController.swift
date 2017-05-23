@@ -12,6 +12,19 @@ class VideosController: UIViewController {
   let library = VideosLibrary()
   let once = Once()
 
+  let cart: Cart
+
+  // MARK: - Init
+
+  public required init(cart: Cart) {
+    self.cart = cart
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   // MARK: - Life cycle
 
   override func viewDidLoad() {
@@ -65,17 +78,17 @@ class VideosController: UIViewController {
   // MARK: - View
 
   func refreshView() {
-    if let selectedItem = Cart.shared.video {
+    if let selectedItem = cart.video {
       videoBox.imageView.g_loadImage(selectedItem.asset)
     } else {
       videoBox.imageView.image = nil
     }
 
-    let hasVideo = (Cart.shared.video != nil)
+    let hasVideo = (cart.video != nil)
     gridView.bottomView.g_fade(visible: hasVideo)
     gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
 
-    Cart.shared.video?.fetchDuration { [weak self] duration in
+    cart.video?.fetchDuration { [weak self] duration in
       self?.infoLabel.isHidden = duration <= Config.VideoEditor.maximumDuration
     }
   }
@@ -123,7 +136,7 @@ extension VideosController: PageAware {
 extension VideosController: VideoBoxDelegate {
 
   func videoBoxDidTap(_ videoBox: VideoBox) {
-    Cart.shared.video?.fetchPlayerItem { item in
+    cart.video?.fetchPlayerItem { item in
       guard let item = item else { return }
 
       DispatchQueue.main.async {
@@ -172,10 +185,10 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let item = items[(indexPath as NSIndexPath).item]
 
-    if let selectedItem = Cart.shared.video , selectedItem == item {
-      Cart.shared.video = nil
+    if let selectedItem = cart.video , selectedItem == item {
+      cart.video = nil
     } else {
-      Cart.shared.video = item
+      cart.video = item
     }
 
     refreshView()
@@ -193,7 +206,7 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
   func configureFrameView(_ cell: VideoCell, indexPath: IndexPath) {
     let item = items[(indexPath as NSIndexPath).item]
 
-    if let selectedItem = Cart.shared.video , selectedItem == item {
+    if let selectedItem = cart.video , selectedItem == item {
       cell.frameView.g_quickFade()
     } else {
       cell.frameView.alpha = 0

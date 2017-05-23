@@ -8,6 +8,20 @@ class CameraController: UIViewController {
   lazy var cameraView: CameraView = self.makeCameraView()
   let once = Once()
 
+  let cart: Cart
+
+  // MARK: - Init
+
+  public required init(cart: Cart) {
+    self.cart = cart
+    super.init(nibName: nil, bundle: nil)
+    cart.delegates.add(self)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   // MARK: - Life cycle
 
   override func viewDidLoad() {
@@ -93,12 +107,16 @@ class CameraController: UIViewController {
     })
 
     self.cameraView.stackView.startLoading()
-    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { asset in
+    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { [weak self] asset in
+      guard let strongSelf = self else {
+        return
+      }
+
       button.isEnabled = true
-      self.cameraView.stackView.stopLoading()
+      strongSelf.cameraView.stackView.stopLoading()
 
       if let asset = asset {
-        Cart.shared.add(Image(asset: asset), newlyTaken: true)
+        strongSelf.cart.add(Image(asset: asset), newlyTaken: true)
       }
     }
   }
@@ -108,13 +126,13 @@ class CameraController: UIViewController {
   }
     
   fileprivate func isBelowImageLimit() -> Bool {
-    return (Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > Cart.shared.images.count)
+    return (Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count)
     }
     
   // MARK: - View
 
   func refreshView() {
-    let hasImages = !Cart.shared.images.isEmpty
+    let hasImages = !cart.images.isEmpty
     cameraView.bottomView.g_fade(visible: hasImages)
   }
 

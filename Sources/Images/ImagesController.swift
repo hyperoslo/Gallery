@@ -12,6 +12,20 @@ class ImagesController: UIViewController {
   var selectedAlbum: Album?
   let once = Once()
 
+  let cart: Cart
+
+  // MARK: - Init
+
+  public required init(cart: Cart) {
+    self.cart = cart
+    super.init(nibName: nil, bundle: nil)
+    cart.delegates.add(self)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   // MARK: - Life cycle
 
   override func viewDidLoad() {
@@ -95,7 +109,7 @@ class ImagesController: UIViewController {
   // MARK: - View
 
   func refreshView() {
-    let hasImages = !Cart.shared.images.isEmpty
+    let hasImages = !cart.images.isEmpty
     gridView.bottomView.g_fade(visible: hasImages)
     gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
   }
@@ -206,11 +220,11 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let item = items[(indexPath as NSIndexPath).item]
 
-    if Cart.shared.images.contains(item) {
-      Cart.shared.remove(item)
+    if cart.images.contains(item) {
+      cart.remove(item)
     } else {
-        if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > Cart.shared.images.count{
-            Cart.shared.add(item)
+        if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
+            cart.add(item)
         }
     }
 
@@ -228,7 +242,7 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
   func configureFrameView(_ cell: ImageCell, indexPath: IndexPath) {
     let item = items[(indexPath as NSIndexPath).item]
 
-    if let index = Cart.shared.images.index(of: item) {
+    if let index = cart.images.index(of: item) {
       cell.frameView.g_quickFade()
       cell.frameView.label.text = "\(index + 1)"
     } else {
