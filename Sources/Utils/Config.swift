@@ -3,8 +3,31 @@ import AVFoundation
 
 public struct Config {
 
-  public static var showsVideoTab: Bool = true
-  public static var showsCameraTab: Bool = true
+  @available(*, deprecated, message: "Use tabsToShow instead.")
+  public static var showsVideoTab: Bool {
+    // Maintains backwards-compatibility.
+    get {
+      return tabsToShow.index(of: .videoTab) != nil
+    }
+    set(newValue) {
+      if !newValue {
+        tabsToShow = tabsToShow.filter({$0 != .videoTab})
+      } else {
+        if tabsToShow.index(of: .videoTab) == nil {
+          tabsToShow.append(.videoTab)
+        }
+      }
+    }
+  }
+  public static var tabsToShow: [GalleryTab] = [.imageTab, .cameraTab, .videoTab]
+  // Defaults to cameraTab if present, or whatever tab is first if cameraTab isn't present.
+  public static var initialTab: GalleryTab?
+  
+  public enum GalleryTab {
+    case imageTab
+    case cameraTab
+    case videoTab
+  }
 
   public struct PageIndicator {
     public static var backgroundColor: UIColor = UIColor(red: 0, green: 3/255, blue: 10/255, alpha: 1)
