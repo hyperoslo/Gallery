@@ -15,10 +15,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
 
-  enum Page: Int {
-    case images, camera, videos
-  }
-
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
   public weak var delegate: GalleryControllerDelegate?
@@ -41,7 +37,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
     setup()
 
-    if Permission.hasPermissions {
+    if Permission.hasNeededPermissions {
       showMain()
     } else {
       showPermissionView()

@@ -4,11 +4,15 @@ import AVFoundation
 
 struct Permission {
 
-  static var hasPermissions: Bool {
-    return Photos.hasPermission && Camera.hasPermission
+  static var hasNeededPermissions: Bool {
+    return (!Photos.needsPermission || Photos.hasPermission) && (!Camera.needsPermission || Camera.hasPermission)
   }
 
   struct Photos {
+    static var needsPermission: Bool {
+      return Config.tabsToShow.index(of: .imageTab) != nil || Config.tabsToShow.index(of: .videoTab) != nil
+    }
+    
     static var hasPermission: Bool {
       return PHPhotoLibrary.authorizationStatus() == .authorized
     }
@@ -21,6 +25,10 @@ struct Permission {
   }
 
   struct Camera {
+    static var needsPermission: Bool {
+      return Config.tabsToShow.index(of: .cameraTab) != nil
+    }
+
     static var hasPermission: Bool {
       return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized
     }

@@ -49,9 +49,16 @@ class PermissionView: UIView {
     let label = UILabel()
     label.textColor = Config.Permission.textColor
     label.font = Config.Font.Text.regular.withSize(14)
-    label.text = "Gallery.Permission.Info".g_localize(fallback: "Please enable photos and camera")
+    if !Permission.Camera.needsPermission && Permission.Photos.needsPermission {
+      label.text = "Gallery.Permission.Info".g_localize(fallback: "Please grant access to photos.")
+    } else if Permission.Camera.needsPermission && !Permission.Photos.needsPermission {
+      label.text = "Camera.Permission.Info".g_localize(fallback: "Please grant access to the camera.")
+    } else {
+      label.text = "GalleryAndCamera.Permission.Info".g_localize(fallback: "Please grant access to photos and the camera.")
+    }
     label.textAlignment = .center
     label.numberOfLines = 0
+    label.lineBreakMode = .byWordWrapping  // FIXME: On a narrow display, long text still won't show a second line. It will show if we increase the greaterThanHeight to 40.
 
     return label
   }

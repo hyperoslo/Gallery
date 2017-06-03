@@ -38,17 +38,21 @@ class PermissionController: UIViewController {
   // MARK: - Logic
 
   func requestPermission() {
-    Permission.Photos.request {
-      self.check()
+    if Permission.Photos.needsPermission {
+      Permission.Photos.request {
+        self.check()
+      }
     }
 
-    Permission.Camera.request {
-      self.check()
+    if Permission.Camera.needsPermission {
+      Permission.Camera.request {
+        self.check()
+      }
     }
   }
 
   func check() {
-    if Permission.hasPermissions {
+    if Permission.hasNeededPermissions {
       DispatchQueue.main.async {
         self.delegate?.permissionControllerDidFinish(self)
       }
