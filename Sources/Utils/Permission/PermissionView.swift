@@ -37,7 +37,7 @@ class PermissionView: UIView {
 
     label.g_pin(on: .bottom, view: settingButton, on: .top, constant: -33)
     label.g_pinHorizontally(padding: 50)
-    label.g_pin(greaterThanHeight: 20)
+    label.g_pin(greaterThanHeight: 200)
 
     imageView.g_pinCenter()
     imageView.g_pin(on: .bottom, view: label, on: .top, constant: -12)
@@ -58,7 +58,7 @@ class PermissionView: UIView {
     }
     label.textAlignment = .center
     label.numberOfLines = 0
-    label.lineBreakMode = .byWordWrapping  // FIXME: On a narrow display, long text still won't show a second line. It will show if we increase the greaterThanHeight to 40.
+    label.lineBreakMode = .byWordWrapping
 
     return label
   }
