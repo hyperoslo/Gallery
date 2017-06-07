@@ -15,10 +15,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   lazy var cameraController: CameraController = self.makeCameraController()
   lazy var videosController: VideosController = self.makeVideosController()
 
-  enum Page: Int {
-    case images, camera, videos
-  }
-
   lazy var pagesController: PagesController = self.makePagesController()
   lazy var permissionController: PermissionController = self.makePermissionController()
   public weak var delegate: GalleryControllerDelegate?
@@ -41,7 +37,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
     setup()
 
-    if Permission.hasPermissions {
+    if Permission.hasNeededPermissions {
       showMain()
     } else {
       showPermissionView()
@@ -91,19 +87,28 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   func makePagesController() -> PagesController {
-    var controllers: [UIViewController] = [imagesController]
-    if Config.showsCameraTab {
-      controllers.append(cameraController)
+    var controllers: [UIViewController] = []
+    for tab in Config.tabsToShow {
+      if tab == .imageTab {
+        controllers.append(imagesController)
+      } else if tab == .cameraTab {
+        controllers.append(cameraController)
+      } else if tab == .videoTab {
+        controllers.append(videosController)
+      }
     }
-    if Config.showsVideoTab {
-      controllers.append(videosController)
-    }
+    assert(!controllers.isEmpty, "Must specify at least one controller.")
 
     let controller = PagesController(controllers: controllers)
-    if Config.showsCameraTab {
-      controller.selectedIndex = Page.camera.rawValue
+    if let initialTab = Config.initialTab {
+      assert(Config.tabsToShow.index(of: initialTab) != nil, "Must specify an initial tab that is in Config.tabsToShow.")
+      controller.selectedIndex = Config.tabsToShow.index(of: initialTab)!
     } else {
-      controller.selectedIndex = Page.images.rawValue
+      if let cameraIndex = Config.tabsToShow.index(of: .cameraTab) {
+        controller.selectedIndex = cameraIndex
+      } else {
+        controller.selectedIndex = 0
+      }
     }
 
     return controller

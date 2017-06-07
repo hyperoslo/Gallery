@@ -37,7 +37,7 @@ class PermissionView: UIView {
 
     label.g_pin(on: .bottom, view: settingButton, on: .top, constant: -33)
     label.g_pinHorizontally(padding: 50)
-    label.g_pin(greaterThanHeight: 20)
+    label.g_pin(greaterThanHeight: 200)
 
     imageView.g_pinCenter()
     imageView.g_pin(on: .bottom, view: label, on: .top, constant: -12)
@@ -49,9 +49,16 @@ class PermissionView: UIView {
     let label = UILabel()
     label.textColor = Config.Permission.textColor
     label.font = Config.Font.Text.regular.withSize(14)
-    label.text = "Gallery.Permission.Info".g_localize(fallback: "Please enable photos and camera")
+    if !Permission.Camera.needsPermission && Permission.Photos.needsPermission {
+      label.text = "Gallery.Permission.Info".g_localize(fallback: "Please grant access to photos.")
+    } else if Permission.Camera.needsPermission && !Permission.Photos.needsPermission {
+      label.text = "Camera.Permission.Info".g_localize(fallback: "Please grant access to the camera.")
+    } else {
+      label.text = "GalleryAndCamera.Permission.Info".g_localize(fallback: "Please grant access to photos and the camera.")
+    }
     label.textAlignment = .center
     label.numberOfLines = 0
+    label.lineBreakMode = .byWordWrapping
 
     return label
   }
