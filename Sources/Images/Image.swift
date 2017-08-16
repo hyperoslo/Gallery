@@ -3,7 +3,7 @@ import Photos
 
 public class Image: Equatable {
 
-  let asset: PHAsset
+  public let asset: PHAsset
 
   // MARK: - Initialization
   
@@ -12,9 +12,25 @@ public class Image: Equatable {
   }
 }
 
+// MARK: - UIImage
+
+extension Image {
+  public func uiImage(ofSize size: CGSize) -> UIImage? {
+    let options = PHImageRequestOptions()
+    options.isSynchronous = true
+
+    var result: UIImage? = nil
+
+    PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) { (image, _) in
+      result = image
+    }
+
+    return result
+  }
+}
+
 // MARK: - Equatable
 
 public func ==(lhs: Image, rhs: Image) -> Bool {
   return lhs.asset == rhs.asset
 }
-

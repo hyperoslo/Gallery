@@ -3,7 +3,7 @@ import Photos
 
 public class Video: Equatable {
 
-  let asset: PHAsset
+  public let asset: PHAsset
 
   var durationRequestID: Int = 0
   var duration: Double = 0
