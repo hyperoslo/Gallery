@@ -3,9 +3,9 @@ import AVFoundation
 
 public protocol GalleryControllerDelegate: class {
 
-  func galleryController(_ controller: GalleryController, didSelectImages images: [UIImage])
+  func galleryController(_ controller: GalleryController, didSelectImages images: [Image])
   func galleryController(_ controller: GalleryController, didSelectVideo video: Video)
-  func galleryController(_ controller: GalleryController, requestLightbox images: [UIImage])
+  func galleryController(_ controller: GalleryController, requestLightbox images: [Image])
   func galleryControllerDidCancel(_ controller: GalleryController)
 }
 
@@ -50,10 +50,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   // MARK: - Logic
-
-  public func reload(_ images: [UIImage]) {
-    cart.reload(images)
-  }
 
   func showMain() {
     g_addChildController(pagesController)
@@ -132,7 +128,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
     EventHub.shared.doneWithImages = { [weak self] in
       if let strongSelf = self {
-        strongSelf.delegate?.galleryController(strongSelf, didSelectImages: strongSelf.cart.UIImages())
+        strongSelf.delegate?.galleryController(strongSelf, didSelectImages: strongSelf.cart.images)
       }
     }
 
@@ -144,7 +140,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
     EventHub.shared.stackViewTouched = { [weak self] in
       if let strongSelf = self {
-        strongSelf.delegate?.galleryController(strongSelf, requestLightbox: strongSelf.cart.UIImages())
+        strongSelf.delegate?.galleryController(strongSelf, requestLightbox: strongSelf.cart.images)
       }
     }
   }

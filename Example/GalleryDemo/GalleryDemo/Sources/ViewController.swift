@@ -40,7 +40,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   // MARK: - LightboxControllerDismissalDelegate
 
   func lightboxControllerWillDismiss(_ controller: LightboxController) {
-    gallery.reload(controller.images.flatMap({ $0.image }))
+
   }
 
   // MARK: - GalleryControllerDelegate
@@ -67,15 +67,21 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     }
   }
 
-  func galleryController(_ controller: GalleryController, didSelectImages images: [UIImage]) {
+  func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
     controller.dismiss(animated: true, completion: nil)
     gallery = nil
   }
 
-  func galleryController(_ controller: GalleryController, requestLightbox images: [UIImage]) {
+  func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
     LightboxConfig.DeleteButton.enabled = true
 
-    let lightbox = LightboxController(images: images.map({ LightboxImage(image: $0) }), startIndex: 0)
+    let lightboxImages = images.flatMap { $0.uiImage(ofSize: UIScreen.main.bounds.size) }.map({ LightboxImage(image: $0) })
+
+    guard lightboxImages.count == images.count else {
+      return
+    }
+
+    let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
     lightbox.dismissalDelegate = self
 
     controller.present(lightbox, animated: true, completion: nil)
