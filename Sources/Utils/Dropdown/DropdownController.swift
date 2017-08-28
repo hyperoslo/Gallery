@@ -11,7 +11,7 @@ class DropdownController: UIViewController {
   lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
   var animating: Bool = false
-  var expanding: Bool = false
+  var expanding: Bool = true
   var selectedIndex: Int = 0
 
   var albums: [Album] = [] {
@@ -20,7 +20,9 @@ class DropdownController: UIViewController {
     }
   }
 
-  var topConstraint: NSLayoutConstraint?
+  var expandedTopConstraint: NSLayoutConstraint?
+  var collapsedTopConstraint: NSLayoutConstraint?
+
   weak var delegate: DropdownControllerDelegate?
 
   // MARK: - Initialization
@@ -54,7 +56,8 @@ class DropdownController: UIViewController {
     animating = true
     expanding = !expanding
 
-    self.topConstraint?.constant = expanding ? 1 : view.bounds.size.height
+    expandedTopConstraint?.isActive = expanding
+    collapsedTopConstraint?.isActive = !expanding
 
     UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: {
       self.view.superview?.layoutIfNeeded()
