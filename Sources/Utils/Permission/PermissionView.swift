@@ -35,12 +35,11 @@ class PermissionView: UIView {
     settingButton.g_pinCenter()
     settingButton.g_pin(height: 44)
 
-    label.g_pin(on: .bottom, view: settingButton, on: .top, constant: -33)
+    label.g_pin(on: .bottom, view: settingButton, on: .top, constant: -24)
     label.g_pinHorizontally(padding: 50)
-    label.g_pin(greaterThanHeight: 200)
 
-    imageView.g_pinCenter()
-    imageView.g_pin(on: .bottom, view: label, on: .top, constant: -12)
+    imageView.g_pin(on: .centerX)
+    imageView.g_pin(on: .bottom, view: label, on: .top, constant: -16)
   }
 
   // MARK: - Controls

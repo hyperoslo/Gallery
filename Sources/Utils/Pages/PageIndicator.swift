@@ -95,19 +95,20 @@ class PageIndicator: UIView {
 
   // MARK: - Logic
 
-  func select(index: Int) {
+  func select(index: Int, animated: Bool = true) {
     for (i, b) in buttons.enumerated() {
       b.titleLabel?.font = buttonFont(i == index)
     }
 
-    UIView.animate(withDuration: 0.25, delay: 0,
-                               usingSpringWithDamping: 0.7,
-                               initialSpringVelocity: 0.5,
-                               options: [],
-                               animations:
-      {
-        self.indicator.center.x = self.buttons[index].center.x
-      }, completion: nil)
+    UIView.animate(withDuration: animated ? 0.25 : 0.0,
+                   delay: 0,
+                   usingSpringWithDamping: 0.7,
+                   initialSpringVelocity: 0.5,
+                   options: .beginFromCurrentState,
+                   animations: {
+                     self.indicator.center.x = self.buttons[index].center.x
+                   },
+                   completion: nil)
   }
 
   // MARK: - Helper

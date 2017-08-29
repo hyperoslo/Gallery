@@ -50,10 +50,12 @@ class ImagesController: UIViewController {
 
     dropdownController.view.g_pin(on: .left)
     dropdownController.view.g_pin(on: .right)
-    dropdownController.view.g_pin(on: .height, constant: -40)
-    dropdownController.topConstraint = dropdownController.view.g_pin(on: .top,
-                                                                     view: gridView.topView, on: .bottom,
-                                                                     constant: view.frame.size.height, priority: 999)
+    dropdownController.view.g_pin(on: .height)
+
+    dropdownController.expandedTopConstraint = dropdownController.view.g_pin(on: .top, view: gridView.topView, on: .bottom)
+    dropdownController.collapsedTopConstraint = dropdownController.view.g_pin(on: .top, on: .bottom)
+
+    dropdownController.toggle()
 
     stackView.g_pin(on: .centerY, constant: -4)
     stackView.g_pin(on: .left, constant: 38)

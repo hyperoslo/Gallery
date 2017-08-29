@@ -108,6 +108,12 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     previewLayer = layer
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    previewLayer?.frame = self.layer.bounds
+  }
+
   // MARK: - Action
 
   func viewTapped(_ gr: UITapGestureRecognizer) {

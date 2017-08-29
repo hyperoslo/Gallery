@@ -38,11 +38,27 @@ class PagesController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    if scrollView.frame.size.width > 0 {
-      once.run {
-        goAndNotify()
-      }
+    guard scrollView.frame.size.width > 0 else {
+      return
     }
+
+    once.run {
+      DispatchQueue.main.async {
+        self.scrollToAndSelect(index: self.selectedIndex, animated: false)
+      }
+
+      notify()
+    }
+  }
+
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    let index = selectedIndex
+
+    coordinator.animate(alongsideTransition: { context in
+      self.scrollToAndSelect(index: index, animated: context.isAnimated)
+    }) { _ in }
+
+    super.viewWillTransition(to: size, with: coordinator)
   }
 
   // MARK: - Controls
@@ -112,14 +128,14 @@ class PagesController: UIViewController {
 
   // MARK: - Index
 
-  func goAndNotify() {
-    let point = CGPoint(x: scrollView.frame.size.width * CGFloat(selectedIndex), y: scrollView.contentOffset.y)
+  fileprivate func scrollTo(index: Int, animated: Bool) {
+    let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
+    scrollView.setContentOffset(point, animated: animated)
+  }
 
-    DispatchQueue.main.async {
-      self.scrollView.setContentOffset(point, animated: false)
-    }
-
-    notify()
+  fileprivate func scrollToAndSelect(index: Int, animated: Bool) {
+    scrollTo(index: index, animated: animated)
+    pageIndicator.select(index: index, animated: animated)
   }
 
   func updateAndNotify(_ index: Int) {
@@ -139,11 +155,9 @@ class PagesController: UIViewController {
 extension PagesController: PageIndicatorDelegate {
 
   func pageIndicator(_ pageIndicator: PageIndicator, didSelect index: Int) {
-    let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
-    scrollView.setContentOffset(point, animated: false)
+    scrollTo(index: index, animated: false)
     updateAndNotify(index)
   }
-
 }
 
 extension PagesController: UIScrollViewDelegate {
