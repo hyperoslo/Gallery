@@ -39,7 +39,7 @@ class PagesController: UIViewController {
     super.viewDidLayoutSubviews()
 
     guard scrollView.frame.size.width > 0 else {
-        return
+      return
     }
 
     once.run {
