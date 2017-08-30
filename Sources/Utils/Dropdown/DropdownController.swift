@@ -11,7 +11,7 @@ class DropdownController: UIViewController {
   lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
   var animating: Bool = false
-  var expanding: Bool = true
+  var expanding: Bool = false
   var selectedIndex: Int = 0
 
   var albums: [Album] = [] {
@@ -56,8 +56,13 @@ class DropdownController: UIViewController {
     animating = true
     expanding = !expanding
 
-    expandedTopConstraint?.isActive = expanding
-    collapsedTopConstraint?.isActive = !expanding
+    if expanding {
+      collapsedTopConstraint?.isActive = false
+      expandedTopConstraint?.isActive = true
+    } else {
+      expandedTopConstraint?.isActive = false
+      collapsedTopConstraint?.isActive = true
+    }
 
     UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: {
       self.view.superview?.layoutIfNeeded()
