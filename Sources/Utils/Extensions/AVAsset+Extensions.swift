@@ -54,18 +54,18 @@ extension AVAsset {
   // MARK: - Description
 
   var g_videoDescription: CMFormatDescription? {
-    if let object = tracks(withMediaType: AVMediaTypeVideo).first?.formatDescriptions.first {
-      return (object as! CMFormatDescription)
+    guard let object = tracks(withMediaType: AVMediaTypeVideo).first?.formatDescriptions.first else {
+      return nil
     }
 
-    return nil
+    return (object as! CMFormatDescription)
   }
 
   var g_audioDescription: CMFormatDescription? {
-    if let object = tracks(withMediaType: AVMediaTypeAudio).first?.formatDescriptions.first {
-      return (object as! CMFormatDescription)
+    guard let object = tracks(withMediaType: AVMediaTypeAudio).first?.formatDescriptions.first else {
+      return nil
     }
 
-    return nil
+    return (object as! CMFormatDescription)
   }
 }
