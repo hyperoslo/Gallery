@@ -129,6 +129,10 @@ class PagesController: UIViewController {
   // MARK: - Index
 
   fileprivate func scrollTo(index: Int, animated: Bool) {
+    guard !scrollView.isTracking && !scrollView.isDragging && !scrollView.isZooming else {
+      return
+    }
+
     let point = CGPoint(x: scrollView.frame.size.width * CGFloat(index), y: scrollView.contentOffset.y)
     scrollView.setContentOffset(point, animated: animated)
   }
