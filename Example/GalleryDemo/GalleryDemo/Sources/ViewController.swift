@@ -73,11 +73,9 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   }
 
   func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
-    LightboxConfig.DeleteButton.enabled = true
-
     let lightboxImages = images.flatMap { $0.uiImage(ofSize: UIScreen.main.bounds.size) }.map({ LightboxImage(image: $0) })
 
-    guard lightboxImages.count == images.count else {
+    guard !lightboxImages.isEmpty else {
       return
     }
 
