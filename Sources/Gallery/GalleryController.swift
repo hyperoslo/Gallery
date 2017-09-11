@@ -68,6 +68,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
       pagesController.setLoading(value: loading)
       imagesController.setLoading(value: loading)
       cameraController.setLoading(value: loading)
+      videosController.setLoading(value: loading)
     }
   }
 
