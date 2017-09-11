@@ -13,6 +13,7 @@ class GridView: UIView {
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
   lazy var emptyView: UIView = self.makeEmptyView()
+  lazy var spinner: UIActivityIndicatorView = self.makeSpinner()
 
   // MARK: - Initialization
 
@@ -39,7 +40,7 @@ class GridView: UIView {
       topView.addSubview($0)
     }
 
-    [bottomBlurView, doneButton].forEach {
+    [bottomBlurView, doneButton, spinner].forEach {
       bottomView.addSubview($0 as! UIView)
     }
 
@@ -64,6 +65,8 @@ class GridView: UIView {
 
     doneButton.g_pin(on: .centerY)
     doneButton.g_pin(on: .right, constant: -38)
+
+    spinner.g_pinCenter()
   }
 
   // MARK: - Controls
@@ -134,5 +137,28 @@ class GridView: UIView {
     view.isHidden = true
 
     return view
+  }
+
+  func makeSpinner() -> UIActivityIndicatorView {
+    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    spinner.hidesWhenStopped = true
+
+    return spinner
+  }
+}
+
+extension GridView: LoadingState {
+
+  func setLoading(value: Bool) {
+    collectionView.isUserInteractionEnabled = !value
+    bottomView.isUserInteractionEnabled = !value
+    emptyView.isUserInteractionEnabled = !value
+    arrowButton.isUserInteractionEnabled = !value
+
+    if value {
+      spinner.startAnimating()
+    } else {
+      spinner.stopAnimating()
+    }
   }
 }

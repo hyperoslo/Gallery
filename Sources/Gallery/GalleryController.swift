@@ -59,6 +59,18 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     g_addChildController(permissionController)
   }
 
+  public var loading: Bool = false {
+    didSet {
+      guard loading != oldValue else {
+        return
+      }
+
+      pagesController.setLoading(value: loading)
+      imagesController.setLoading(value: loading)
+      cameraController.setLoading(value: loading)
+    }
+  }
+
   // MARK: - Child view controller
 
   func makeImagesController() -> ImagesController {
