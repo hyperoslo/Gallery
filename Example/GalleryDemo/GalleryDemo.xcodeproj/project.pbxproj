@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		145B416E1F6651E400364F82 /* Gallery+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145B416D1F6651E400364F82 /* Gallery+Rx.swift */; };
 		A8425773E175973B0D09D0D3 /* Pods_GalleryDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4928690FAB57FF43352B19F /* Pods_GalleryDemo.framework */; };
 		D5C7F74E1C3BC9CE008CDDBA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5C7F74C1C3BC9CE008CDDBA /* LaunchScreen.storyboard */; };
 		D5C7F75B1C3BCA1E008CDDBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5C7F7571C3BCA1E008CDDBA /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		145B416D1F6651E400364F82 /* Gallery+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gallery+Rx.swift"; sourceTree = "<group>"; };
 		402BCF1E5C040590468859E0 /* Pods-GalleryDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GalleryDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GalleryDemo/Pods-GalleryDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		515ECADD6BE81FF87018212F /* Pods-GalleryDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GalleryDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-GalleryDemo/Pods-GalleryDemo.release.xcconfig"; sourceTree = "<group>"; };
 		D4928690FAB57FF43352B19F /* Pods_GalleryDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GalleryDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +109,7 @@
 			children = (
 				D5C7F7591C3BCA1E008CDDBA /* AppDelegate.swift */,
 				D5C7F75A1C3BCA1E008CDDBA /* ViewController.swift */,
+				145B416D1F6651E400364F82 /* Gallery+Rx.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -193,12 +196,14 @@
 				"${BUILT_PRODUCTS_DIR}/Gallery/Gallery.framework",
 				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gallery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -247,6 +252,7 @@
 			files = (
 				D5C7F75D1C3BCA1E008CDDBA /* ViewController.swift in Sources */,
 				D5C7F75C1C3BCA1E008CDDBA /* AppDelegate.swift in Sources */,
+				145B416E1F6651E400364F82 /* Gallery+Rx.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
