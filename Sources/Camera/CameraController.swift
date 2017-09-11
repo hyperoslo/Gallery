@@ -211,3 +211,10 @@ extension CameraController: CameraManDelegate {
   }
 
 }
+
+extension CameraController: LoadingState {
+
+  func setLoading(value: Bool) {
+    cameraView.setLoading(value: value)
+  }
+}

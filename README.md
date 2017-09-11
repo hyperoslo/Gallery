@@ -40,9 +40,9 @@ The content controller is not loaded until the users navigate to, which offers a
 The `GalleryControllerDelegate` requires you to implement some delegate methods in order to interact with the picker
 
 ```swift
-func galleryController(_ controller: GalleryController, didSelectImages images: [UIImage])
+func galleryController(_ controller: GalleryController, didSelectImages images: [Image])
 func galleryController(_ controller: GalleryController, didSelectVideo video: Video)
-func galleryController(_ controller: GalleryController, requestLightbox images: [UIImage])
+func galleryController(_ controller: GalleryController, requestLightbox images: [Image])
 func galleryControllerDidCancel(_ controller: GalleryController)
 ```
 

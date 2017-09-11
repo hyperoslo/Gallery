@@ -212,3 +212,12 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
     }
   }
 }
+
+extension VideosController: LoadingState {
+
+  func setLoading(value: Bool) {
+    videoBox.isUserInteractionEnabled = !value
+    infoLabel.alpha = value ? 0 : 1
+    gridView.setLoading(value: value)
+  }
+}
