@@ -50,7 +50,7 @@ class ImagesController: UIViewController {
 
     dropdownController.view.g_pin(on: .left)
     dropdownController.view.g_pin(on: .right)
-    dropdownController.view.g_pin(on: .height)
+    dropdownController.view.g_pin(on: .height, constant: -40) // subtract gridView.topView height
 
     dropdownController.expandedTopConstraint = dropdownController.view.g_pin(on: .top, view: gridView.topView, on: .bottom, constant: 1)
     dropdownController.expandedTopConstraint?.isActive = false
