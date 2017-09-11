@@ -34,10 +34,10 @@ extension Reactive where Base: PHImageManager {
     o.isNetworkAccessAllowed = true
     o.deliveryMode = .highQualityFormat
     o.resizeMode = .fast
-
+    
     return requestImage(for: image.asset,
-                        targetSize: PHImageManagerMaximumSize,
-                        contentMode: .default,
+                        targetSize: CGSize(width: 1500, height: 1500),
+                        contentMode: .aspectFit,
                         options: o)
   }
 
