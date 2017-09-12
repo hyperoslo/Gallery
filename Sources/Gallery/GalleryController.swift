@@ -59,19 +59,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     g_addChildController(permissionController)
   }
 
-  public var loading: Bool = false {
-    didSet {
-      guard loading != oldValue else {
-        return
-      }
-
-      pagesController.setLoading(value: loading)
-      imagesController.setLoading(value: loading)
-      cameraController.setLoading(value: loading)
-      videosController.setLoading(value: loading)
-    }
-  }
-
   // MARK: - Child view controller
 
   func makeImagesController() -> ImagesController {
@@ -163,5 +150,17 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   func permissionControllerDidFinish(_ controller: PermissionController) {
     showMain()
     permissionController.g_removeFromParentController()
+  }
+
+  // MARK: - Loading
+
+  public var loading: Bool = false {
+    didSet {
+      guard loading != oldValue else {
+        return
+      }
+
+      childViewControllers.flatMap { $0 as? LoadingState }.forEach { $0.setLoading(value: loading) }
+    }
   }
 }
