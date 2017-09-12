@@ -4,17 +4,25 @@ import AVFoundation
 
 struct Permission {
 
-  static var hasNeededPermissions: Bool {
-    return (!Photos.needsPermission || Photos.hasPermission) && (!Camera.needsPermission || Camera.hasPermission)
+  enum Status {
+    case notDetermined
+    case restricted
+    case denied
+    case authorized
   }
 
   struct Photos {
-    static var needsPermission: Bool {
-      return Config.tabsToShow.index(of: .imageTab) != nil || Config.tabsToShow.index(of: .videoTab) != nil
-    }
-    
-    static var hasPermission: Bool {
-      return PHPhotoLibrary.authorizationStatus() == .authorized
+    static var status: Status {
+      switch PHPhotoLibrary.authorizationStatus() {
+      case .notDetermined:
+        return .notDetermined
+      case .restricted:
+        return .restricted
+      case .denied:
+        return .denied
+      case .authorized:
+        return .authorized
+      }
     }
 
     static func request(_ completion: @escaping () -> Void) {
@@ -29,8 +37,17 @@ struct Permission {
       return Config.tabsToShow.index(of: .cameraTab) != nil
     }
 
-    static var hasPermission: Bool {
-      return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized
+    static var status: Status {
+      switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+      case .notDetermined:
+        return .notDetermined
+      case .restricted:
+        return .restricted
+      case .denied:
+        return .denied
+      case .authorized:
+        return .authorized
+      }
     }
 
     static func request(_ completion: @escaping () -> Void) {

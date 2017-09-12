@@ -48,12 +48,10 @@ class PermissionView: UIView {
     let label = UILabel()
     label.textColor = Config.Permission.textColor
     label.font = Config.Font.Text.regular.withSize(14)
-    if !Permission.Camera.needsPermission && Permission.Photos.needsPermission {
-      label.text = "Gallery.Permission.Info".g_localize(fallback: "Please grant access to photos.")
-    } else if Permission.Camera.needsPermission && !Permission.Photos.needsPermission {
-      label.text = "Camera.Permission.Info".g_localize(fallback: "Please grant access to the camera.")
-    } else {
+    if Permission.Camera.needsPermission {
       label.text = "GalleryAndCamera.Permission.Info".g_localize(fallback: "Please grant access to photos and the camera.")
+    } else {
+      label.text = "Gallery.Permission.Info".g_localize(fallback: "Please grant access to photos.")
     }
     label.textAlignment = .center
     label.numberOfLines = 0
