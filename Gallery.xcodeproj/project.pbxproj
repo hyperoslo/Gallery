@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		145B43F01F68079300364F82 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145B43EF1F68079200364F82 /* LoadingState.swift */; };
 		D24CF7321E93D1FB002E6484 /* Gallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D24CF7311E93D1FB002E6484 /* Gallery.bundle */; };
 		D27B72ED1D6EEEC80093318F /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EC1D6EEEC80093318F /* Tests.swift */; };
 		D27B72FD1D6EEED10093318F /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EF1D6EEED10093318F /* CameraController.swift */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		145B43EF1F68079200364F82 /* LoadingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		D24CF7311E93D1FB002E6484 /* Gallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Gallery.bundle; sourceTree = "<group>"; };
 		D27B72EC1D6EEEC80093318F /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		D27B72EF1D6EEED10093318F /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 		D27B72F61D6EEED10093318F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				145B43EF1F68079200364F82 /* LoadingState.swift */,
 				D2E021611DAF6E3B00984B5A /* Bundle.swift */,
 				D2E021621DAF6E3B00984B5A /* Config.swift */,
 				D2E021641DAF6E3B00984B5A /* Dropdown */,
@@ -480,6 +483,7 @@
 				D2E0218A1DAF6E3B00984B5A /* Array+Extensions.swift in Sources */,
 				D2E021991DAF6E3B00984B5A /* Utils.swift in Sources */,
 				D2E021601DAF6E2C00984B5A /* VideosLibrary.swift in Sources */,
+				145B43F01F68079300364F82 /* LoadingState.swift in Sources */,
 				D2E0215D1DAF6E2C00984B5A /* VideoBox.swift in Sources */,
 				D2E021931DAF6E3B00984B5A /* Once.swift in Sources */,
 				D27B72FE1D6EEED10093318F /* ImagesController.swift in Sources */,
