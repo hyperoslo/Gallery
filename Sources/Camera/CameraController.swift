@@ -44,8 +44,9 @@ class CameraController: UIViewController {
 
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     coordinator.animate(alongsideTransition: { _ in
-      if let previewLayer = self.cameraView.previewLayer, previewLayer.connection.isVideoOrientationSupported {
-        previewLayer.connection.videoOrientation = Utils.videoOrientation()
+      if let connection = self.cameraView.previewLayer?.connection,
+        connection.isVideoOrientationSupported {
+        connection.videoOrientation = Utils.videoOrientation()
       }
     }, completion: nil)
 
