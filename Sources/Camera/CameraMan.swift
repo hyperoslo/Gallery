@@ -27,7 +27,7 @@ class CameraMan {
   // MARK: - Setup
 
   func setup() {
-    if Permission.Camera.hasPermission {
+    if Permission.Camera.status == .authorized {
       self.start()
     } else {
       self.delegate?.cameraManNotAvailable(self)
