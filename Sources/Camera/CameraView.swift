@@ -99,11 +99,11 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     guard previewLayer == nil else { return }
 
     let layer = AVCaptureVideoPreviewLayer(session: session)
-    layer?.autoreverses = true
-    layer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+    layer.autoreverses = true
+    layer.videoGravity = .resizeAspectFill
 
-    self.layer.insertSublayer(layer!, at: 0)
-    layer?.frame = self.layer.bounds
+    self.layer.insertSublayer(layer, at: 0)
+    layer.frame = self.layer.bounds
 
     previewLayer = layer
   }
