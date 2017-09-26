@@ -52,7 +52,7 @@ class StackView: UIControl{
 
   // MARK: - Action
 
-  func viewTapped(_ gr: UITapGestureRecognizer) {
+  @objc func viewTapped(_ gr: UITapGestureRecognizer) {
     sendActions(for: .touchUpInside)
   }
 

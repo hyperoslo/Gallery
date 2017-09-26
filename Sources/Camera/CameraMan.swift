@@ -37,10 +37,9 @@ class CameraMan {
   func setupDevices() {
     // Input
     AVCaptureDevice
-      .devices().flatMap {
-        return $0 as? AVCaptureDevice
-      }.filter {
-        return $0.hasMediaType(AVMediaTypeVideo)
+      .devices()
+      .filter {
+        return $0.hasMediaType(.video)
       }.forEach {
         switch $0.position {
         case .front:
@@ -128,7 +127,7 @@ class CameraMan {
   }
 
   func takePhoto(_ previewLayer: AVCaptureVideoPreviewLayer, location: CLLocation?, completion: @escaping ((PHAsset?) -> Void)) {
-    guard let connection = stillImageOutput?.connection(withMediaType: AVMediaTypeVideo) else { return }
+    guard let connection = stillImageOutput?.connection(with: .video) else { return }
 
     connection.videoOrientation = Utils.videoOrientation()
 
@@ -179,7 +178,7 @@ class CameraMan {
     }
   }
 
-  func flash(_ mode: AVCaptureFlashMode) {
+  func flash(_ mode: AVCaptureDevice.FlashMode) {
     guard let device = currentInput?.device , device.isFlashModeSupported(mode) else { return }
 
     queue.async {
@@ -190,7 +189,7 @@ class CameraMan {
   }
 
   func focus(_ point: CGPoint) {
-    guard let device = currentInput?.device , device.isFocusModeSupported(AVCaptureFocusMode.locked) else { return }
+    guard let device = currentInput?.device , device.isFocusModeSupported(AVCaptureDevice.FocusMode.locked) else { return }
 
     queue.async {
       self.lock {
@@ -219,18 +218,18 @@ class CameraMan {
 
   func configurePreset(_ input: AVCaptureDeviceInput) {
     for asset in preferredPresets() {
-      if input.device.supportsAVCaptureSessionPreset(asset) && self.session.canSetSessionPreset(asset) {
+      if input.device.supportsSessionPreset(asset) && self.session.canSetSessionPreset(asset) {
         self.session.sessionPreset = asset
         return
       }
     }
   }
 
-  func preferredPresets() -> [String] {
+  func preferredPresets() -> [AVCaptureSession.Preset] {
     return [
-      AVCaptureSessionPresetHigh,
-      AVCaptureSessionPresetMedium,
-      AVCaptureSessionPresetLow
+      .high,
+      .medium,
+      .low
     ]
   }
 }

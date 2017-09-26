@@ -87,7 +87,7 @@ class PageIndicator: UIView {
 
   // MARK: - Action
 
-  func buttonTouched(_ button: UIButton) {
+  @objc func buttonTouched(_ button: UIButton) {
     let index = buttons.index(of: button) ?? 0
     delegate?.pageIndicator(self, didSelect: index)
     select(index: index)

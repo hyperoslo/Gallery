@@ -25,7 +25,7 @@ class VideoBox: UIView {
 
   // MARK: - Action
 
-  func viewTapped(_ gr: UITapGestureRecognizer) {
+  @objc func viewTapped(_ gr: UITapGestureRecognizer) {
     delegate?.videoBoxDidTap(self)
   }
 
