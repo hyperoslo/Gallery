@@ -116,7 +116,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   // MARK: - Action
 
-  func viewTapped(_ gr: UITapGestureRecognizer) {
+  @objc func viewTapped(_ gr: UITapGestureRecognizer) {
     let point = gr.location(in: self)
 
     focusImageView.transform = CGAffineTransform.identity
