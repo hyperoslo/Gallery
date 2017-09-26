@@ -20,6 +20,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var rotateOverlayView: UIView = self.makeRotateOverlayView()
   lazy var shutterOverlayView: UIView = self.makeShutterOverlayView()
   lazy var blurView: UIVisualEffectView = self.makeBlurView()
+  lazy var spinner: UIActivityIndicatorView = self.makeSpinner()
 
   var timer: Timer?
   var previewLayer: AVCaptureVideoPreviewLayer?
@@ -47,7 +48,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       addSubview($0)
     }
 
-    [bottomView, shutterButton].forEach {
+    [bottomView, shutterButton, spinner].forEach {
       bottomContainer.addSubview($0)
     }
 
@@ -89,6 +90,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     
     doneButton.g_pin(on: .centerY)
     doneButton.g_pin(on: .right, constant: -38)
+
+    spinner.g_pinCenter()
 
     rotateOverlayView.g_pinEdges()
     blurView.g_pinEdges()
@@ -256,4 +259,27 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     return blurView
   }
 
+  func makeSpinner() -> UIActivityIndicatorView {
+    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    spinner.hidesWhenStopped = true
+
+    return spinner
+  }
+}
+
+extension CameraView: LoadingState {
+
+  func setLoading(value: Bool) {
+    tapGR.isEnabled = !value
+    
+    flashButton.isUserInteractionEnabled = !value
+    rotateButton.isUserInteractionEnabled = !value
+    bottomContainer.isUserInteractionEnabled = !value
+
+    if value {
+      spinner.startAnimating()
+    } else {
+      spinner.stopAnimating()
+    }
+  }
 }

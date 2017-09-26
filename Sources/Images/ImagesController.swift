@@ -250,3 +250,12 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     }
   }
 }
+
+extension ImagesController: LoadingState {
+
+  func setLoading(value: Bool) {
+    stackView.isUserInteractionEnabled = !value
+
+    gridView.setLoading(value: value)
+  }
+}

@@ -172,3 +172,13 @@ extension PagesController: UIScrollViewDelegate {
     updateAndNotify(index)
   }
 }
+
+extension PagesController: LoadingState {
+
+  func setLoading(value: Bool) {
+    pageIndicator.isUserInteractionEnabled = !value
+    scrollView.isScrollEnabled = !value
+
+    controllers.flatMap { $0 as? LoadingState }.forEach { $0.setLoading(value: value) }
+  }
+}

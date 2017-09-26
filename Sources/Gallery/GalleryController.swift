@@ -141,4 +141,16 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
       controller.g_removeFromParentController()
     }
   }
+
+  // MARK: - Loading
+
+  public var loading: Bool = false {
+    didSet {
+      guard loading != oldValue else {
+        return
+      }
+
+      childViewControllers.flatMap { $0 as? LoadingState }.forEach { $0.setLoading(value: loading) }
+    }
+  }
 }
