@@ -136,7 +136,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   // MARK: - Timer
 
-  func timerFired(_ timer: Timer) {
+  @objc func timerFired(_ timer: Timer) {
     UIView.animate(withDuration: 0.3, animations: {
       self.focusImageView.alpha = 0
     }, completion: { _ in

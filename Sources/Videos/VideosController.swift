@@ -66,11 +66,11 @@ class VideosController: UIViewController {
 
   // MARK: - Action
 
-  func closeButtonTouched(_ button: UIButton) {
+  @objc func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
   }
 
-  func doneButtonTouched(_ button: UIButton) {
+  @objc func doneButtonTouched(_ button: UIButton) {
     EventHub.shared.doneWithVideos?()
   }
 
