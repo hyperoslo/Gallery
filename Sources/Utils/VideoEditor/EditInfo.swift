@@ -6,7 +6,7 @@ struct EditInfo {
   // MARK: - Basic
 
   static func composition(_ avAsset: AVAsset) -> AVVideoComposition? {
-    guard let track = avAsset.tracks(withMediaType: AVMediaTypeVideo).first else { return nil }
+    guard let track = avAsset.tracks(withMediaType: .video).first else { return nil }
 
     let cropInfo = EditInfo.cropInfo(avAsset)
 
@@ -84,8 +84,8 @@ struct EditInfo {
     return CMTimeRange(start: kCMTimeZero, duration: end)
   }
 
-  static var file: (type: String, pathExtension: String) {
-    return (type: AVFileTypeMPEG4, pathExtension: "mp4")
+  static var file: (type: AVFileType, pathExtension: String) {
+    return (type: .mp4, pathExtension: "mp4")
   }
 
   static var outputURL: URL? {
