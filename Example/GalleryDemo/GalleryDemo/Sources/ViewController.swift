@@ -30,7 +30,7 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     button.center = CGPoint(x: view.bounds.size.width/2, y: view.bounds.size.height/2)
   }
 
-  func buttonTouched(_ button: UIButton) {
+  @objc func buttonTouched(_ button: UIButton) {
     gallery = GalleryController()
     gallery.delegate = self
 
