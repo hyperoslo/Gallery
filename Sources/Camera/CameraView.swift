@@ -156,16 +156,16 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(Bundle.image("gallery_close"), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_close"), for: UIControlState())
 
     return button
   }
 
   func makeFlashButton() -> TripleButton {
     let states: [TripleButton.State] = [
-      TripleButton.State(title: "Gallery.Camera.Flash.Off".g_localize(fallback: "OFF"), image: Bundle.image("gallery_camera_flash_off")!),
-      TripleButton.State(title: "Gallery.Camera.Flash.On".g_localize(fallback: "ON"), image: Bundle.image("gallery_camera_flash_on")!),
-      TripleButton.State(title: "Gallery.Camera.Flash.Auto".g_localize(fallback: "AUTO"), image: Bundle.image("gallery_camera_flash_auto")!)
+      TripleButton.State(title: "Gallery.Camera.Flash.Off".g_localize(fallback: "OFF"), image: GalleryBundle.image("gallery_camera_flash_off")!),
+      TripleButton.State(title: "Gallery.Camera.Flash.On".g_localize(fallback: "ON"), image: GalleryBundle.image("gallery_camera_flash_on")!),
+      TripleButton.State(title: "Gallery.Camera.Flash.Auto".g_localize(fallback: "AUTO"), image: GalleryBundle.image("gallery_camera_flash_auto")!)
     ]
 
     let button = TripleButton(states: states)
@@ -175,7 +175,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeRotateButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(Bundle.image("gallery_camera_rotate"), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_camera_rotate"), for: UIControlState())
 
     return button
   }
@@ -220,7 +220,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeFocusImageView() -> UIImageView {
     let view = UIImageView()
     view.frame.size = CGSize(width: 110, height: 110)
-    view.image = Bundle.image("gallery_camera_focus")
+    view.image = GalleryBundle.image("gallery_camera_focus")
     view.backgroundColor = .clear
     view.alpha = 0
 

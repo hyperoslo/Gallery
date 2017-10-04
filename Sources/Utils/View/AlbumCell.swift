@@ -56,7 +56,7 @@ class AlbumCell: UITableViewCell {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
-    imageView.image = Bundle.image("gallery_placeholder")
+    imageView.image = GalleryBundle.image("gallery_placeholder")
 
     return imageView
   }
