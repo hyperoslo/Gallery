@@ -80,14 +80,14 @@ class PageIndicator: UIView {
   }
 
   func makeIndicator() -> UIImageView {
-    let imageView = UIImageView(image: Bundle.image("gallery_page_indicator"))
+    let imageView = UIImageView(image: GalleryBundle.image("gallery_page_indicator"))
 
     return imageView
   }
 
   // MARK: - Action
 
-  func buttonTouched(_ button: UIButton) {
+  @objc func buttonTouched(_ button: UIButton) {
     let index = buttons.index(of: button) ?? 0
     delegate?.pageIndicator(self, didSelect: index)
     select(index: index)

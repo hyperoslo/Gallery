@@ -1,47 +1,32 @@
 PODS:
-  - Gallery (1.3.0)
-  - Hue (2.0.1)
-  - Lightbox (1.0.0):
-    - Hue
-    - Sugar
-  - Sugar (3.1.2)
+  - Cache (4.0.2):
+    - SwiftHash (~> 2.0.0)
+  - Gallery (2.0.0)
+  - Hue (3.0.0)
+  - Imaginary (3.0.0):
+    - Cache (~> 4.0)
+  - Lightbox (2.0.0):
+    - Hue (~> 3.0)
+    - Imaginary (~> 3.0)
+  - SwiftHash (2.0.0)
 
 DEPENDENCIES:
   - Gallery (from `../../`)
-  - Hue (from `https://github.com/hyperoslo/Hue.git`, branch `master`)
-  - Lightbox (from `https://github.com/hyperoslo/Lightbox.git`, branch `swift-3`)
-  - Sugar (from `https://github.com/hyperoslo/Sugar.git`, branch `master`)
+  - Hue
+  - Lightbox
 
 EXTERNAL SOURCES:
   Gallery:
     :path: ../../
-  Hue:
-    :branch: master
-    :git: https://github.com/hyperoslo/Hue.git
-  Lightbox:
-    :branch: swift-3
-    :git: https://github.com/hyperoslo/Lightbox.git
-  Sugar:
-    :branch: master
-    :git: https://github.com/hyperoslo/Sugar.git
-
-CHECKOUT OPTIONS:
-  Hue:
-    :commit: 979ba84244b5166b461bf31bbb6dba561d2c2a1e
-    :git: https://github.com/hyperoslo/Hue.git
-  Lightbox:
-    :commit: 04437d8450a5ccc92af7e9bd08027bdced9fb589
-    :git: https://github.com/hyperoslo/Lightbox.git
-  Sugar:
-    :commit: 41e0f1e92bfd29b805fa74f87444975ca2976887
-    :git: https://github.com/hyperoslo/Sugar.git
 
 SPEC CHECKSUMS:
-  Gallery: 11da62c497ad7aa7e612bcef03a6155627db16e8
-  Hue: ab7efb15270e0bc764f2f468aa6f3f2728d52f2b
-  Lightbox: e4523e8cf3261cbc833d0e76ae4dae774731d115
-  Sugar: 41f2efa0244806f524ff2d77c951a6a43e81a0f3
+  Cache: 363b6899cee63c82ccbd291e64a6c202abc17a88
+  Gallery: b0451b47e6be808fbc9ce81f76f999ad55e4c81e
+  Hue: b8fe1e43eef13631331eebecb2198b68e2622f95
+  Imaginary: 2765d293d425cbed3b07fa11642554cbaebe913d
+  Lightbox: 83ec9f4aba4c79fc7bb9bcd263386df9969f09bb
+  SwiftHash: d2e09b13495447178cdfb8e46e54a5c46f15f5a9
 
-PODFILE CHECKSUM: 0d6c925ae667b86ff448c7cc8926b2dfc7c121cc
+PODFILE CHECKSUM: eb9042b9d6a5aecd8dbf459941711c9a378e650c
 
 COCOAPODS: 1.3.1

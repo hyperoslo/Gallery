@@ -38,7 +38,7 @@ struct Permission {
     }
 
     static var status: Status {
-      switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+      switch AVCaptureDevice.authorizationStatus(for: .video) {
       case .notDetermined:
         return .notDetermined
       case .restricted:
@@ -51,7 +51,7 @@ struct Permission {
     }
 
     static func request(_ completion: @escaping () -> Void) {
-      AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { granted in
+      AVCaptureDevice.requestAccess(for: .video) { granted in
         completion()
       }
     }

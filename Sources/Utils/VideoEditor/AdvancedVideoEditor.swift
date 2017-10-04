@@ -118,7 +118,7 @@ public class AdvancedVideoEditor: VideoEditing {
   }
 
   fileprivate func wireVideo(_ avAsset: AVAsset) {
-    let videoTracks = avAsset.tracks(withMediaType: AVMediaTypeVideo)
+    let videoTracks = avAsset.tracks(withMediaType: AVMediaType.video)
     if !videoTracks.isEmpty {
       // Output
       let videoOutput = AVAssetReaderVideoCompositionOutput(videoTracks: videoTracks, videoSettings: nil)
@@ -128,7 +128,7 @@ public class AdvancedVideoEditor: VideoEditing {
       }
 
       // Input
-      let videoInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo,
+      let videoInput = AVAssetWriterInput(mediaType: AVMediaType.video,
                                           outputSettings: EditInfo.videoSettings,
                                           sourceFormatHint: avAsset.g_videoDescription)
       if writer.canAdd(videoInput) {
@@ -141,7 +141,7 @@ public class AdvancedVideoEditor: VideoEditing {
   }
 
   fileprivate func wireAudio(_ avAsset: AVAsset) {
-    let audioTracks = avAsset.tracks(withMediaType: AVMediaTypeAudio)
+    let audioTracks = avAsset.tracks(withMediaType: AVMediaType.audio)
     if !audioTracks.isEmpty {
       // Output
       let audioOutput = AVAssetReaderAudioMixOutput(audioTracks: audioTracks, audioSettings: nil)
@@ -151,7 +151,7 @@ public class AdvancedVideoEditor: VideoEditing {
       }
 
       // Input
-      let audioInput = AVAssetWriterInput(mediaType: AVMediaTypeAudio,
+      let audioInput = AVAssetWriterInput(mediaType: AVMediaType.audio,
                                           outputSettings: EditInfo.audioSettings,
                                           sourceFormatHint: avAsset.g_audioDescription)
       if writer.canAdd(audioInput) {

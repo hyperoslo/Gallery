@@ -4,7 +4,7 @@ import AVFoundation
 extension AVAsset {
 
   fileprivate var g_naturalSize: CGSize {
-    return tracks(withMediaType: AVMediaTypeVideo).first?.naturalSize ?? .zero
+    return tracks(withMediaType: AVMediaType.video).first?.naturalSize ?? .zero
   }
 
   var g_correctSize: CGSize {
@@ -30,12 +30,12 @@ extension AVAsset {
   }
 
   var g_frameRate: Float {
-    return tracks(withMediaType: AVMediaTypeVideo).first?.nominalFrameRate ?? 30
+    return tracks(withMediaType: AVMediaType.video).first?.nominalFrameRate ?? 30
   }
 
   // Same as UIImageOrientation
   var g_orientation: UIInterfaceOrientation {
-    guard let transform = tracks(withMediaType: AVMediaTypeVideo).first?.preferredTransform else {
+    guard let transform = tracks(withMediaType: AVMediaType.video).first?.preferredTransform else {
       return .portrait
     }
 
@@ -54,7 +54,7 @@ extension AVAsset {
   // MARK: - Description
 
   var g_videoDescription: CMFormatDescription? {
-    guard let object = tracks(withMediaType: AVMediaTypeVideo).first?.formatDescriptions.first else {
+    guard let object = tracks(withMediaType: AVMediaType.video).first?.formatDescriptions.first else {
       return nil
     }
 
@@ -62,7 +62,7 @@ extension AVAsset {
   }
 
   var g_audioDescription: CMFormatDescription? {
-    guard let object = tracks(withMediaType: AVMediaTypeAudio).first?.formatDescriptions.first else {
+    guard let object = tracks(withMediaType: AVMediaType.audio).first?.formatDescriptions.first else {
       return nil
     }
 

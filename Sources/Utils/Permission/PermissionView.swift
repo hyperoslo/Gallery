@@ -76,7 +76,7 @@ class PermissionView: UIView {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(Bundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button
