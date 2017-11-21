@@ -32,6 +32,7 @@ class PagesController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    view.backgroundColor = .black
     setup()
   }
 
@@ -92,8 +93,21 @@ class PagesController: UIViewController {
     view.addSubview(scrollView)
     scrollView.addSubview(scrollViewContentView)
 
-    pageIndicator.g_pinDownward()
-    pageIndicator.g_pin(height: 40)
+    Constraint.on(
+      pageIndicator.leftAnchor.constraint(equalTo: pageIndicator.superview!.leftAnchor),
+      pageIndicator.rightAnchor.constraint(equalTo: pageIndicator.superview!.rightAnchor),
+      pageIndicator.heightAnchor.constraint(equalToConstant: 40)
+    )
+
+    if #available(iOS 11, *) {
+      Constraint.on(
+        pageIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+      )
+    } else {
+      Constraint.on(
+        pageIndicator.bottomAnchor.constraint(equalTo: pageIndicator.superview!.bottomAnchor)
+      )
+    }
 
     scrollView.g_pinUpward()
     if usePageIndicator {
