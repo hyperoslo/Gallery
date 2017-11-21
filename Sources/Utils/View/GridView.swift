@@ -29,8 +29,6 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
-    backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
-
     [collectionView, bottomView, topView, emptyView].forEach {
       addSubview($0)
     }
@@ -43,8 +41,22 @@ class GridView: UIView {
       bottomView.addSubview($0 as! UIView)
     }
 
-    topView.g_pinUpward()
-    topView.g_pin(height: 40)
+    Constraint.on(
+      topView.leftAnchor.constraint(equalTo: topView.superview!.leftAnchor),
+      topView.rightAnchor.constraint(equalTo: topView.superview!.rightAnchor),
+      topView.heightAnchor.constraint(equalToConstant: 40)
+    )
+
+    if #available(iOS 11, *) {
+      Constraint.on(
+        topView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
+      )
+    } else {
+      Constraint.on(
+        topView.topAnchor.constraint(equalTo: topView.superview!.topAnchor)
+      )
+    }
+
     bottomView.g_pinDownward()
     bottomView.g_pin(height: 80)
 
