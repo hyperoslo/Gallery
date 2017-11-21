@@ -29,8 +29,6 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
-    backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
-
     [collectionView, bottomView, topView, emptyView].forEach {
       addSubview($0)
     }
