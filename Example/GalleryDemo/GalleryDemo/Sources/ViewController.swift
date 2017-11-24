@@ -85,7 +85,6 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
 
   func showLightbox(images: [UIImage]) {
     guard images.count > 0 else {
-      assertionFailure()
       return
     }
 
