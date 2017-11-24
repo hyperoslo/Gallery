@@ -19,7 +19,7 @@ class FrameView: UIView {
 
   // MARK: - Setup
 
-  func setup() {
+  private func setup() {
     layer.addSublayer(gradientLayer)
     layer.borderColor = Config.Grid.FrameView.borderColor.cgColor
     layer.borderWidth = 3
@@ -38,7 +38,7 @@ class FrameView: UIView {
 
   // MARK: - Controls
 
-  func makeLabel() -> UILabel {
+  private func makeLabel() -> UILabel {
     let label = UILabel()
     label.font = Config.Font.Main.regular.withSize(40)
     label.textColor = UIColor.white
@@ -46,7 +46,7 @@ class FrameView: UIView {
     return label
   }
 
-  func makeGradientLayer() -> CAGradientLayer {
+  private func makeGradientLayer() -> CAGradientLayer {
     let layer = CAGradientLayer()
     layer.colors = [
       Config.Grid.FrameView.fillColor.withAlphaComponent(0.25).cgColor,

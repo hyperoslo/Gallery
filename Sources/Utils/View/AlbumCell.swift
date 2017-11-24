@@ -52,7 +52,7 @@ class AlbumCell: UITableViewCell {
 
   // MARK: - Controls
 
-  func makeAlbumImageView() -> UIImageView {
+  private func makeAlbumImageView() -> UIImageView {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
@@ -61,7 +61,7 @@ class AlbumCell: UITableViewCell {
     return imageView
   }
 
-  func makeAlbumTitleLabel() -> UILabel {
+  private func makeAlbumTitleLabel() -> UILabel {
     let label = UILabel()
     label.numberOfLines = 1
     label.font = Config.Font.Text.regular.withSize(14)
@@ -69,7 +69,7 @@ class AlbumCell: UITableViewCell {
     return label
   }
 
-  func makeItemCountLabel() -> UILabel {
+  private func makeItemCountLabel() -> UILabel {
     let label = UILabel()
     label.numberOfLines = 1
     label.font = Config.Font.Text.regular.withSize(10)

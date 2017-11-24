@@ -52,7 +52,7 @@ class ImageCell: UICollectionViewCell {
 
   // MARK: - Controls
 
-  func makeImageView() -> UIImageView {
+  private func makeImageView() -> UIImageView {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
@@ -60,7 +60,7 @@ class ImageCell: UICollectionViewCell {
     return imageView
   }
 
-  func makeHighlightOverlay() -> UIView {
+  private func makeHighlightOverlay() -> UIView {
     let view = UIView()
     view.isUserInteractionEnabled = false
     view.backgroundColor = Config.Grid.FrameView.borderColor.withAlphaComponent(0.3)
@@ -69,7 +69,7 @@ class ImageCell: UICollectionViewCell {
     return view
   }
 
-  func makeFrameView() -> FrameView {
+  private func makeFrameView() -> FrameView {
     let frameView = FrameView(frame: .zero)
     frameView.alpha = 0
 
