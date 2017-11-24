@@ -31,7 +31,7 @@ public class Video: Equatable {
       PHImageManager.default().cancelImageRequest(PHImageRequestID(durationRequestID))
     }
 
-    let id = PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) {
+    let id = PHImageManager.default().requestAVAsset(forVideo: asset, options: videoOptions) {
       asset, mix, _ in
 
       self.duration = asset?.duration.seconds ?? 0
@@ -47,7 +47,7 @@ public class Video: Equatable {
   ///
   /// - Parameter completion: Called when finish
   public func fetchPlayerItem(_ completion: @escaping (AVPlayerItem?) -> Void) {
-    PHImageManager.default().requestPlayerItem(forVideo: asset, options: nil) {
+    PHImageManager.default().requestPlayerItem(forVideo: asset, options: videoOptions) {
       item, _ in
 
       DispatchQueue.main.async {
@@ -60,7 +60,7 @@ public class Video: Equatable {
   ///
   /// - Parameter completion: Called when finish
   public func fetchAVAsset(_ completion: @escaping (AVAsset?) -> Void) {
-    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { avAsset, _, _ in
+    PHImageManager.default().requestAVAsset(forVideo: asset, options: videoOptions) { avAsset, _, _ in
       DispatchQueue.main.async {
         completion(avAsset)
       }
@@ -72,11 +72,14 @@ public class Video: Equatable {
   /// - Parameter size: The preferred size
   /// - Parameter completion: Called when finish
   public func fetchThumbnail(size: CGSize = CGSize(width: 100, height: 100), completion: @escaping (UIImage?) -> Void) {
+    let options = PHImageRequestOptions()
+    options.isNetworkAccessAllowed = true
+
     PHImageManager.default().requestImage(
       for: asset,
       targetSize: size,
       contentMode: .aspectFill,
-      options: nil) { image, _ in
+      options: options) { image, _ in
         DispatchQueue.main.async {
           completion(image)
         }
@@ -85,7 +88,7 @@ public class Video: Equatable {
 
   // MARK: - Helper
 
-  private var options: PHVideoRequestOptions {
+  private var videoOptions: PHVideoRequestOptions {
     let options = PHVideoRequestOptions()
     options.isNetworkAccessAllowed = true
 
