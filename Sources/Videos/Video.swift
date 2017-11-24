@@ -1,6 +1,7 @@
 import UIKit
 import Photos
 
+/// Wrap a PHAsset for video
 public class Video: Equatable {
 
   public let asset: PHAsset
@@ -14,10 +15,15 @@ public class Video: Equatable {
     self.asset = asset
   }
 
+  /// Fetch video duration asynchronously
+  ///
+  /// - Parameter completion: Called when finish
   func fetchDuration(_ completion: @escaping (Double) -> Void) {
     guard duration == 0
     else {
-      completion(duration)
+      DispatchQueue.main.async {
+        completion(self.duration)
+      }
       return
     }
 
@@ -29,32 +35,61 @@ public class Video: Equatable {
       asset, mix, _ in
 
       self.duration = asset?.duration.seconds ?? 0
-      completion(self.duration)
+      DispatchQueue.main.async {
+        completion(self.duration)
+      }
     }
 
     durationRequestID = Int(id)
   }
 
+  /// Fetch AVPlayerItem asynchronoulys
+  ///
+  /// - Parameter completion: Called when finish
   public func fetchPlayerItem(_ completion: @escaping (AVPlayerItem?) -> Void) {
     PHImageManager.default().requestPlayerItem(forVideo: asset, options: nil) {
       item, _ in
 
-      completion(item)
+      DispatchQueue.main.async {
+        completion(item)
+      }
     }
   }
 
-  public func fetchAVAsset(_ completion: @escaping (AVAsset?) -> Void){
+  /// Fetch AVAsset asynchronoulys
+  ///
+  /// - Parameter completion: Called when finish
+  public func fetchAVAsset(_ completion: @escaping (AVAsset?) -> Void) {
     PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { avAsset, _, _ in
-      completion(avAsset)
+      DispatchQueue.main.async {
+        completion(avAsset)
+      }
     }
   }
 
-  public func fetchThumbnail(_ size: CGSize = CGSize(width: 100, height: 100), completion: @escaping (UIImage?) -> Void) {
-    PHImageManager.default().requestImage(for: asset, targetSize: size,
-                                                         contentMode: .aspectFill, options: nil)
-    { image, _ in
-      completion(image)
+  /// Fetch thumbnail image for this video asynchronoulys
+  ///
+  /// - Parameter size: The preferred size
+  /// - Parameter completion: Called when finish
+  public func fetchThumbnail(size: CGSize = CGSize(width: 100, height: 100), completion: @escaping (UIImage?) -> Void) {
+    PHImageManager.default().requestImage(
+      for: asset,
+      targetSize: size,
+      contentMode: .aspectFill,
+      options: nil) { image, _ in
+        DispatchQueue.main.async {
+          completion(image)
+        }
     }
+  }
+
+  // MARK: - Helper
+
+  private var options: PHVideoRequestOptions {
+    let options = PHVideoRequestOptions()
+    options.isNetworkAccessAllowed = true
+
+    return options
   }
 }
 
