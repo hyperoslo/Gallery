@@ -60,7 +60,7 @@ class ArrowButton: UIButton {
 
   // MARK: - Controls
 
-  func makeLabel() -> UILabel {
+  private func makeLabel() -> UILabel {
     let label = UILabel()
     label.textColor = Config.Grid.ArrowButton.tintColor
     label.font = Config.Font.Main.regular.withSize(16)
@@ -69,7 +69,7 @@ class ArrowButton: UIButton {
     return label
   }
 
-  func makeArrow() -> UIImageView {
+  private func makeArrow() -> UIImageView {
     let arrow = UIImageView()
     arrow.image = GalleryBundle.image("gallery_title_arrow")?.withRenderingMode(.alwaysTemplate)
     arrow.tintColor = Config.Grid.ArrowButton.tintColor

@@ -75,16 +75,24 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
     LightboxConfig.DeleteButton.enabled = true
 
-    let lightboxImages = images.flatMap { $0.uiImage(ofSize: UIScreen.main.bounds.size) }.map({ LightboxImage(image: $0) })
+    let size = UIScreen.main.bounds.size
+    Image.resolve(images: images, size: size, completion: { [weak self] resolvedImages in
+      self?.showLightbox(images: resolvedImages.flatMap({ $0 }))
+    })
+  }
 
-    guard lightboxImages.count == images.count else {
+  // MARK: - Helper
+
+  func showLightbox(images: [UIImage]) {
+    guard images.count > 0 else {
       return
     }
 
+    let lightboxImages = images.map({ LightboxImage(image: $0) })
     let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
     lightbox.dismissalDelegate = self
 
-    controller.present(lightbox, animated: true, completion: nil)
+    gallery.present(lightbox, animated: true, completion: nil)
   }
 }
 
