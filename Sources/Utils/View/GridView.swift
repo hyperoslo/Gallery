@@ -13,6 +13,7 @@ class GridView: UIView {
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
   lazy var emptyView: UIView = self.makeEmptyView()
+  lazy var loadingIndicator: UIActivityIndicatorView = self.makeLoadingIndicator()
 
   // MARK: - Initialization
 
@@ -20,6 +21,7 @@ class GridView: UIView {
     super.init(frame: frame)
 
     setup()
+    loadingIndicator.startAnimating()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -29,7 +31,7 @@ class GridView: UIView {
   // MARK: - Setup
 
   func setup() {
-    [collectionView, bottomView, topView, emptyView].forEach {
+    [collectionView, bottomView, topView, emptyView, loadingIndicator].forEach {
       addSubview($0)
     }
 
@@ -44,7 +46,10 @@ class GridView: UIView {
     Constraint.on(
       topView.leftAnchor.constraint(equalTo: topView.superview!.leftAnchor),
       topView.rightAnchor.constraint(equalTo: topView.superview!.rightAnchor),
-      topView.heightAnchor.constraint(equalToConstant: 40)
+      topView.heightAnchor.constraint(equalToConstant: 40),
+
+      loadingIndicator.centerXAnchor.constraint(equalTo: loadingIndicator.superview!.centerXAnchor),
+      loadingIndicator.centerYAnchor.constraint(equalTo: loadingIndicator.superview!.centerYAnchor)
     )
 
     if #available(iOS 11, *) {
@@ -144,6 +149,13 @@ class GridView: UIView {
   func makeEmptyView() -> EmptyView {
     let view = EmptyView()
     view.isHidden = true
+
+    return view
+  }
+
+  func makeLoadingIndicator() -> UIActivityIndicatorView {
+    let view = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    view.color = .gray
 
     return view
   }
