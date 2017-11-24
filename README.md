@@ -49,7 +49,7 @@ The lightbox delegate method is your chance to display selected images. If you'r
 
 ### Resolving
 
-The delegate methods give you `Image` and `Video`, which are just wrappers around `PHAsset`. To get the actual asset informations, we offer many convenient methods
+The delegate methods give you `Image` and `Video`, which are just wrappers around `PHAsset`. To get the actual asset informations, we offer many convenient methods. See [example](https://github.com/hyperoslo/Gallery/blob/master/Example/GalleryDemo/GalleryDemo/Sources/ViewController.swift)
 
 `Image`
 
