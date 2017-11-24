@@ -1,10 +1,10 @@
 PODS:
   - Cache (4.1.2)
-  - Gallery (2.0.2)
-  - Hue (3.0.0)
+  - Gallery (2.0.3)
+  - Hue (3.0.1)
   - Imaginary (3.0.2):
     - Cache (~> 4.0)
-  - Lightbox (2.0.1):
+  - Lightbox (2.1.1):
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
 
@@ -19,10 +19,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
-  Gallery: 5d303aeda7e9838f4334748ae3fbce8d51cba722
-  Hue: b8fe1e43eef13631331eebecb2198b68e2622f95
+  Gallery: 6a263a0ca5a9407ec65c6a9232503611cc5d6b52
+  Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
   Imaginary: d675200546110e305d6a26db6267c0622ffe5e6b
-  Lightbox: b72d18d05b57ba55dbac2eb0d7dafdc934205cf3
+  Lightbox: 30dc3540527e03194a10ee51be8ad5e039a1893f
 
 PODFILE CHECKSUM: eb9042b9d6a5aecd8dbf459941711c9a378e650c
 
