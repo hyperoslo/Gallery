@@ -7,11 +7,13 @@ PODS:
   - Lightbox (2.1.1):
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
+  - SVProgressHUD (2.2.2)
 
 DEPENDENCIES:
   - Gallery (from `../../`)
   - Hue
   - Lightbox
+  - SVProgressHUD
 
 EXTERNAL SOURCES:
   Gallery:
@@ -23,7 +25,8 @@ SPEC CHECKSUMS:
   Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
   Imaginary: d675200546110e305d6a26db6267c0622ffe5e6b
   Lightbox: 30dc3540527e03194a10ee51be8ad5e039a1893f
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
 
-PODFILE CHECKSUM: eb9042b9d6a5aecd8dbf459941711c9a378e650c
+PODFILE CHECKSUM: c95332f23ba226af26fd7b4ba1d3ffabf7836bf0
 
 COCOAPODS: 1.3.1

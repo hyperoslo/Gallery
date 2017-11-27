@@ -31,8 +31,8 @@ extension Image {
     PHImageManager.default().requestImage(
       for: asset,
       targetSize: size,
-      contentMode: .aspectFill,
-      options: options) { (image, _) in
+      contentMode: .aspectFit,
+      options: options) { (image, info) in
         result = image
     }
 
