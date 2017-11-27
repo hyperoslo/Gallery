@@ -32,7 +32,7 @@ extension Image {
       for: asset,
       targetSize: size,
       contentMode: .aspectFit,
-      options: options) { (image, _) in
+      options: options) { (image, info) in
         result = image
     }
 
