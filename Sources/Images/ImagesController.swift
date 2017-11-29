@@ -224,7 +224,32 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
       cart.remove(item)
     } else {
         if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
-            cart.add(item)
+            if item.assetImageDataStorageLocation == .icloud {
+                item.loadImageFromCloud(ofSize: PHImageManagerMaximumSize, progressHandle: { (progerss, error, _, _) in
+                    DispatchQueue.main.sync {
+                        
+                        let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
+                        cell.progressView.progress = Float(progerss)
+                        if error != nil {
+                            //下载错误
+                        }
+                        else {
+                            //
+                            print("\(progerss)")
+                        }
+                        
+                    }
+                },loadDoneHandle:{image in
+                    item.assetImageDataStorageLocation = .local
+                    self.cart.add(item)
+                    self.configureFrameViews()
+                })
+                return
+            }
+            else {
+                cart.add(item)
+            }
+            
         }
     }
 
@@ -247,6 +272,12 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
       cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.alpha = 0
+    }
+    if item.assetImageDataStorageLocation == .icloud {
+        cell.progressView.isHidden = false
+    }
+    else {
+        cell.progressView.isHidden = true
     }
   }
 }

@@ -1,32 +1,43 @@
 PODS:
   - Cache (4.0.2):
     - SwiftHash (~> 2.0.0)
-  - Gallery (2.0.0)
+  - Gallery (2.0.2)
   - Hue (3.0.0)
   - Imaginary (3.0.0):
     - Cache (~> 4.0)
   - Lightbox (2.0.0):
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
+  - PKHUD (4.2.3)
   - SwiftHash (2.0.0)
 
 DEPENDENCIES:
   - Gallery (from `../../`)
   - Hue
   - Lightbox
+  - PKHUD (from `https://github.com/pkluz/PKHUD.git`, branch `release/swift4`)
 
 EXTERNAL SOURCES:
   Gallery:
     :path: ../../
+  PKHUD:
+    :branch: release/swift4
+    :git: https://github.com/pkluz/PKHUD.git
+
+CHECKOUT OPTIONS:
+  PKHUD:
+    :commit: 4d8fbf70ae912dd72280cde0a5c1440ada9a7306
+    :git: https://github.com/pkluz/PKHUD.git
 
 SPEC CHECKSUMS:
   Cache: 363b6899cee63c82ccbd291e64a6c202abc17a88
-  Gallery: b0451b47e6be808fbc9ce81f76f999ad55e4c81e
+  Gallery: 5d303aeda7e9838f4334748ae3fbce8d51cba722
   Hue: b8fe1e43eef13631331eebecb2198b68e2622f95
   Imaginary: 2765d293d425cbed3b07fa11642554cbaebe913d
   Lightbox: 83ec9f4aba4c79fc7bb9bcd263386df9969f09bb
+  PKHUD: 351011b853e6b942e7ee8ad335864cc84c787241
   SwiftHash: d2e09b13495447178cdfb8e46e54a5c46f15f5a9
 
-PODFILE CHECKSUM: eb9042b9d6a5aecd8dbf459941711c9a378e650c
+PODFILE CHECKSUM: 8af9c0c457ba1aaf1bc98a0341cd81e0e04000d1
 
 COCOAPODS: 1.3.1

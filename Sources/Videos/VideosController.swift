@@ -88,7 +88,9 @@ class VideosController: UIViewController {
     gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
 
     cart.video?.fetchDuration { [weak self] duration in
-      self?.infoLabel.isHidden = duration <= Config.VideoEditor.maximumDuration
+        DispatchQueue.main.async {
+            self?.infoLabel.isHidden = duration <= Config.VideoEditor.maximumDuration
+        }
     }
   }
 
@@ -187,28 +189,69 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
     if let selectedItem = cart.video , selectedItem == item {
       cart.video = nil
     } else {
-      cart.video = item
+        if item.assetVideoDataStorageLocation == .icloud {
+            item.loadAssetFromCloud(progressHandle: { (progerss, error, _, _) in
+                DispatchQueue.main.sync {
+                    
+                    let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
+                    cell.progressView.progress = Float(progerss)
+                    if error != nil {
+                        //下载错误
+                    }
+                    else {
+                        //
+                        print("\(progerss)")
+                    }
+                    
+                }
+            },loadDoneHandle:{image in
+                DispatchQueue.main.sync {
+                    item.assetVideoDataStorageLocation = .local
+                    self.cart.video = item
+                    self.refreshView()
+                    self.configureFrameViews()
+                }
+                
+            })
+            return
+        }
+        else {
+            cart.video = item
+        }
+      
     }
 
     refreshView()
     configureFrameViews()
   }
 
+
   func configureFrameViews() {
-    for case let cell as VideoCell in gridView.collectionView.visibleCells {
-      if let indexPath = gridView.collectionView.indexPath(for: cell) {
-        configureFrameView(cell, indexPath: indexPath)
-      }
+    DispatchQueue.main.async {
+        for case let cell as VideoCell in self.gridView.collectionView.visibleCells {
+            if let indexPath = self.gridView.collectionView.indexPath(for: cell) {
+                self.configureFrameView(cell, indexPath: indexPath)
+            }
+        }
     }
   }
 
   func configureFrameView(_ cell: VideoCell, indexPath: IndexPath) {
-    let item = items[(indexPath as NSIndexPath).item]
-
-    if let selectedItem = cart.video , selectedItem == item {
-      cell.frameView.g_quickFade()
-    } else {
-      cell.frameView.alpha = 0
+    DispatchQueue.main.async {
+        let item = self.items[(indexPath as NSIndexPath).item]
+        
+        if let selectedItem = self.cart.video , selectedItem == item {
+            cell.frameView.g_quickFade()
+        } else {
+            cell.frameView.alpha = 0
+        }
+        if item.assetVideoDataStorageLocation == .icloud {
+            cell.progressView.isHidden = false
+        }
+        else {
+            cell.progressView.isHidden = true
+        }
     }
+    
   }
 }
