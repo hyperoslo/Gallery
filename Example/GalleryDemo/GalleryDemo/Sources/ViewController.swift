@@ -76,9 +76,8 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
     LightboxConfig.DeleteButton.enabled = true
 
-    let size = UIScreen.main.bounds.size
     SVProgressHUD.show()
-    Image.resolve(images: images, size: size, completion: { [weak self] resolvedImages in
+    Image.resolve(images: images, completion: { [weak self] resolvedImages in
       SVProgressHUD.dismiss()
       self?.showLightbox(images: resolvedImages.flatMap({ $0 }))
     })
