@@ -21,22 +21,23 @@ extension Image {
   ///
   /// - Parameter size: The target size
   /// - Returns: The resolved UIImage, otherwise nil
-  public func resolve(size: CGSize) -> UIImage? {
+  public func resolve(completion: @escaping (UIImage?) -> Void) {
     let options = PHImageRequestOptions()
-    options.isSynchronous = true
     options.isNetworkAccessAllowed = true
+    options.deliveryMode = .highQualityFormat
 
-    var result: UIImage? = nil
+    let targetSize = CGSize(
+      width: asset.pixelWidth,
+      height: asset.pixelHeight
+    )
 
     PHImageManager.default().requestImage(
       for: asset,
-      targetSize: size,
-      contentMode: .aspectFit,
-      options: options) { (image, info) in
-        result = image
+      targetSize: targetSize,
+      contentMode: .default,
+      options: options) { (image, _) in
+        completion(image)
     }
-
-    return result
   }
 
   /// Resolve an array of Image
@@ -45,13 +46,28 @@ extension Image {
   ///   - images: The array of Image
   ///   - size: The target size for all images
   ///   - completion: Called when operations completion
-  public static func resolve(images: [Image], size: CGSize, completion: @escaping ([UIImage?]) -> Void) {
-    DispatchQueue.global().async {
-      let uiImages = images.map({ $0.resolve(size: size) })
-      DispatchQueue.main.async {
-        completion(uiImages)
-      }
+  public static func resolve(images: [Image], completion: @escaping ([UIImage?]) -> Void) {
+    let dispatchGroup = DispatchGroup()
+    var convertedImages = [Int: UIImage]()
+
+    for (index, image) in images.enumerated() {
+      dispatchGroup.enter()
+
+      image.resolve(completion: { resolvedImage in
+        if let resolvedImage = resolvedImage {
+          convertedImages[index] = resolvedImage
+        }
+
+        dispatchGroup.leave()
+      })
     }
+
+    dispatchGroup.notify(queue: .main, execute: {
+      let sortedImages = convertedImages
+        .sorted(by: { $0.key < $1.key })
+        .map({ $0.value })
+      completion(sortedImages)
+    })
   }
 }
 
