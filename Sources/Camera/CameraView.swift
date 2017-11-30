@@ -81,8 +81,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       )
     } else {
       Constraint.on(
-        closeButton.topAnchor.constraint(equalTo: superview!.topAnchor),
-        rotateButton.topAnchor.constraint(equalTo: superview!.topAnchor)
+        closeButton.topAnchor.constraint(equalTo: topAnchor),
+        rotateButton.topAnchor.constraint(equalTo: topAnchor)
       )
     }
 
