@@ -13,15 +13,12 @@ class VideoCell: ImageCell {
     super.configure(video.asset)
     video.getAssetVideoDataStorageLocation { (assetVideoDataStorageLocation) in
         if assetVideoDataStorageLocation == .icloud {
-            print("cloud")
             self.progressView.isHidden = false
             [self.bottomOverlay, self.cameraImageView, self.durationLabel].forEach {
                 $0.isHidden = true
             }
         }
-        else {
-            print("local")
-            
+        else {     
             self.progressView.isHidden = true
             video.fetchDuration { duration in
                 DispatchQueue.main.async {

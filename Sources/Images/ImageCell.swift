@@ -37,11 +37,9 @@ class ImageCell: UICollectionViewCell {
     
     func configure(_ image: Image) {
         if image.assetImageDataStorageLocation == .icloud {
-            print("cloud")
             progressView.isHidden = false
         }
         else {
-            print("local")
             progressView.isHidden = true
         }
         configure(image.asset)
@@ -58,9 +56,12 @@ class ImageCell: UICollectionViewCell {
         imageView.g_pinEdges()
         frameView.g_pinEdges()
         highlightOverlay.g_pinEdges()
-//        cloudView.g_pinEdges()
-//        cloudView.image = UIImage(named: "cloud")
-        progressView.g_pinEdges()
+        
+        
+        progressView.g_pin(on: .right)
+        progressView.g_pin(on: .top)
+        progressView.g_pin(size: CGSize(width: 30.0, height: 30.0))
+//        progressView.g_pin(on: .top, view: progressView.superview)
         
     }
     
@@ -91,7 +92,9 @@ class ImageCell: UICollectionViewCell {
     }
     
     func makeMaskProgressView() -> MaskProgressView {
-        let maskprg = MaskProgressView(withMaskImage: UIImage(named: "cloud")!)
+        
+        let maskprg = MaskProgressView(withMaskImage: GalleryBundle.image("gallery_cloud")!)
+        maskprg.hightLightColor = Config.Grid.FrameView.borderColor
         return maskprg
     }
     

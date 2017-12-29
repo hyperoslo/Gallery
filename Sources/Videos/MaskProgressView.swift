@@ -11,6 +11,9 @@ import UIKit
 class MaskProgressView: UIView {
     public var progress:Float = 0.0 {
         didSet{
+            if progress  < 0.15 {
+                progress = 0.15
+            }
             self.layoutSubviews()
         }
     }
@@ -21,7 +24,7 @@ class MaskProgressView: UIView {
         }
     }
     
-    public var normalColor = UIColor.lightGray {
+    public var normalColor = UIColor.white {
         didSet{
             self.backgroundColor = normalColor
         }
@@ -47,7 +50,7 @@ class MaskProgressView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         backgroundView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height * CGFloat(progress))
-        self.maskLayer.frame = self.frame
+        self.maskLayer.frame = self.bounds
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

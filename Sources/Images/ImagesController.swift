@@ -225,6 +225,8 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     } else {
         if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
             if item.assetImageDataStorageLocation == .icloud {
+                let tmpCell = collectionView.cellForItem(at: indexPath) as! ImageCell
+                tmpCell.progressView.progress = 0
                 item.loadImageFromCloud(ofSize: PHImageManagerMaximumSize, progressHandle: { (progerss, error, _, _) in
                     DispatchQueue.main.sync {
                         
@@ -234,15 +236,21 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
                             //下载错误
                         }
                         else {
-                            //
-                            print("\(progerss)")
+
                         }
                         
                     }
-                },loadDoneHandle:{image in
-                    item.assetImageDataStorageLocation = .local
-                    self.cart.add(item)
-                    self.configureFrameViews()
+                },loadDoneHandle:{[weak self]image in
+                    if self == nil {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        item.assetImageDataStorageLocation = .local
+                        if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
+                            self?.cart.add(item)
+                        }
+                        self?.configureFrameViews()
+                    }
                 })
                 return
             }

@@ -190,26 +190,31 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
       cart.video = nil
     } else {
         if item.assetVideoDataStorageLocation == .icloud {
+            let tmpCell = collectionView.cellForItem(at: indexPath) as! ImageCell
+            tmpCell.progressView.progress = 0
             item.loadAssetFromCloud(progressHandle: { (progerss, error, _, _) in
                 DispatchQueue.main.sync {
-                    
                     let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
                     cell.progressView.progress = Float(progerss)
                     if error != nil {
                         //下载错误
                     }
                     else {
-                        //
-                        print("\(progerss)")
+                        
                     }
                     
                 }
-            },loadDoneHandle:{image in
-                DispatchQueue.main.sync {
+            },loadDoneHandle:{[weak self]image in
+                if self == nil {
+                    return
+                }
+                DispatchQueue.main.async {
                     item.assetVideoDataStorageLocation = .local
-                    self.cart.video = item
-                    self.refreshView()
-                    self.configureFrameViews()
+                    if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
+                        self?.cart.video = item
+                        self?.refreshView()
+                    }
+                    self?.configureFrameViews()
                 }
                 
             })

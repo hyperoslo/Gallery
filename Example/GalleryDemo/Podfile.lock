@@ -1,15 +1,13 @@
 PODS:
-  - Cache (4.0.2):
-    - SwiftHash (~> 2.0.0)
+  - Cache (4.1.2)
   - Gallery (2.0.2)
-  - Hue (3.0.0)
-  - Imaginary (3.0.0):
+  - Hue (3.0.1)
+  - Imaginary (3.0.2):
     - Cache (~> 4.0)
-  - Lightbox (2.0.0):
+  - Lightbox (2.1.1):
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
   - PKHUD (4.2.3)
-  - SwiftHash (2.0.0)
 
 DEPENDENCIES:
   - Gallery (from `../../`)
@@ -30,13 +28,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/pkluz/PKHUD.git
 
 SPEC CHECKSUMS:
-  Cache: 363b6899cee63c82ccbd291e64a6c202abc17a88
+  Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
   Gallery: 5d303aeda7e9838f4334748ae3fbce8d51cba722
-  Hue: b8fe1e43eef13631331eebecb2198b68e2622f95
-  Imaginary: 2765d293d425cbed3b07fa11642554cbaebe913d
-  Lightbox: 83ec9f4aba4c79fc7bb9bcd263386df9969f09bb
+  Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
+  Imaginary: d675200546110e305d6a26db6267c0622ffe5e6b
+  Lightbox: 30dc3540527e03194a10ee51be8ad5e039a1893f
   PKHUD: 351011b853e6b942e7ee8ad335864cc84c787241
-  SwiftHash: d2e09b13495447178cdfb8e46e54a5c46f15f5a9
 
 PODFILE CHECKSUM: 8af9c0c457ba1aaf1bc98a0341cd81e0e04000d1
 
