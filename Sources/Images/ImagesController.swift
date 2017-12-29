@@ -244,13 +244,11 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
                     if self == nil {
                         return
                     }
-                    DispatchQueue.main.async {
-                        item.assetImageDataStorageLocation = .local
-                        if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
-                            self?.cart.add(item)
-                        }
-                        self?.configureFrameViews()
+                    item.assetImageDataStorageLocation = .local
+                    if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
+                        self?.cart.add(item)
                     }
+                    self?.configureFrameViews()
                 })
                 return
             }

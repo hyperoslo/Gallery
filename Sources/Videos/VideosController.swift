@@ -208,15 +208,12 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
                 if self == nil {
                     return
                 }
-                DispatchQueue.main.async {
-                    item.assetVideoDataStorageLocation = .local
-                    if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
-                        self?.cart.video = item
-                        self?.refreshView()
-                    }
-                    self?.configureFrameViews()
+                item.assetVideoDataStorageLocation = .local
+                if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
+                    self?.cart.video = item
+                    self?.refreshView()
                 }
-                
+                self?.configureFrameViews()
             })
             return
         }

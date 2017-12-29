@@ -11,9 +11,6 @@ public class Video: Equatable {
     var _assetVideoDataStorageLocation:AssetVideoDataStorageLocation = .unknown
     public var assetVideoDataStorageLocation:AssetVideoDataStorageLocation {
         get {
-//            if _assetVideoDataStorageLocation == .unknown {
-//                checkHasLocalData(handle: <#(AssetVideoDataStorageLocation)#>)
-//            }
             return _assetVideoDataStorageLocation
         }
         set {

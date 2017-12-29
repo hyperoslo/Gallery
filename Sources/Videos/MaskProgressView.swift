@@ -14,7 +14,9 @@ class MaskProgressView: UIView {
             if progress  < 0.15 {
                 progress = 0.15
             }
-            self.layoutSubviews()
+            DispatchQueue.main.async {
+                self.layoutSubviews()
+            }
         }
     }
     public var maskImage:UIImage?

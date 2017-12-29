@@ -16,8 +16,8 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     view.backgroundColor = UIColor.white
     
     Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
-        Gallery.Config.tabsToShow = [.imageTab]
-//    Gallery.Config.tabsToShow = [.videoTab]
+//        Gallery.Config.tabsToShow = [.imageTab]
+    Gallery.Config.tabsToShow = [.videoTab]
     Gallery.Config.Camera.imageLimit = 2
     button = UIButton(type: .system)
     button.frame.size = CGSize(width: 200, height: 50)
@@ -90,22 +90,22 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
   }
   
   func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
-//    LightboxConfig.DeleteButton.enabled = true
-//
-//    let lightboxImages = images.flatMap {
-//      ($0.uiImage(ofSize: UIScreen.main.bounds.size),$0)
-//      }.map({
-//        LightboxImage(image: ($0.0)!, orginalImage: $0.1)
-//      })
-//
-//    guard lightboxImages.count == images.count else {
-//      return
-//    }
-//
-//    let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
-//    lightbox.dismissalDelegate = self
-//
-//    controller.present(lightbox, animated: true, completion: nil)
+    LightboxConfig.DeleteButton.enabled = true
+
+    let lightboxImages = images.flatMap {
+      ($0.uiImage(ofSize: UIScreen.main.bounds.size),$0)
+      }.map({
+        LightboxImage(image: ($0.0)!, orginalImage: $0.1)
+      })
+
+    guard lightboxImages.count == images.count else {
+      return
+    }
+
+    let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
+    lightbox.dismissalDelegate = self
+
+    controller.present(lightbox, animated: true, completion: nil)
   }
 }
 
