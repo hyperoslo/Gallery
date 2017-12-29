@@ -81,7 +81,6 @@ public class Video: Equatable {
     }
     func checkHasLocalData(handle :@escaping (AssetVideoDataStorageLocation) -> Swift.Void) {
         let options = PHVideoRequestOptions()
-//        options.isSynchronous = true
         
         PHImageManager.default().requestAVAsset(forVideo: asset, options: options) { (asset, mix, _) in
             if asset != nil {
@@ -103,13 +102,9 @@ extension Video {
         let options = PHVideoRequestOptions()
         options.isNetworkAccessAllowed = true
         options.progressHandler = handle
-        //(Double, Error?, UnsafeMutablePointer<ObjCBool>, [AnyHashable : Any]?) -> Swift.Void
         PHImageManager.default().requestAVAsset(forVideo: asset, options: options) { (asset, mix, _) in
             loadDoneHandle?(asset)
         }
-//        PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) { (image, _) in
-//            loadDoneHandle?(image)
-//        }
     }
 }
 

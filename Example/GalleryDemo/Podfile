@@ -6,6 +6,5 @@ target 'GalleryDemo' do
  pod 'Gallery', path: '../../'
  pod 'Lightbox'
  pod 'Hue'
- pod 'PKHUD', :git => 'https://github.com/pkluz/PKHUD.git', :branch => 'release/swift4' # HUD 菊花
 end
 
