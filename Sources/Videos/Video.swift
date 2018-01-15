@@ -98,6 +98,28 @@ public class Video: Equatable {
 }
 
 extension Video {
+    public func getUrlAndThumbnail(size: CGSize = CGSize(width: 100, height: 100), completionHandler : @escaping ((_ videoURL : URL?, _ videoThumbnail : UIImage?) -> Swift.Void)) {
+        loadAssetFromCloud(progressHandle: nil) {[weak self] (asset) in
+            if let urlAsset = asset as? AVURLAsset {
+                let localVideoUrl: URL = urlAsset.url as URL
+                let options = PHImageRequestOptions()
+                options.isSynchronous = true
+                options.isNetworkAccessAllowed = true
+                PHImageManager.default().requestImage(for: (self?.asset)!, targetSize: size,
+                                                      contentMode: .aspectFill, options: options){ image, _ in
+                                                        DispatchQueue.main.async {
+                                                            completionHandler(localVideoUrl,image)
+                                                        }
+                    
+                }
+                
+            } else {
+                DispatchQueue.main.async {
+                    completionHandler(nil,nil)
+                }
+            }
+        }
+    }
     public func loadAssetFromCloud(progressHandle handle:Photos.PHAssetImageProgressHandler?, loadDoneHandle:((AVAsset?) -> Swift.Void)?) {
         let options = PHVideoRequestOptions()
         options.isNetworkAccessAllowed = true

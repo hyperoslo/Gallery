@@ -114,8 +114,8 @@ class VideosController: UIViewController {
     let label = UILabel()
     label.textColor = UIColor.white
     label.font = Config.Font.Text.regular.withSize(12)
-    label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
-                        (Int(Config.VideoEditor.maximumDuration)))
+//    label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
+//                        (Int(Config.VideoEditor.maximumDuration)))
 
     return label
   }
@@ -208,12 +208,14 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
                 if self == nil {
                     return
                 }
-                item.assetVideoDataStorageLocation = .local
-                if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
-                    self?.cart.video = item
-                    self?.refreshView()
+                DispatchQueue.main.sync {
+                    item.assetVideoDataStorageLocation = .local
+                    if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > (self?.cart.images.count)!{
+                        self?.cart.video = item
+                        self?.refreshView()
+                    }
+                    self?.configureFrameViews()
                 }
-                self?.configureFrameViews()
             })
             return
         }

@@ -60,17 +60,25 @@ class ViewController: UIViewController, LightboxControllerDismissalDelegate, Gal
     controller.dismiss(animated: true, completion: nil)
     gallery = nil
     
-    
-    editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
-      DispatchQueue.main.async {
-        if let tempPath = tempPath {
-          let controller = AVPlayerViewController()
-          controller.player = AVPlayer(url: tempPath)
-          
-          self.present(controller, animated: true, completion: nil)
-        }
+    video.getUrlAndThumbnail { (url, thumbnail) in
+      print(url)
+      if let tempPath = url {
+        let controller = AVPlayerViewController()
+        controller.player = AVPlayer(url: tempPath)
+        self.present(controller, animated: true, completion: nil)
       }
     }
+    
+//    editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
+//      DispatchQueue.main.async {
+//        if let tempPath = tempPath {
+//          let controller = AVPlayerViewController()
+//          controller.player = AVPlayer(url: tempPath)
+//
+//          self.present(controller, animated: true, completion: nil)
+//        }
+//      }
+//    }
   }
   
   func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
