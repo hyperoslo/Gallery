@@ -79,6 +79,7 @@ There are lots of customization points in `Config` structs. For example
 Config.Permission.image = UIImage(named: ImageList.Gallery.cameraIcon)
 Config.Font.Text.bold = UIFont(name: FontList.OpenSans.bold, size: 14)!
 Config.Camera.recordLocation = true
+Config.tabsToShow = [.imageTab, .cameraTab]
 ```
 
 ### Video Editor
