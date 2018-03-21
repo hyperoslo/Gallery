@@ -30,6 +30,12 @@ public class Cart {
 
   public func add(_ image: Image, newlyTaken: Bool = false) {
     guard !images.contains(image) else { return }
+    
+    if !Config.Camera.allowMultiselection {
+      for image in images {
+        remove(image)
+      }
+    }
 
     images.append(image)
 
