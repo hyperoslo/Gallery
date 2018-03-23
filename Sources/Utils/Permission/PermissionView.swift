@@ -2,8 +2,8 @@ import UIKit
 
 class PermissionView: UIView {
 
-  lazy var imageView: UIImageView = self.makeImageView()
-  lazy var label: UILabel = self.makeLabel()
+  lazy var mainLabel: UILabel = self.makeMainLabel()
+  lazy var detailLabel: UILabel = self.makeDetailLabel()
   lazy var settingButton: UIButton = self.makeSettingButton()
   lazy var closeButton: UIButton = self.makeCloseButton()
 
@@ -24,7 +24,7 @@ class PermissionView: UIView {
   // MARK: - Setup
 
   func setup() {
-    [label, settingButton, closeButton, imageView].forEach {
+    [mainLabel, detailLabel, settingButton, closeButton].forEach {
       addSubview($0)
     }
 
@@ -32,44 +32,50 @@ class PermissionView: UIView {
     closeButton.g_pin(on: .left)
     closeButton.g_pin(size: CGSize(width: 44, height: 44))
 
-    settingButton.g_pinCenter()
-    settingButton.g_pin(height: 44)
-
-    label.g_pin(on: .bottom, view: settingButton, on: .top, constant: -24)
-    label.g_pinHorizontally(padding: 50)
-
-    imageView.g_pin(on: .centerX)
-    imageView.g_pin(on: .bottom, view: label, on: .top, constant: -16)
+    mainLabel.g_pin(on: .left, constant: 12)
+    mainLabel.g_pin(on: .right, constant: -12)
+    
+    detailLabel.g_pinCenter()
+    detailLabel.g_pin(on: .left, constant: 12)
+    detailLabel.g_pin(on: .right, constant: -12)
+    detailLabel.g_pin(on: .top, view: mainLabel, on: .bottom, constant: 12)
+    
+    settingButton.g_pin(on: .centerX)
+    settingButton.g_pin(on: .top, view: detailLabel, on: .bottom, constant: 12)
   }
 
   // MARK: - Controls
 
-  func makeLabel() -> UILabel {
+  func makeMainLabel() -> UILabel {
     let label = UILabel()
-    label.textColor = Config.Permission.textColor
-    label.font = Config.Font.Text.regular.withSize(14)
-    if Permission.Camera.needsPermission {
-      label.text = "GalleryAndCamera.Permission.Info".g_localize(fallback: "Please grant access to photos and the camera.")
-    } else {
-      label.text = "Gallery.Permission.Info".g_localize(fallback: "Please grant access to photos.")
-    }
+    label.textColor = Config.Permission.MainLabel.textColor
+    label.font = Config.Permission.MainLabel.font
+    label.text = Config.Permission.MainLabel.text
     label.textAlignment = .center
     label.numberOfLines = 0
     label.lineBreakMode = .byWordWrapping
 
     return label
   }
+    
+  func makeDetailLabel() -> UILabel {
+    let label = UILabel()
+    label.textColor = Config.Permission.DetailLabel.textColor
+    label.font = Config.Permission.DetailLabel.font
+    label.text = Config.Permission.DetailLabel.text
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.lineBreakMode = .byWordWrapping
+        
+    return label
+  }
 
   func makeSettingButton() -> UIButton {
-    let button = UIButton(type: .custom)
-    button.setTitle("Gallery.Permission.Button".g_localize(fallback: "Go to Settings").uppercased(),
-                    for: UIControlState())
-    button.backgroundColor = Config.Permission.Button.backgroundColor
-    button.titleLabel?.font = Config.Font.Main.medium.withSize(16)
-    button.setTitleColor(Config.Permission.Button.textColor, for: UIControlState())
-    button.setTitleColor(Config.Permission.Button.highlightedTextColor, for: .highlighted)
-    button.layer.cornerRadius = 22
-    button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+    let button = UIButton(type: .system)
+    button.setTitle(Config.Permission.SettingButton.text, for: UIControlState())
+    button.setTitleColor(Config.Permission.SettingButton.textColor, for: UIControlState())
+    button.backgroundColor = Config.Permission.SettingButton.backgroundColor
+    button.titleLabel?.font = Config.Permission.SettingButton.font
 
     return button
   }
@@ -82,10 +88,4 @@ class PermissionView: UIView {
     return button
   }
 
-  func makeImageView() -> UIImageView {
-    let view = UIImageView()
-    view.image = Config.Permission.image
-
-    return view
-  }
 }
