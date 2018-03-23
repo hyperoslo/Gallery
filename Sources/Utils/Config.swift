@@ -83,13 +83,24 @@ public struct Config {
   }
 
   public struct Permission {
-    public static var image: UIImage? = GalleryBundle.image("gallery_permission_view_camera")
-    public static var textColor: UIColor = UIColor(red: 102/255, green: 118/255, blue: 138/255, alpha: 1)
+    
+    public struct MainLabel {
+      public static var text: String = ""
+      public static var textColor: UIColor = UIColor.black
+      public static var font: UIFont = UIFont.systemFont(ofSize: 1)
+    }
+    
+    public struct DetailLabel {
+      public static var text: String = ""
+      public static var textColor: UIColor = UIColor.black
+      public static var font: UIFont = UIFont.systemFont(ofSize: 1)
+    }
 
-    public struct Button {
-      public static var textColor: UIColor = UIColor.white
-      public static var highlightedTextColor: UIColor = UIColor.lightGray
-      public static var backgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
+    public struct SettingButton {
+      public static var text: String = ""
+      public static var textColor: UIColor = UIColor.black
+      public static var backgroundColor: UIColor = UIColor.white
+      public static var font: UIFont = UIFont.systemFont(ofSize: 1)
     }
   }
 
