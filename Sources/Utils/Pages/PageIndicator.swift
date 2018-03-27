@@ -70,9 +70,9 @@ class PageIndicator: UIView {
   func makeButton(_ title: String) -> UIButton {
     let button = UIButton(type: .custom)
     button.setTitle(title, for: UIControlState())
-    button.setTitleColor(Config.PageIndicator.textColor, for: UIControlState())
-    button.setTitleColor(UIColor.gray, for: .highlighted)
-    button.backgroundColor = Config.PageIndicator.backgroundColor
+    button.setTitleColor(UIColor.black, for: UIControlState())
+    button.setTitleColor(UIColor(red: 210.0/255.0, green: 25.0/255.0, blue: 41/255.0, alpha: 1), for: .selected)
+    button.backgroundColor = UIColor.white
     button.addTarget(self, action: #selector(buttonTouched(_:)), for: .touchUpInside)
     button.titleLabel?.font = buttonFont(false)
 
@@ -98,6 +98,7 @@ class PageIndicator: UIView {
   func select(index: Int, animated: Bool = true) {
     for (i, b) in buttons.enumerated() {
       b.titleLabel?.font = buttonFont(i == index)
+      b.isSelected = b == buttons[index]
     }
 
     UIView.animate(withDuration: animated ? 0.25 : 0.0,
@@ -114,6 +115,6 @@ class PageIndicator: UIView {
   // MARK: - Helper
 
   func buttonFont(_ selected: Bool) -> UIFont {
-    return selected ? Config.Font.Main.bold.withSize(14) : Config.Font.Main.regular.withSize(14)
+    return selected ? Config.Font.Main.bold.withSize(15) : Config.Font.Main.regular.withSize(15)
   }
 }
