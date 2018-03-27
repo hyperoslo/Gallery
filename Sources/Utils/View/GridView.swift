@@ -99,7 +99,7 @@ class GridView: UIView {
   }
 
   private func makeBottomBlurView() -> UIVisualEffectView {
-    let view = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .light))
 
     return view
   }
@@ -127,10 +127,10 @@ class GridView: UIView {
 
   private func makeDoneButton() -> UIButton {
     let button = UIButton(type: .system)
-    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.setTitleColor(UIColor.black, for: UIControlState())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControlState())
+    button.titleLabel?.font = Config.Font.Text.regular.withSize(17)
+    button.setTitle(Config.Camera.BottomContainer.done, for: UIControlState())
     
     return button
   }
