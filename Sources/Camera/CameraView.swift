@@ -173,9 +173,9 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeFlashButton() -> TripleButton {
     let states: [TripleButton.State] = [
-      TripleButton.State(title: "Gallery.Camera.Flash.Off".g_localize(fallback: "OFF"), image: GalleryBundle.image("gallery_camera_flash_off")!),
-      TripleButton.State(title: "Gallery.Camera.Flash.On".g_localize(fallback: "ON"), image: GalleryBundle.image("gallery_camera_flash_on")!),
-      TripleButton.State(title: "Gallery.Camera.Flash.Auto".g_localize(fallback: "AUTO"), image: GalleryBundle.image("gallery_camera_flash_auto")!)
+      TripleButton.State(title: Config.Camera.Flash.off, image: GalleryBundle.image("gallery_camera_flash_off")!),
+      TripleButton.State(title: Config.Camera.Flash.on, image: GalleryBundle.image("gallery_camera_flash_on")!),
+      TripleButton.State(title: Config.Camera.Flash.auto, image: GalleryBundle.image("gallery_camera_flash_auto")!)
     ]
 
     let button = TripleButton(states: states)
@@ -219,10 +219,10 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeDoneButton() -> UIButton {
     let button = UIButton(type: .system)
-    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.setTitleColor(UIColor.black, for: UIControlState())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControlState())
+    button.titleLabel?.font = Config.Font.Text.regular.withSize(17)
+    button.setTitle(Config.Camera.BottomContainer.done, for: UIControlState())
 
     return button
   }
