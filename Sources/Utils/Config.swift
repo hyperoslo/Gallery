@@ -29,11 +29,6 @@ public struct Config {
     case videoTab
   }
 
-  public struct PageIndicator {
-    public static var backgroundColor: UIColor = UIColor(red: 0, green: 3/255, blue: 10/255, alpha: 1)
-    public static var textColor: UIColor = UIColor.white
-  }
-
   public struct Camera {
 
     public static var recordLocation: Bool = false
@@ -43,7 +38,8 @@ public struct Config {
     }
 
     public struct BottomContainer {
-      public static var backgroundColor: UIColor = UIColor(red: 23/255, green: 25/255, blue: 28/255, alpha: 0.8)
+      public static var backgroundColor: UIColor = UIColor.white.withAlphaComponent(0.5)
+      public static var done: String = "Weiter"
     }
 
     public struct StackView {
@@ -54,6 +50,26 @@ public struct Config {
     
     public static var allowMultiselection: Bool = true
     
+    public static var title: String = "KAMERA"
+    
+    public struct Flash {
+        public static var off: String = "AUS"
+        public static var on: String = "AN"
+        public static var auto: String = "AUTO"
+    }
+    
+  }
+    
+  public struct Images {
+        
+    public static var title: String = "FOTOALBUM"
+        
+  }
+    
+  public struct Videos {
+        
+    public static var title: String = "VIDEOS"
+        
   }
 
   public struct Grid {
