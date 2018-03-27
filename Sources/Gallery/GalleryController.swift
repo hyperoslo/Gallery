@@ -48,21 +48,21 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
   func makeImagesController() -> ImagesController {
     let controller = ImagesController(cart: cart)
-    controller.title = "Gallery.Images.Title".g_localize(fallback: "PHOTOS")
+    controller.title = Config.Images.title
 
     return controller
   }
 
   func makeCameraController() -> CameraController {
     let controller = CameraController(cart: cart)
-    controller.title = "Gallery.Camera.Title".g_localize(fallback: "CAMERA")
+    controller.title = Config.Camera.title
 
     return controller
   }
 
   func makeVideosController() -> VideosController {
     let controller = VideosController(cart: cart)
-    controller.title = "Gallery.Videos.Title".g_localize(fallback: "VIDEOS")
+    controller.title = Config.Videos.title
 
     return controller
   }
