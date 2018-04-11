@@ -30,6 +30,8 @@ public struct Config {
   }
 
   public struct Camera {
+    
+    public static var onAppearAction: ()->() = {}
 
     public static var recordLocation: Bool = false
 
@@ -61,6 +63,8 @@ public struct Config {
   }
     
   public struct Images {
+    
+    public static var onAppearAction: ()->() = {}
         
     public static var title: String = "FOTOALBUM"
         
