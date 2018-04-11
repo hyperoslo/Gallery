@@ -184,6 +184,7 @@ extension CameraController: CartDelegate {
 extension CameraController: PageAware {
 
   func pageDidShow() {
+    Config.Camera.onAppearAction()
     once.run {
       cameraMan.setup()
     }
