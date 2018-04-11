@@ -140,6 +140,7 @@ class ImagesController: UIViewController {
 extension ImagesController: PageAware {
 
   func pageDidShow() {
+    Config.Images.onAppearAction()
     once.run {
       library.reload {
         self.gridView.loadingIndicator.stopAnimating()
