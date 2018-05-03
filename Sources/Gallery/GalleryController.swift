@@ -39,6 +39,22 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
       g_addChildController(permissionController)
     }
   }
+  
+  public override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    eventuallyPresentIntroductionController()
+  }
+    
+  // MARK: - Introduction controller
+    
+  func eventuallyPresentIntroductionController() {
+    guard let introductionController = Config.Introduction.viewController else { return }
+    introductionController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+    introductionController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+    self.present(introductionController, animated: true, completion: nil)
+  }
+
 
   public override var prefersStatusBarHidden : Bool {
     return true
