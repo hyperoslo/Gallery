@@ -68,7 +68,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   func makePagesController() -> PagesController? {
-    guard Permission.Photos.status == .authorized else {
+      guard Permission.Camera.status == .authorized && Permission.Photos.status == .authorized else {
       return nil
     }
 
