@@ -28,6 +28,12 @@ public struct Config {
     case cameraTab
     case videoTab
   }
+  
+  public struct Introduction {
+        
+    public static var viewController: UIViewController? = nil
+        
+  }
 
   public struct Camera {
     
