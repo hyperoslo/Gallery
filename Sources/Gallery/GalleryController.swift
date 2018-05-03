@@ -34,30 +34,26 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
     if let pagesController = makePagesController() {
       g_addChildController(pagesController)
+      eventuallyPresentIntroductionController()
     } else {
       let permissionController = makePermissionController()
       g_addChildController(permissionController)
     }
   }
-  
-  public override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
     
-    eventuallyPresentIntroductionController()
+  public override var prefersStatusBarHidden : Bool {
+    return true
   }
-    
+  
   // MARK: - Introduction controller
     
   func eventuallyPresentIntroductionController() {
     guard let introductionController = Config.Introduction.viewController else { return }
     introductionController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     introductionController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-    self.present(introductionController, animated: true, completion: nil)
-  }
-
-
-  public override var prefersStatusBarHidden : Bool {
-    return true
+    DispatchQueue.main.async {
+      self.present(introductionController, animated: true, completion: nil)
+    }
   }
 
   // MARK: - Child view controller
@@ -161,6 +157,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     if let pagesController = makePagesController() {
       g_addChildController(pagesController)
       controller.g_removeFromParentController()
+      eventuallyPresentIntroductionController()
     }
   }
 }
