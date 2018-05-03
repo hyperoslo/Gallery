@@ -32,6 +32,7 @@ class PermissionController: UIViewController {
 
   func setup() {
     view.addSubview(permissionView)
+    permissionView.isHidden = true
     permissionView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)),
                                          for: .touchUpInside)
     permissionView.settingButton.addTarget(self, action: #selector(settingButtonTouched(_:)),
@@ -59,6 +60,7 @@ class PermissionController: UIViewController {
     }
 
     DispatchQueue.main.async {
+      self.permissionView.isHidden = false
       self.delegate?.permissionControllerDidFinish(self)
     }
   }
