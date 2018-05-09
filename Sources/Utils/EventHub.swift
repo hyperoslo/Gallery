@@ -11,6 +11,7 @@ class EventHub {
   init() {}
 
   var close: Action?
+  var doneWithFiles: Action?
   var doneWithImages: Action?
   var doneWithVideos: Action?
   var stackViewTouched: Action?

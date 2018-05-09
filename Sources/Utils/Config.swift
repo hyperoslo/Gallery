@@ -27,6 +27,7 @@ public struct Config {
     case imageTab
     case cameraTab
     case videoTab
+    case filesTab
   }
 
   public struct PageIndicator {

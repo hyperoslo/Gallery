@@ -3,6 +3,7 @@ import AVFoundation
 
 public protocol GalleryControllerDelegate: class {
 
+  func galleryController(_ controller: GalleryController, didSelectFiles files: [URL])
   func galleryController(_ controller: GalleryController, didSelectImages images: [Image])
   func galleryController(_ controller: GalleryController, didSelectVideo video: Video)
   func galleryController(_ controller: GalleryController, requestLightbox images: [Image])
@@ -66,6 +67,13 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 
     return controller
   }
+    
+  func makeFilesController() -> FilesController {
+    let controller = FilesController(cart: cart)
+    controller.title = "Gallery.Files.Title".g_localize(fallback: "FILES")
+        
+    return controller
+  }
 
   func makePagesController() -> PagesController? {
     guard Permission.Photos.status == .authorized else {
@@ -83,6 +91,8 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         return makeCameraController()
       } else if tab == .videoTab {
         return makeVideosController()
+      } else if tab == .filesTab {
+        return makeFilesController()
       } else {
         return nil
       }
@@ -129,6 +139,12 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     EventHub.shared.stackViewTouched = { [weak self] in
       if let strongSelf = self {
         strongSelf.delegate?.galleryController(strongSelf, requestLightbox: strongSelf.cart.images)
+      }
+    }
+    
+    EventHub.shared.doneWithImages = { [weak self] in
+      if let strongSelf = self {
+        strongSelf.delegate?.galleryController(strongSelf, didSelectFiles: strongSelf.cart.urls)
       }
     }
   }

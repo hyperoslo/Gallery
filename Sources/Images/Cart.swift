@@ -11,6 +11,7 @@ public protocol CartDelegate: class {
 public class Cart {
 
   public var images: [Image] = []
+  public var urls: [URL] = []
   public var video: Video?
   var delegates: NSHashTable<AnyObject> = NSHashTable.weakObjects()
 
@@ -54,6 +55,11 @@ public class Cart {
     for case let delegate as CartDelegate in delegates.allObjects {
       delegate.cartDidReload(self)
     }
+  }
+
+  public func add(_ url: URL) {
+    guard !urls.contains(url) else { return }
+    urls.append(url)
   }
 
   // MARK: - Reset

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2128B3920A3AE900005189D /* FilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2128B3820A3AE900005189D /* FilesController.swift */; };
 		D24CF7321E93D1FB002E6484 /* Gallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D24CF7311E93D1FB002E6484 /* Gallery.bundle */; };
 		D27B72ED1D6EEEC80093318F /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EC1D6EEEC80093318F /* Tests.swift */; };
 		D2D1A6CA1F84F4DB0083D4C5 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D1A6901F84F4DB0083D4C5 /* Album.swift */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B2128B3820A3AE900005189D /* FilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilesController.swift; sourceTree = "<group>"; };
 		D24CF7311E93D1FB002E6484 /* Gallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Gallery.bundle; sourceTree = "<group>"; };
 		D27B72EC1D6EEEC80093318F /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		D27B730C1D6EF04D0093318F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B2128B3A20A3AE940005189D /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2128B3820A3AE900005189D /* FilesController.swift */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
 		D24CF7301E93D1FB002E6484 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +340,7 @@
 		D5C629691C3A809D007F7B7C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B2128B3A20A3AE940005189D /* Files */,
 				D2D1A6BB1F84F4DB0083D4C5 /* Camera */,
 				D2D1A6C21F84F4DB0083D4C5 /* Gallery */,
 				D2D1A68F1F84F4DB0083D4C5 /* Images */,
@@ -470,6 +481,7 @@
 				D2D1A6EF1F84F4DB0083D4C5 /* CameraMan.swift in Sources */,
 				D2D1A6E21F84F4DB0083D4C5 /* PermissionController.swift in Sources */,
 				D2D1A6CD1F84F4DB0083D4C5 /* ImageCell.swift in Sources */,
+				B2128B3920A3AE900005189D /* FilesController.swift in Sources */,
 				D2D1A6D21F84F4DB0083D4C5 /* DropdownController.swift in Sources */,
 				D2D1A6D41F84F4DB0083D4C5 /* Array+Extensions.swift in Sources */,
 				D2D1A6F71F84F4DB0083D4C5 /* VideoCell.swift in Sources */,
