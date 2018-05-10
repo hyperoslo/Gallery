@@ -142,7 +142,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
       }
     }
     
-    EventHub.shared.doneWithImages = { [weak self] in
+    EventHub.shared.doneWithFiles = { [weak self] in
       if let strongSelf = self {
         strongSelf.delegate?.galleryController(strongSelf, didSelectFiles: strongSelf.cart.urls)
       }
