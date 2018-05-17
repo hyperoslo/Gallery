@@ -111,6 +111,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     let layer = AVCaptureVideoPreviewLayer(session: session)
     layer.autoreverses = true
     layer.videoGravity = .resizeAspectFill
+    
+    layer.connection?.videoOrientation = Utils.videoOrientation()
 
     self.layer.insertSublayer(layer, at: 0)
     layer.frame = self.layer.bounds
