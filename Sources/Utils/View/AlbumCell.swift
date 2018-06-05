@@ -34,7 +34,7 @@ class AlbumCell: UITableViewCell {
 
   func setup() {
     [albumImageView, albumTitleLabel, itemCountLabel].forEach {
-      addSubview($0 as! UIView)
+        addSubview($0)
     }
 
     albumImageView.g_pin(on: .left, constant: 12)
