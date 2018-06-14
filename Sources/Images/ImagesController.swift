@@ -202,6 +202,7 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImageCell.self), for: indexPath)
       as! ImageCell
+    cell.accessibilityIdentifier = "GalleryImageCell"
     let item = items[(indexPath as NSIndexPath).item]
 
     cell.configure(item)
