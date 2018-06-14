@@ -131,6 +131,7 @@ class GridView: UIView {
     button.setTitleColor(UIColor.lightGray, for: .disabled)
     button.titleLabel?.font = Config.Font.Text.regular.withSize(17)
     button.setTitle(Config.Camera.BottomContainer.done, for: UIControlState())
+    button.accessibilityIdentifier = "GalleryContinueButton"
     
     return button
   }
