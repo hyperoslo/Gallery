@@ -57,6 +57,7 @@ class PageIndicator: UIView {
   func setup() {
     buttons = items.map {
       let button = self.makeButton($0)
+      button.accessibilityIdentifier = "GalleryPageIndicatorButton"
       addSubview(button)
 
       return button
