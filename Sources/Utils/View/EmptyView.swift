@@ -21,7 +21,7 @@ class EmptyView: UIView {
 
   private func setup() {
     [label, imageView].forEach {
-      addSubview($0 as! UIView)
+        addSubview($0)
     }
 
     label.g_pinCenter()

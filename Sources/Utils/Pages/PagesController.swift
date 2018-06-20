@@ -76,7 +76,7 @@ class PagesController: UIViewController {
   }
 
   func makePageIndicator() -> PageIndicator {
-    let items = controllers.flatMap { $0.title }
+    let items = controllers.compactMap { $0.title }
     let indicator = PageIndicator(items: items)
     indicator.delegate = self
 

@@ -40,7 +40,7 @@ class GridView: UIView {
     }
 
     [bottomBlurView, doneButton].forEach {
-      bottomView.addSubview($0 as! UIView)
+        bottomView.addSubview($0)
     }
 
     Constraint.on(
