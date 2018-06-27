@@ -30,7 +30,7 @@ public class VideoEditor: VideoEditing {
     export?.shouldOptimizeForNetworkUse = true
 
     export?.exportAsynchronously {
-      if export?.status == AVAssetExportSessionStatus.completed {
+        if export?.status == AVAssetExportSession.Status.completed {
         completion(outputURL)
       } else {
         completion(nil)
