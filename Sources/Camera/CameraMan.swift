@@ -135,7 +135,7 @@ class CameraMan {
       self.stillImageOutput?.captureStillImageAsynchronously(from: connection) {
         buffer, error in
 
-        guard error == nil, let buffer = buffer, buffer.isValid,
+        guard error == nil, let buffer = buffer, CMSampleBufferIsValid(buffer),
           let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer),
           let image = UIImage(data: imageData)
           else {
