@@ -32,7 +32,7 @@ class PagesController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .black
+    view.backgroundColor = .white
     setup()
   }
 
@@ -181,7 +181,7 @@ extension PagesController: PageIndicatorDelegate {
 extension PagesController: UIScrollViewDelegate {
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
+    let index = min(Int(round(scrollView.contentOffset.x / scrollView.frame.size.width)), pageIndicator.buttons.count - 1)
     pageIndicator.select(index: index)
     updateAndNotify(index)
   }
