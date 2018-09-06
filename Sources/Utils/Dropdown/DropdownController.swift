@@ -64,7 +64,7 @@ class DropdownController: UIViewController {
       collapsedTopConstraint?.isActive = true
     }
 
-    UIView.animate(withDuration: 0.25, delay: 0, options: UIView.AnimationOptions(), animations: {
+    UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: {
       self.view.superview?.layoutIfNeeded()
     }, completion: { finished in
       self.animating = false

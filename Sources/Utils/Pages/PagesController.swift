@@ -119,9 +119,9 @@ class PagesController: UIViewController {
     scrollViewContentView.g_pinEdges()
 
     for (i, controller) in controllers.enumerated() {
-        addChild(controller)
+        addChildViewController(controller)
       scrollViewContentView.addSubview(controller.view)
-        controller.didMove(toParent: self)
+        controller.didMove(toParentViewController: self)
 
       controller.view.g_pin(on: .top)
       controller.view.g_pin(on: .bottom)

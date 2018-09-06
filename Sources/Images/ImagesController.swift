@@ -40,9 +40,9 @@ class ImagesController: UIViewController {
 
     view.addSubview(gridView)
 
-    addChild(dropdownController)
+    addChildViewController(dropdownController)
     gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
-    dropdownController.didMove(toParent: self)
+    dropdownController.didMove(toParentViewController: self)
 
     gridView.bottomView.addSubview(stackView)
 
