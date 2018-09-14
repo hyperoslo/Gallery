@@ -70,8 +70,8 @@ class PageIndicator: UIView {
 
   func makeButton(_ title: String) -> UIButton {
     let button = UIButton(type: .custom)
-    button.setTitle(title, for: UIControlState())
-    button.setTitleColor(UIColor.black, for: UIControlState())
+    button.setTitle(title, for: UIControl.State())
+    button.setTitleColor(UIColor.black, for: UIControl.State())
     button.setTitleColor(UIColor(red: 210.0/255.0, green: 25.0/255.0, blue: 41/255.0, alpha: 1), for: .selected)
     button.backgroundColor = UIColor.white
     button.addTarget(self, action: #selector(buttonTouched(_:)), for: .touchUpInside)

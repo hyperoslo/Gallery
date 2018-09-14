@@ -40,7 +40,7 @@ class GridView: UIView {
     }
 
     [bottomBlurView, doneButton].forEach {
-      bottomView.addSubview($0 as! UIView)
+      bottomView.addSubview($0 )
     }
 
     Constraint.on(
@@ -119,7 +119,7 @@ class GridView: UIView {
 
   private func makeCloseButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button
@@ -127,10 +127,10 @@ class GridView: UIView {
 
   private func makeDoneButton() -> UIButton {
     let button = UIButton(type: .system)
-    button.setTitleColor(UIColor.black, for: UIControlState())
+    button.setTitleColor(UIColor.black, for: UIControl.State())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
     button.titleLabel?.font = Config.Font.Text.regular.withSize(17)
-    button.setTitle(Config.Camera.BottomContainer.done, for: UIControlState())
+    button.setTitle(Config.Camera.BottomContainer.done, for: UIControl.State())
     button.accessibilityIdentifier = "GalleryContinueButton"
     
     return button
@@ -155,7 +155,7 @@ class GridView: UIView {
   }
 
   private func makeLoadingIndicator() -> UIActivityIndicatorView {
-    let view = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    let view = UIActivityIndicatorView(style: .whiteLarge)
     view.color = .gray
     view.hidesWhenStopped = true
 

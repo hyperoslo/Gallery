@@ -72,8 +72,8 @@ class PermissionView: UIView {
 
   func makeSettingButton() -> UIButton {
     let button = UIButton(type: .system)
-    button.setTitle(Config.Permission.SettingButton.text, for: UIControlState())
-    button.setTitleColor(Config.Permission.SettingButton.textColor, for: UIControlState())
+    button.setTitle(Config.Permission.SettingButton.text, for: UIControl.State())
+    button.setTitleColor(Config.Permission.SettingButton.textColor, for: UIControl.State())
     button.backgroundColor = Config.Permission.SettingButton.backgroundColor
     button.titleLabel?.font = Config.Permission.SettingButton.font
 
@@ -82,7 +82,7 @@ class PermissionView: UIView {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
     button.tintColor = Config.Grid.CloseButton.tintColor
 
     return button
