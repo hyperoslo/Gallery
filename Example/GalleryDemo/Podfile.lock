@@ -1,13 +1,12 @@
 PODS:
-  - Cache (4.1.2)
-  - Gallery (2.0.3)
+  - Cache (5.2.0)
+  - Gallery (2.1.0)
   - Hue (3.0.1)
-  - Imaginary (3.0.2):
-    - Cache (~> 4.0)
-  - Lightbox (2.1.1):
-    - Hue (~> 3.0)
-    - Imaginary (~> 3.0)
-  - SVProgressHUD (2.2.2)
+  - Imaginary (4.2.0):
+    - Cache (~> 5.0)
+  - Lightbox (2.3.0):
+    - Imaginary (~> 4.0)
+  - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
   - Gallery (from `../../`)
@@ -15,18 +14,26 @@ DEPENDENCIES:
   - Lightbox
   - SVProgressHUD
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Cache
+    - Hue
+    - Imaginary
+    - Lightbox
+    - SVProgressHUD
+
 EXTERNAL SOURCES:
   Gallery:
-    :path: ../../
+    :path: "../../"
 
 SPEC CHECKSUMS:
-  Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
-  Gallery: 6a263a0ca5a9407ec65c6a9232503611cc5d6b52
+  Cache: 807c5d86d01a177f06ede9865add3aea269bbfd4
+  Gallery: ced3429c72468c2f192d665c46960a87726f2182
   Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
-  Imaginary: d675200546110e305d6a26db6267c0622ffe5e6b
-  Lightbox: 30dc3540527e03194a10ee51be8ad5e039a1893f
-  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
+  Imaginary: dae33d06dbc2ada22f98afef5eb45cc061311a2c
+  Lightbox: d317750e4132bfb871a5307cfe0a2c7d6a583c65
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
 PODFILE CHECKSUM: c95332f23ba226af26fd7b4ba1d3ffabf7836bf0
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.6.0.beta.1
