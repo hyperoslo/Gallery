@@ -167,7 +167,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(GalleryBundle.image("gallery_close"), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_close"), for: UIControl.State())
 
     return button
   }
@@ -186,7 +186,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeRotateButton() -> UIButton {
     let button = UIButton(type: .custom)
-    button.setImage(GalleryBundle.image("gallery_camera_rotate"), for: UIControlState())
+    button.setImage(GalleryBundle.image("gallery_camera_rotate"), for: UIControl.State())
 
     return button
   }
@@ -220,10 +220,10 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
 
   func makeDoneButton() -> UIButton {
     let button = UIButton(type: .system)
-    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.setTitleColor(UIColor.white, for: UIControl.State())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
     button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: Config.DoneButton.title), for: UIControlState())
+    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControl.State())
 
     return button
   }

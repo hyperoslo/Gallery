@@ -46,7 +46,7 @@ class TripleButton: UIButton {
 
     let state = states[index]
 
-    setTitle(state.title, for: UIControlState())
-    setImage(state.image, for: UIControlState())
+    setTitle(state.title, for: UIControl.State())
+    setImage(state.image, for: UIControl.State())
   }
 }
