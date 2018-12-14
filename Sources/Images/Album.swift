@@ -17,7 +17,7 @@ class Album {
 
     let itemsFetchResult = PHAsset.fetchAssets(in: collection, options: Utils.fetchOptions())
     itemsFetchResult.enumerateObjects({ (asset, count, stop) in
-      if asset.mediaType == .image {
+      if asset.mediaType == .image && !Config.blacklistedAssetMediaSubtypes.contains(asset.mediaSubtypes) {
         self.items.append(Image(asset: asset))
       }
     })
