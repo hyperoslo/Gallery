@@ -29,15 +29,12 @@ class ImagesController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     setup()
   }
 
   // MARK: - Setup
 
   func setup() {
-    view.backgroundColor = UIColor.white
-
     view.addSubview(gridView)
 
     addChild(dropdownController)
@@ -110,6 +107,7 @@ class ImagesController: UIViewController {
 
   func refreshView() {
     let hasImages = !cart.images.isEmpty
+    gridView.bottomView.backgroundColor = .white
     gridView.bottomView.g_fade(visible: hasImages)
     gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
   }
@@ -125,6 +123,7 @@ class ImagesController: UIViewController {
   
   func makeGridView() -> GridView {
     let view = GridView()
+    view.backgroundColor = .white
     view.bottomView.alpha = 0
     
     return view

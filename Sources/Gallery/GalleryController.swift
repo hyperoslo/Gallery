@@ -31,7 +31,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     super.viewDidLoad()
 
     setup()
-
+    
     if let pagesController = makePagesController() {
       g_addChildController(pagesController)
     } else {

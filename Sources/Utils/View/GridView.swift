@@ -7,7 +7,7 @@ class GridView: UIView {
 
   lazy var topView: UIView = self.makeTopView()
   lazy var bottomView: UIView = self.makeBottomView()
-  lazy var bottomBlurView: UIVisualEffectView = self.makeBottomBlurView()
+  lazy var bottomBlurView: UIView = self.makeBottomBlurView()
   lazy var arrowButton: ArrowButton = self.makeArrowButton()
   lazy var collectionView: UICollectionView = self.makeCollectionView()
   lazy var closeButton: UIButton = self.makeCloseButton()
@@ -80,7 +80,8 @@ class GridView: UIView {
     arrowButton.g_pin(height: 40)
 
     doneButton.g_pin(on: .centerY)
-    doneButton.g_pin(on: .right, constant: -38)
+    doneButton.g_pin(size: CGSize(width:145, height: 45))
+    doneButton.g_pin(on: .right, constant: -20)
   }
 
   // MARK: - Controls
@@ -94,12 +95,14 @@ class GridView: UIView {
 
   private func makeBottomView() -> UIView {
     let view = UIView()
+    view.backgroundColor = .white
 
     return view
   }
 
-  private func makeBottomBlurView() -> UIVisualEffectView {
-    let view = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+  private func makeBottomBlurView() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .white
 
     return view
   }
@@ -129,7 +132,10 @@ class GridView: UIView {
     let button = UIButton(type: .system)
     button.setTitleColor(UIColor.white, for: UIControl.State())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
+  
+    button.layer.cornerRadius = 3
+    button.backgroundColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:1.0)
+    button.titleLabel?.font = Config.Font.Text.bold.withSize(16)
     button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControl.State())
     
     return button

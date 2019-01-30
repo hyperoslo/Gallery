@@ -96,7 +96,7 @@ class VideosController: UIViewController {
 
   func makeGridView() -> GridView {
     let view = GridView()
-    view.bottomView.alpha = 0
+    view.bottomView.alpha = 1
     
     return view
   }

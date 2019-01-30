@@ -19,7 +19,6 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   lazy var tapGR: UITapGestureRecognizer = self.makeTapGR()
   lazy var rotateOverlayView: UIView = self.makeRotateOverlayView()
   lazy var shutterOverlayView: UIView = self.makeShutterOverlayView()
-  lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
   var timer: Timer?
   var previewLayer: AVCaptureVideoPreviewLayer?
@@ -59,7 +58,6 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
       $0.g_addShadow()
     }
 
-    rotateOverlayView.addSubview(blurView)
     insertSubview(rotateOverlayView, belowSubview: rotateButton)
     insertSubview(focusImageView, belowSubview: bottomContainer)
     insertSubview(shutterOverlayView, belowSubview: bottomContainer)
@@ -101,7 +99,6 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     doneButton.g_pin(on: .right, constant: -38)
 
     rotateOverlayView.g_pinEdges()
-    blurView.g_pinEdges()
     shutterOverlayView.g_pinEdges()
   }
 
@@ -200,7 +197,7 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeBottomView() -> UIView {
     let view = UIView()
     view.backgroundColor = Config.Camera.BottomContainer.backgroundColor
-    view.alpha = 0
+    view.alpha = 1
 
     return view
   }
@@ -255,16 +252,9 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
   func makeShutterOverlayView() -> UIView {
     let view = UIView()
     view.alpha = 0
-    view.backgroundColor = UIColor.black
+    view.backgroundColor = UIColor.white
 
     return view
-  }
-
-  func makeBlurView() -> UIVisualEffectView {
-    let effect = UIBlurEffect(style: .dark)
-    let blurView = UIVisualEffectView(effect: effect)
-
-    return blurView
   }
 
 }
