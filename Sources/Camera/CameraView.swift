@@ -96,7 +96,8 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     shutterButton.g_pin(size: CGSize(width: 60, height: 60))
     
     doneButton.g_pin(on: .centerY)
-    doneButton.g_pin(on: .right, constant: -38)
+    doneButton.g_pin(size: CGSize(width:100, height: 45))
+    doneButton.g_pin(on: .right, constant: -20)
 
     rotateOverlayView.g_pinEdges()
     shutterOverlayView.g_pinEdges()
@@ -219,7 +220,9 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     let button = UIButton(type: .system)
     button.setTitleColor(UIColor.white, for: UIControl.State())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
+    button.layer.cornerRadius = 3
+    button.backgroundColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:1.0)
+    button.titleLabel?.font = Config.Font.Text.bold.withSize(16)
     button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControl.State())
 
     return button

@@ -132,7 +132,6 @@ class GridView: UIView {
     let button = UIButton(type: .system)
     button.setTitleColor(UIColor.white, for: UIControl.State())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-  
     button.layer.cornerRadius = 3
     button.backgroundColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:1.0)
     button.titleLabel?.font = Config.Font.Text.bold.withSize(16)
