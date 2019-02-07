@@ -112,14 +112,27 @@ class CameraView: UIView, UIGestureRecognizerDelegate {
     layer.connection?.videoOrientation = Utils.videoOrientation()
     
     self.layer.insertSublayer(layer, at: 0)
+    
+    //Create Mask View
     layer.frame = self.layer.bounds
-
+    let maskLayer = CALayer()
+    maskLayer.backgroundColor =  UIColor(red:0.21, green:0.17, blue:0.46, alpha:0.5).cgColor
+    let squareLayer = CAShapeLayer()
+    let squarePath = UIBezierPath(rect: CGRect(x:0, y:0, width: self.layer.frame.width - 20, height: 0.567 * (self.layer.frame.width)))
+    squarePath.usesEvenOddFillRule = true
+    maskLayer.frame = layer.bounds
+    maskLayer.contentsGravity = .center
+    squareLayer.frame = CGRect(x: 10, y: self.layer.frame.height/3 , width: self.layer.frame.width - 20, height: 0.567 * (self.layer.frame.width - 20))
+    squareLayer.path = squarePath.cgPath
+    squareLayer.fillColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:0.5).cgColor
+    squareLayer.fillRule = .evenOdd
+    maskLayer.addSublayer(squareLayer)
+    layer.mask = maskLayer
     previewLayer = layer
   }
 
   override func layoutSubviews() {
     super.layoutSubviews()
-
     previewLayer?.frame = self.layer.bounds
   }
 
