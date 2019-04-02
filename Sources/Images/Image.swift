@@ -21,24 +21,21 @@ extension Image {
   ///
   /// - Parameter size: The target size
   /// - Returns: The resolved UIImage, otherwise nil
-  public func resolve(completion: @escaping (UIImage?) -> Void) {
-    let options = PHImageRequestOptions()
-    options.isNetworkAccessAllowed = true
-    options.deliveryMode = .highQualityFormat
-
-    let targetSize = CGSize(
-      width: asset.pixelWidth,
-      height: asset.pixelHeight
-    )
-
-    PHImageManager.default().requestImage(
-      for: asset,
-      targetSize: targetSize,
-      contentMode: .default,
-      options: options) { (image, _) in
-        completion(image)
+    public func resolve(completion: @escaping (UIImage?) -> Void) {
+        let options = PHImageRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        options.resizeMode = .exact;
+        
+        PHImageManager.default().requestImage(
+            for: asset,
+            targetSize: PHImageManagerMaximumSize,
+            contentMode: .default,
+            options: options) { (image, _) in
+                print(image!.size);
+                completion(image)
+        }
     }
-  }
 
   /// Resolve an array of Image
   ///
