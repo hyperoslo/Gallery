@@ -69,6 +69,10 @@ public struct Config {
       public static var borderColor: UIColor = UIColor(red: 0, green: 239/255, blue: 155/255, alpha: 1)
     }
 
+    public struct TopView {
+      public static var backgroundColor: UIColor = UIColor.white
+    }
+
     struct Dimension {
       static let columnCount: CGFloat = 4
       static let cellSpacing: CGFloat = 2
@@ -88,6 +92,10 @@ public struct Config {
       public static var textColor: UIColor = UIColor.white
       public static var highlightedTextColor: UIColor = UIColor.lightGray
       public static var backgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
+    }
+
+    public struct CloseButton {
+      public static var tintColor: UIColor = UIColor(red: 109/255, green: 107/255, blue: 132/255, alpha: 1)
     }
   }
 
