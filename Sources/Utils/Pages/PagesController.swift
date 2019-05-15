@@ -1,5 +1,6 @@
 import UIKit
 
+
 protocol PageAware: class {
   func pageDidShow()
 }
@@ -31,9 +32,8 @@ class PagesController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    scrollView.backgroundColor = .white
-    scrollViewContentView.backgroundColor = .white
-    view.backgroundColor = .white
+    scrollView.isScrollEnabled = false
+    view.backgroundColor = .black
     setup()
   }
 
@@ -87,9 +87,6 @@ class PagesController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    view.backgroundColor = .white
-    pageIndicator.indicator.backgroundColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:1.0)
-    pageIndicator.backgroundColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:1.0)
     let usePageIndicator = controllers.count > 1
     if usePageIndicator {
       view.addSubview(pageIndicator)

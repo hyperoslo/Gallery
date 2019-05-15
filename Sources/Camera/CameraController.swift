@@ -59,12 +59,9 @@ class CameraController: UIViewController {
     view.addSubview(cameraView)
     cameraView.g_pinEdges()
 
-    cameraView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
     cameraView.flashButton.addTarget(self, action: #selector(flashButtonTouched(_:)), for: .touchUpInside)
     cameraView.rotateButton.addTarget(self, action: #selector(rotateButtonTouched(_:)), for: .touchUpInside)
-    cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
     cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
-    cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
   }
 
   func setupLocation() {
@@ -102,33 +99,38 @@ class CameraController: UIViewController {
   @objc func stackViewTouched(_ stackView: StackView) {
     EventHub.shared.stackViewTouched?()
   }
+    
+    
 
   @objc func shutterButtonTouched(_ button: ShutterButton) {
-    guard isBelowImageLimit() else { return }
-    guard let previewLayer = cameraView.previewLayer else { return }
-
-    button.isEnabled = false
-    UIView.animate(withDuration: 0.1, animations: {
-      self.cameraView.shutterOverlayView.alpha = 1
-    }, completion: { _ in
-      UIView.animate(withDuration: 0.1, animations: {
-        self.cameraView.shutterOverlayView.alpha = 0
-      }) 
-    })
-
-    self.cameraView.stackView.startLoading()
-    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { [weak self] asset in
-      guard let strongSelf = self else {
-        return
-      }
-
-      button.isEnabled = true
-      strongSelf.cameraView.stackView.stopLoading()
-
-      if let asset = asset {
-        strongSelf.cart.add(Image(asset: asset), newlyTaken: true)
-      }
-    }
+    
+    
+    
+//    guard isBelowImageLimit() else { return }
+//    guard let previewLayer = cameraView.previewLayer else { return }
+//
+//    button.isEnabled = false
+//    UIView.animate(withDuration: 0.1, animations: {
+//      self.cameraView.shutterOverlayView.alpha = 1
+//    }, completion: { _ in
+//      UIView.animate(withDuration: 0.1, animations: {
+//        self.cameraView.shutterOverlayView.alpha = 0
+//      })
+//    })
+//
+////    self.cameraView.stackView.startLoading()
+//    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { [weak self] asset in
+//      guard let strongSelf = self else {
+//        return
+//      }
+//
+//      button.isEnabled = true
+////      strongSelf.cameraView.stackView.stopLoading()
+//
+//      if let asset = asset {
+//        strongSelf.cart.add(Image(asset: asset), newlyTaken: true)
+//      }
+//    }
   }
 
   @objc func doneButtonTouched(_ button: UIButton) {
@@ -140,11 +142,6 @@ class CameraController: UIViewController {
     }
     
   // MARK: - View
-
-  func refreshView() {
-    let hasImages = !cart.images.isEmpty
-    cameraView.bottomView.g_fade(visible: hasImages)
-  }
 
   // MARK: - Controls
 
@@ -165,20 +162,11 @@ class CameraController: UIViewController {
 
 extension CameraController: CartDelegate {
 
-  func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
-    cameraView.stackView.reload(cart.images, added: true)
-    refreshView()
-  }
+  func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) { }
 
-  func cart(_ cart: Cart, didRemove image: Image) {
-    cameraView.stackView.reload(cart.images)
-    refreshView()
-  }
+  func cart(_ cart: Cart, didRemove image: Image) { }
 
-  func cartDidReload(_ cart: Cart) {
-    cameraView.stackView.reload(cart.images)
-    refreshView()
-  }
+  func cartDidReload(_ cart: Cart) { }
 }
 
 extension CameraController: PageAware {
@@ -210,5 +198,4 @@ extension CameraController: CameraManDelegate {
   func cameraMan(_ cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
     cameraView.flashButton.isHidden = !input.device.hasFlash
   }
-
 }

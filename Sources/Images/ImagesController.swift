@@ -2,16 +2,42 @@ import UIKit
 import Photos
 
 class ImagesController: UIViewController {
+    
+    weak var galleryController: GalleryController?
+    
+    let columnCount: CGFloat = 3
+    let spacing: CGFloat = 8
+    
+    var insets : UIEdgeInsets{
+      return UIEdgeInsets(top: spacing, left: spacing, bottom: 36, right: spacing)
+    }
 
   lazy var dropdownController: DropdownController = self.makeDropdownController()
   lazy var gridView: GridView = self.makeGridView()
   lazy var stackView: StackView = self.makeStackView()
 
-  var items: [Image] = []
+  var items: [ArdhiMedia] = []
   let library = ImagesLibrary()
-  var selectedAlbum: Album?
+  let videoLibrary = VideosLibrary()
+  var selectedAlbum: MediaAlbum?
   let once = Once()
   let cart: Cart
+    
+    var containerviewHeightConstraint: NSLayoutConstraint?
+    
+    var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    var arrowButton: ArrowButton = {
+        let btn = ArrowButton()
+        btn.backgroundColor = UIColor.clear
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
 
   // MARK: - Init
 
@@ -24,48 +50,104 @@ class ImagesController: UIViewController {
   public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+    
+    enum ControllerMode {
+        case image
+        case video
+    }
+    var controllerMode: ControllerMode = .image
+    
   // MARK: - Life cycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
     setup()
+    setupDropDownController()
+    view.backgroundColor = .black
+    
+    gridView.didTapButtonLeft = { _ in
+        EventHub.shared.close?()
+    }
+    
+    gridView.didTapButtonRight = { [unowned self] _ in
+        guard self.controllerMode == .image else {
+            EventHub.shared.doneWithVideos?()
+            return
+        }
+        EventHub.shared.doneWithImages?()
+    }
   }
 
   // MARK: - Setup
-
   func setup() {
+    view.backgroundColor = UIColor.white
     view.addSubview(gridView)
-
-    addChild(dropdownController)
-    gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
-    dropdownController.didMove(toParent: self)
 
     gridView.bottomView.addSubview(stackView)
 
     gridView.g_pinEdges()
-
-    dropdownController.view.g_pin(on: .left)
-    dropdownController.view.g_pin(on: .right)
-    dropdownController.view.g_pin(on: .height, constant: -40) // subtract gridView.topView height
-
-    dropdownController.expandedTopConstraint = dropdownController.view.g_pin(on: .top, view: gridView.topView, on: .bottom, constant: 1)
-    dropdownController.expandedTopConstraint?.isActive = false
-    dropdownController.collapsedTopConstraint = dropdownController.view.g_pin(on: .top, on: .bottom)
-    
     stackView.g_pin(on: .centerY, constant: -4)
     stackView.g_pin(on: .left, constant: 38)
     stackView.g_pin(size: CGSize(width: 56, height: 56))
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
     gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
-    gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
     stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
 
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
     gridView.collectionView.register(ImageCell.self, forCellWithReuseIdentifier: String(describing: ImageCell.self))
+    gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
   }
+    
+    @objc
+    func arrowBtnTapped() {
+       toggleContainerView()
+    }
+    
+    var isExpanded: Bool = false
+    
+    func toggleContainerView() {
+        isExpanded = !isExpanded
+        arrowButton.toggle(isExpanded)
+        gridView.isUserInteractionEnabled = !isExpanded
+        containerviewHeightConstraint?.constant = containerviewHeightConstraint?.constant == 36 ? 378 : 36
+        UIView.animate(withDuration: 0.25, delay: 0, options: UIView.AnimationOptions(), animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { finished in
+            //            self.animating = false
+        })
+    }
+    
+    func setupDropDownController() {
+        
+        gridView.collectionView.contentInset = insets
+        
+        view.addSubview(containerView)
+        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        containerviewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: 36)
+        containerviewHeightConstraint?.isActive = true
+        
+        // Button Top of view controller to be presented
+        containerView.addSubview(arrowButton)
+        arrowButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        arrowButton.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        arrowButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        arrowButton.addTarget(self, action: #selector(arrowBtnTapped), for: .touchUpInside)
+        
+        addChild(dropdownController)
+        dropdownController.view.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(dropdownController.view)
+        dropdownController.didMove(toParent: self)
+        
+        dropdownController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        dropdownController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        dropdownController.view.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 36).isActive = true
+        dropdownController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+    }
 
   // MARK: - Action
 
@@ -88,9 +170,14 @@ class ImagesController: UIViewController {
 
   // MARK: - Logic
 
-  func show(album: Album) {
-    gridView.arrowButton.updateText(album.collection.localizedTitle ?? "")
-    items = album.items
+  func show(album: MediaAlbum) {
+    arrowButton.updateText(album.title ?? "")
+    switch album.mode {
+    case .image(let images):
+        items = images
+    case .video(let videos):
+        items = videos
+    }
     gridView.collectionView.reloadData()
     gridView.collectionView.g_scrollToTop()
     gridView.emptyView.isHidden = !items.isEmpty
@@ -107,7 +194,6 @@ class ImagesController: UIViewController {
 
   func refreshView() {
     let hasImages = !cart.images.isEmpty
-    gridView.bottomView.backgroundColor = .white
     gridView.bottomView.g_fade(visible: hasImages)
     gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
   }
@@ -123,7 +209,6 @@ class ImagesController: UIViewController {
   
   func makeGridView() -> GridView {
     let view = GridView()
-    view.backgroundColor = .white
     view.bottomView.alpha = 0
     
     return view
@@ -131,7 +216,6 @@ class ImagesController: UIViewController {
 
   func makeStackView() -> StackView {
     let view = StackView()
-
     return view
   }
 }
@@ -139,53 +223,60 @@ class ImagesController: UIViewController {
 extension ImagesController: PageAware {
 
   func pageDidShow() {
-    once.run {
-      library.reload {
-        self.gridView.loadingIndicator.stopAnimating()
-        self.dropdownController.albums = self.library.albums
-        self.dropdownController.tableView.reloadData()
-
-        if let album = self.library.albums.first {
-          self.selectedAlbum = album
-          self.show(album: album)
+    if Permission.Photos.status != .authorized {
+        Permission.Photos.request { [weak self] in
+            guard Permission.Photos.status == .authorized else {
+                Alert.shared.show(from: self, mode: .library)
+                return
+            }
+            self?.reload()
         }
-      }
+    }
+
+    once.run {
+      reload()
     }
   }
-}
-
-extension ImagesController: CartDelegate {
-
-  func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
-    stackView.reload(cart.images, added: true)
-    refreshView()
-
-    if newlyTaken {
-      refreshSelectedAlbum()
+    
+    func reload() {
+        library.reload { [weak self] in
+            guard let welf = self else { return }
+            welf.reloadLibraries()
+        }
     }
-  }
-
-  func cart(_ cart: Cart, didRemove image: Image) {
-    stackView.reload(cart.images)
-    refreshView()
-  }
-
-  func cartDidReload(_ cart: Cart) {
-    stackView.reload(cart.images)
-    refreshView()
-    refreshSelectedAlbum()
-  }
+    
+    func reloadLibraries() {
+        gridView.loadingIndicator.stopAnimating()
+        var albums = [MediaAlbum]()
+        albums = library.albums
+        if !videoLibrary.items.isEmpty {
+            albums.insert(VideoAlbum(videos: videoLibrary.items), at: 1)
+        }
+        dropdownController.albums = albums
+        
+        dropdownController.tableView.reloadData()
+        
+        if let album = library.albums.first {
+            selectedAlbum = album
+            show(album: album)
+        }
+    }
 }
 
 extension ImagesController: DropdownControllerDelegate {
 
-  func dropdownController(_ controller: DropdownController, didSelect album: Album) {
+  func dropdownController(_ controller: DropdownController, didSelect album: MediaAlbum) {
+    cart.images = []
+    cart.video = nil
     selectedAlbum = album
     show(album: album)
-
-    dropdownController.toggle()
-    gridView.arrowButton.toggle(controller.expanding)
+    toggleContainerView()
+    updateTopView()
   }
+    
+    func updateTopView() {
+        
+    }
 }
 
 extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -197,39 +288,81 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    
+    if let item = items[indexPath.item] as? Image {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImageCell.self), for: indexPath)
+            as! ImageCell
+        cell.configure(item)
+        configureFrameView(cell, indexPath: indexPath)
+        return cell
 
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ImageCell.self), for: indexPath)
-      as! ImageCell
-    let item = items[(indexPath as NSIndexPath).item]
-
-    cell.configure(item)
-    configureFrameView(cell, indexPath: indexPath)
-
-    return cell
+    } else if let item = items[indexPath.item] as? Video {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: VideoCell.self), for: indexPath)
+            as! VideoCell
+        cell.configure(item)
+        configureFrameViewVideo(cell, indexPath: indexPath)
+        return cell
+    }
+    return UICollectionViewCell()
   }
 
   // MARK: - UICollectionViewDelegateFlowLayout
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-    let size = (collectionView.bounds.size.width - (Config.Grid.Dimension.columnCount - 1) * Config.Grid.Dimension.cellSpacing)
-      / Config.Grid.Dimension.columnCount
+    let totalSpacing = (spacing * (columnCount - 1)) + insets.left + insets.right
+    
+    let size = (collectionView.bounds.size.width - totalSpacing) / columnCount
     return CGSize(width: size, height: size)
   }
-
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let item = items[(indexPath as NSIndexPath).item]
-
-    if cart.images.contains(item) {
-      cart.remove(item)
-    } else {
-      if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
-        cart.add(item)
-      }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
     }
 
-    configureFrameViews()
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    
+    if let item = items[indexPath.item] as? Image  {
+        cart.images = [item]
+        EventHub.shared.doneWithImages?()
+    } else if let item = items[indexPath.item] as? Video {
+        cart.video = item
+        EventHub.shared.doneWithVideos?()
+    }
   }
+    
+    func configVideos(with item: Video) {
+        if let selectedItem = cart.video, selectedItem == item {
+            cart.video = nil
+        } else {
+            cart.video = item
+        }
+        configureFrameViewsforVideo()
+    }
+    
+    func configureFrameViewsforVideo() {
+        for case let cell as VideoCell in gridView.collectionView.visibleCells {
+            if let indexPath = gridView.collectionView.indexPath(for: cell) {
+                configureFrameViewVideo(cell, indexPath: indexPath)
+            }
+        }
+        updateTopView()
+    }
+    
+    func configureFrameViewVideo(_ cell: VideoCell, indexPath: IndexPath) {
+        guard let item = items[(indexPath as NSIndexPath).item] as? Video else { return }
+        
+        if let selectedItem = cart.video , selectedItem == item {
+            cell.frameView.g_quickFade()
+        } else {
+            cell.frameView.alpha = 0
+        }
+    }
+    
 
   func configureFrameViews() {
     for case let cell as ImageCell in gridView.collectionView.visibleCells {
@@ -237,14 +370,14 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
         configureFrameView(cell, indexPath: indexPath)
       }
     }
+    updateTopView()
   }
 
   func configureFrameView(_ cell: ImageCell, indexPath: IndexPath) {
-    let item = items[(indexPath as NSIndexPath).item]
+    guard let item = items[(indexPath as NSIndexPath).item] as? Image else { return }
 
-    if let index = cart.images.index(of: item) {
+    if let _ = cart.images.index(of: item) {
       cell.frameView.g_quickFade()
-      cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.alpha = 0
     }

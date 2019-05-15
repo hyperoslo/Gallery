@@ -5,8 +5,9 @@ class ArrowButton: UIButton {
   lazy var label: UILabel = self.makeLabel()
   lazy var arrow: UIImageView = self.makeArrow()
 
-  let padding: CGFloat = 10
-  let arrowSize: CGFloat = 8
+    let padding: CGFloat = 12
+    let arrowSize: CGFloat = 11
+    let arrowHeight: CGFloat = 8
 
   // MARK: - Initialization
 
@@ -28,7 +29,7 @@ class ArrowButton: UIButton {
 
     label.center = CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2)
 
-    arrow.frame.size = CGSize(width: arrowSize, height: arrowSize)
+    arrow.frame.size = CGSize(width: arrowSize, height: arrowHeight)
     arrow.center = CGPoint(x: label.frame.maxX + padding, y: bounds.size.height / 2)
   }
 
@@ -44,7 +45,7 @@ class ArrowButton: UIButton {
   // MARK: - Logic
 
   func updateText(_ text: String) {
-    label.text = text.uppercased()
+    label.text = text
     arrow.alpha = text.isEmpty ? 0 : 1
     invalidateIntrinsicContentSize()
   }
@@ -62,19 +63,20 @@ class ArrowButton: UIButton {
 
   private func makeLabel() -> UILabel {
     let label = UILabel()
-    label.textColor = Config.Grid.ArrowButton.tintColor
-    label.font = Config.Font.Main.regular.withSize(16)
+    if let font = GalleryConfig.shared.selectedAlbumFont {
+       label.font = font
+    }
+    let color = GalleryConfig.shared.selectedAlbumColor ?? .white
+       label.textColor = color
     label.textAlignment = .center
-
     return label
   }
 
   private func makeArrow() -> UIImageView {
     let arrow = UIImageView()
-    arrow.image = GalleryBundle.image("gallery_title_arrow")?.withRenderingMode(.alwaysTemplate)
-    arrow.tintColor = Config.Grid.ArrowButton.tintColor
+    arrow.image = GalleryBundle.image("arrow")?.withRenderingMode(.alwaysTemplate)
+    arrow.tintColor = UIColor.white
     arrow.alpha = 0
-
     return arrow
   }
 
@@ -82,8 +84,9 @@ class ArrowButton: UIButton {
 
   override var isHighlighted: Bool {
     didSet {
-      label.textColor = isHighlighted ? UIColor.lightGray : Config.Grid.ArrowButton.tintColor
-      arrow.tintColor = isHighlighted ? UIColor.lightGray : Config.Grid.ArrowButton.tintColor
+        let color = GalleryConfig.shared.selectedAlbumColor ?? .white
+            label.textColor = isHighlighted ? UIColor.lightGray : color
+            arrow.tintColor = isHighlighted ? UIColor.lightGray : color
     }
   }
 }

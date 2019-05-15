@@ -59,9 +59,6 @@ class VideosController: UIViewController {
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
     gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
-
-    gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
-    gridView.arrowButton.arrow.isHidden = true
   }
 
   // MARK: - Action
@@ -96,7 +93,7 @@ class VideosController: UIViewController {
 
   func makeGridView() -> GridView {
     let view = GridView()
-    view.bottomView.alpha = 1
+    view.bottomView.alpha = 0
     
     return view
   }

@@ -2,13 +2,12 @@ import UIKit
 import Photos
 
 class GridView: UIView {
-
-  // MARK: - Initialization
-
-  lazy var topView: UIView = self.makeTopView()
+    
+    var didTapButtonLeft: ((UIButton) -> Void )?
+    var didTapButtonRight: ((UIButton) -> Void )?
+    
   lazy var bottomView: UIView = self.makeBottomView()
-  lazy var bottomBlurView: UIView = self.makeBottomBlurView()
-  lazy var arrowButton: ArrowButton = self.makeArrowButton()
+  lazy var bottomBlurView: UIVisualEffectView = self.makeBottomBlurView()
   lazy var collectionView: UICollectionView = self.makeCollectionView()
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
@@ -29,14 +28,9 @@ class GridView: UIView {
   }
 
   // MARK: - Setup
-
   private func setup() {
-    [collectionView, bottomView, topView, emptyView, loadingIndicator].forEach {
+    [collectionView, bottomView, emptyView, loadingIndicator].forEach {
       addSubview($0)
-    }
-
-    [closeButton, arrowButton].forEach {
-      topView.addSubview($0)
     }
 
     [bottomBlurView, doneButton].forEach {
@@ -44,23 +38,9 @@ class GridView: UIView {
     }
 
     Constraint.on(
-      topView.leftAnchor.constraint(equalTo: topView.superview!.leftAnchor),
-      topView.rightAnchor.constraint(equalTo: topView.superview!.rightAnchor),
-      topView.heightAnchor.constraint(equalToConstant: 40),
-
       loadingIndicator.centerXAnchor.constraint(equalTo: loadingIndicator.superview!.centerXAnchor),
       loadingIndicator.centerYAnchor.constraint(equalTo: loadingIndicator.superview!.centerYAnchor)
     )
-
-    if #available(iOS 11, *) {
-      Constraint.on(
-        topView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
-      )
-    } else {
-      Constraint.on(
-        topView.topAnchor.constraint(equalTo: topView.superview!.topAnchor)
-      )
-    }
 
     bottomView.g_pinDownward()
     bottomView.g_pin(height: 80)
@@ -68,7 +48,7 @@ class GridView: UIView {
     emptyView.g_pinEdges(view: collectionView)
     
     collectionView.g_pinDownward()
-    collectionView.g_pin(on: .top, view: topView, on: .bottom, constant: 1)
+    collectionView.g_pin(on: .top, constant: 1)
 
     bottomBlurView.g_pinEdges()
 
@@ -76,33 +56,35 @@ class GridView: UIView {
     closeButton.g_pin(on: .left)
     closeButton.g_pin(size: CGSize(width: 40, height: 40))
 
-    arrowButton.g_pinCenter()
-    arrowButton.g_pin(height: 40)
-
     doneButton.g_pin(on: .centerY)
-    doneButton.g_pin(size: CGSize(width:145, height: 45))
-    doneButton.g_pin(on: .right, constant: -20)
+    doneButton.g_pin(on: .right, constant: -38)
   }
+    
+    @objc
+    func buttonRightTapped(_ sender: UIButton) {
+        didTapButtonRight?(sender)
+    }
+    
+    @objc
+    func buttonLeftTapped(_ sender: UIButton) {
+        didTapButtonLeft?(sender)
+    }
 
   // MARK: - Controls
 
-  private func makeTopView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = UIColor.white
-
+  private func makeTopView() -> TopView {
+    let view = TopView()
     return view
   }
 
   private func makeBottomView() -> UIView {
     let view = UIView()
-    view.backgroundColor = .white
 
     return view
   }
 
-  private func makeBottomBlurView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .white
+  private func makeBottomBlurView() -> UIVisualEffectView {
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
 
     return view
   }
@@ -132,9 +114,7 @@ class GridView: UIView {
     let button = UIButton(type: .system)
     button.setTitleColor(UIColor.white, for: UIControl.State())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.layer.cornerRadius = 3
-    button.backgroundColor = UIColor(red:0.21, green:0.17, blue:0.46, alpha:1.0)
-    button.titleLabel?.font = Config.Font.Text.bold.withSize(16)
+    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
     button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControl.State())
     
     return button
@@ -146,7 +126,7 @@ class GridView: UIView {
     layout.minimumLineSpacing = 2
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    view.backgroundColor = UIColor.white
+    view.backgroundColor = UIColor.black
 
     return view
   }

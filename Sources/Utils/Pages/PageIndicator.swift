@@ -8,7 +8,7 @@ class PageIndicator: UIView {
 
   let items: [String]
   var buttons: [UIButton]!
-  lazy var indicator: UIImageView = self.makeIndicator()
+//  lazy var indicator: UIImageView = self.makeIndicator()
   weak var delegate: PageIndicatorDelegate?
 
   // MARK: - Initialization
@@ -40,12 +40,12 @@ class PageIndicator: UIView {
                             height: bounds.size.height)
     }
 
-    indicator.frame.size = CGSize(width: width / 1.5, height: 4)
-    indicator.frame.origin.y = bounds.size.height - indicator.frame.size.height
-
-    if indicator.frame.origin.x == 0 {
-      select(index: 0)
-    }
+//    indicator.frame.size = CGSize(width: width / 1.5, height: 4)
+//    indicator.frame.origin.y = bounds.size.height - indicator.frame.size.height
+//
+//    if indicator.frame.origin.x == 0 {
+//      select(index: 0)
+//    }
   }
 
   override func didMoveToSuperview() {
@@ -62,7 +62,7 @@ class PageIndicator: UIView {
       return button
     }
 
-    addSubview(indicator)
+//    addSubview(indicator)
   }
 
   // MARK: - Controls
@@ -79,11 +79,11 @@ class PageIndicator: UIView {
     return button
   }
 
-  func makeIndicator() -> UIImageView {
+//  func makeIndicator() -> UIImageView {
 //    let imageView = UIImageView(image: GalleryBundle.image("gallery_page_indicator"))
-
-    return UIImageView()
-  }
+//
+//    return imageView
+//  }
 
   // MARK: - Action
 
@@ -100,15 +100,15 @@ class PageIndicator: UIView {
       b.titleLabel?.font = buttonFont(i == index)
     }
 
-    UIView.animate(withDuration: animated ? 0.25 : 0.0,
-                   delay: 0,
-                   usingSpringWithDamping: 0.7,
-                   initialSpringVelocity: 0.5,
-                   options: .beginFromCurrentState,
-                   animations: {
-                     self.indicator.center.x = self.buttons[index].center.x
-                   },
-                   completion: nil)
+//    UIView.animate(withDuration: animated ? 0.25 : 0.0,
+//                   delay: 0,
+//                   usingSpringWithDamping: 0.7,
+//                   initialSpringVelocity: 0.5,
+//                   options: .beginFromCurrentState,
+//                   animations: {
+//                     self.indicator.center.x = self.buttons[index].center.x
+//                   },
+//                   completion: nil)
   }
 
   // MARK: - Helper

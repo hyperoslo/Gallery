@@ -2,7 +2,7 @@ import UIKit
 import Photos
 
 protocol DropdownControllerDelegate: class {
-  func dropdownController(_ controller: DropdownController, didSelect album: Album)
+  func dropdownController(_ controller: DropdownController, didSelect mediaAlbum: MediaAlbum)
 }
 
 class DropdownController: UIViewController {
@@ -14,7 +14,7 @@ class DropdownController: UIViewController {
   var expanding: Bool = false
   var selectedIndex: Int = 0
 
-  var albums: [Album] = [] {
+  var albums: [MediaAlbum] = [] {
     didSet {
       selectedIndex = 0
     }
@@ -39,12 +39,10 @@ class DropdownController: UIViewController {
 
   func setup() {
     view.backgroundColor = UIColor.clear
-    tableView.backgroundColor = UIColor.clear
-    tableView.backgroundView = blurView
-    
+    // TODO: Update background color from outside the framework
+    tableView.backgroundColor = UIColor(red: 12/255, green: 18/255, blue: 28/255, alpha: 0.98)
     view.addSubview(tableView)
     tableView.register(AlbumCell.self, forCellReuseIdentifier: String(describing: AlbumCell.self))
-
     tableView.g_pinEdges()
   }
 
@@ -106,8 +104,6 @@ extension DropdownController: UITableViewDataSource, UITableViewDelegate {
 
     let album = albums[(indexPath as NSIndexPath).row]
     cell.configure(album)
-    cell.backgroundColor = UIColor.clear
-
     return cell
   }
 
@@ -116,11 +112,8 @@ extension DropdownController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
 
-    let album = albums[(indexPath as NSIndexPath).row]
-    delegate?.dropdownController(self, didSelect: album)
-
+    delegate?.dropdownController(self, didSelect: albums[indexPath.row])
     selectedIndex = (indexPath as NSIndexPath).row
     tableView.reloadData()
   }
 }
-

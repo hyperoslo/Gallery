@@ -21,7 +21,8 @@ class FrameView: UIView {
 
   private func setup() {
     layer.addSublayer(gradientLayer)
-    layer.borderColor = Config.Grid.FrameView.borderColor.cgColor
+    // TODO: Update frameview color
+    layer.borderColor = UIColor.white.cgColor
     layer.borderWidth = 3
 
     addSubview(label)

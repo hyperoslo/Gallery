@@ -11,6 +11,8 @@ public protocol CartDelegate: class {
 public class Cart {
 
   public var images: [Image] = []
+    public var image: UIImage?
+    var url: URL?
   public var video: Video?
   var delegates: NSHashTable<AnyObject> = NSHashTable.weakObjects()
 

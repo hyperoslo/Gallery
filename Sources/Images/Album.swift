@@ -23,3 +23,45 @@ class Album {
     })
   }
 }
+
+class VideoAlbum: MediaAlbum {
+    
+    var videos: [Video] = []
+    
+    var title: String? {
+        return "All Videos"
+    }
+    
+    var count: String? {
+        return "\(videos.count)"
+    }
+    
+    var mode: MediaMode {
+        return .video(videos: videos)
+    }
+    
+    // todo:- update reload for videos
+    func reload() {
+    
+    }
+    
+    convenience init (videos: [Video]) {
+        self.init()
+        self.videos = videos
+    }
+}
+
+extension Album: MediaAlbum {
+    
+    var title: String? {
+        return collection.localizedTitle
+    }
+    
+    var count: String? {
+        return "\(items.count)"
+    }
+    
+    var mode: MediaMode {
+        return .image(images: items)
+    }
+}

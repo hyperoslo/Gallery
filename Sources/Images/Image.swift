@@ -71,10 +71,15 @@ extension Image {
   }
 }
 
-
-
 // MARK: - Equatable
 
 public func == (lhs: Image, rhs: Image) -> Bool {
   return lhs.asset == rhs.asset
 }
+
+protocol ArdhiMedia {
+    var asset : PHAsset { get }
+}
+
+extension Image: ArdhiMedia { }
+extension Video: ArdhiMedia { }

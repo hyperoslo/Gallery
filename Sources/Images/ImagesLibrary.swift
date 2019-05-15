@@ -49,3 +49,15 @@ class ImagesLibrary {
     }
   }
 }
+
+enum MediaMode {
+    case image(images: [Image])
+    case video(videos: [Video])
+}
+
+protocol MediaAlbum {
+    var title: String? { get }
+    var count: String? { get }
+    var mode: MediaMode { get }
+    func reload()
+}
