@@ -7,13 +7,13 @@ public struct Config {
   public static var showsVideoTab: Bool {
     // Maintains backwards-compatibility.
     get {
-      return tabsToShow.index(of: .videoTab) != nil
+      return tabsToShow.firstIndex(of: .videoTab) != nil
     }
     set(newValue) {
       if !newValue {
         tabsToShow = tabsToShow.filter({$0 != .videoTab})
       } else {
-        if tabsToShow.index(of: .videoTab) == nil {
+        if tabsToShow.firstIndex(of: .videoTab) == nil {
           tabsToShow.append(.videoTab)
         }
       }
