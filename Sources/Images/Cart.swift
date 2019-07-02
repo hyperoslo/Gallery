@@ -45,7 +45,7 @@ public class Cart {
   }
 
   public func remove(_ image: Image) {
-    guard let index = images.index(of: image) else { return }
+    guard let index = images.firstIndex(of: image) else { return }
 
     images.remove(at: index)
 

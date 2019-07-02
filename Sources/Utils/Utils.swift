@@ -39,6 +39,8 @@ struct Utils {
             return .landscapeRight
         case .unknown:
             return .portrait
+        @unknown default:
+            return .portrait
         }
     }
   }
