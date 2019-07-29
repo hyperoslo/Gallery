@@ -22,6 +22,9 @@ public struct Config {
   public static var tabsToShow: [GalleryTab] = [.imageTab, .cameraTab, .videoTab]
   // Defaults to cameraTab if present, or whatever tab is first if cameraTab isn't present.
   public static var initialTab: GalleryTab?
+
+  public static var isAutoImageSelectionActive = false
+
   
   public enum GalleryTab {
     case imageTab
