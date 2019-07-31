@@ -22,6 +22,10 @@ public struct Config {
   public static var tabsToShow: [GalleryTab] = [.imageTab, .cameraTab, .videoTab]
   // Defaults to cameraTab if present, or whatever tab is first if cameraTab isn't present.
   public static var initialTab: GalleryTab?
+  // If isAutoImageSelectionActive is true, then the preview of the images at the bottom
+  // of the camera and album view will be hidden, so delegate method for didSelectImages will be called.
+  public static var isAutoImageSelectionActive = false
+
   
   public enum GalleryTab {
     case imageTab

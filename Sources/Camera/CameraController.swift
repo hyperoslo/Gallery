@@ -65,6 +65,10 @@ class CameraController: UIViewController {
     cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
     cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
     cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+
+    cameraView.doneButton.isHidden = Config.isAutoImageSelectionActive
+    cameraView.stackView.isHidden = Config.isAutoImageSelectionActive
+    cameraView.bottomView.isHidden = Config.isAutoImageSelectionActive
   }
 
   func setupLocation() {
@@ -127,6 +131,10 @@ class CameraController: UIViewController {
 
       if let asset = asset {
         strongSelf.cart.add(Image(asset: asset), newlyTaken: true)
+
+        if Config.isAutoImageSelectionActive {
+            EventHub.shared.doneWithImages?()
+        }
       }
     }
   }

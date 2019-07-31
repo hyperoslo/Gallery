@@ -68,6 +68,9 @@ class ImagesController: UIViewController {
     gridView.collectionView.dataSource = self
     gridView.collectionView.delegate = self
     gridView.collectionView.register(ImageCell.self, forCellWithReuseIdentifier: String(describing: ImageCell.self))
+
+    stackView.isHidden = Config.isAutoImageSelectionActive
+    gridView.bottomView.isHidden = Config.isAutoImageSelectionActive
   }
 
   // MARK: - Action
@@ -164,6 +167,10 @@ extension ImagesController: CartDelegate {
 
     if newlyTaken {
       refreshSelectedAlbum()
+    }
+
+    if Config.isAutoImageSelectionActive {
+        EventHub.shared.doneWithImages?()
     }
   }
 
