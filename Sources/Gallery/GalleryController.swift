@@ -93,7 +93,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     }
 
     let controller = PagesController(controllers: controllers)
-    controller.selectedIndex = tabsToShow.index(of: Config.initialTab ?? .cameraTab) ?? 0
+    controller.selectedIndex = tabsToShow.firstIndex(of: Config.initialTab ?? .cameraTab) ?? 0
 
     return controller
   }
