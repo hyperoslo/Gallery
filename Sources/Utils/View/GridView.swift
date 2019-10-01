@@ -141,7 +141,7 @@ class GridView: UIView {
     layout.minimumLineSpacing = 2
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    view.backgroundColor = UIColor.white
+    view.backgroundColor = UIColor.backgroundColor
 
     return view
   }

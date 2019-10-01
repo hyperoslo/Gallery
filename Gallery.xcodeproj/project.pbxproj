@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7979785823439AF000C3AEAE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979785723439AF000C3AEAE /* UIColor.swift */; };
 		D24CF7321E93D1FB002E6484 /* Gallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D24CF7311E93D1FB002E6484 /* Gallery.bundle */; };
 		D27B72ED1D6EEEC80093318F /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EC1D6EEEC80093318F /* Tests.swift */; };
 		D2D1A6CA1F84F4DB0083D4C5 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D1A6901F84F4DB0083D4C5 /* Album.swift */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7979785723439AF000C3AEAE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D24CF7311E93D1FB002E6484 /* Gallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Gallery.bundle; sourceTree = "<group>"; };
 		D27B72EC1D6EEEC80093318F /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		D27B730C1D6EF04D0093318F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7979785623439AB300C3AEAE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7979785723439AF000C3AEAE /* UIColor.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D24CF7301E93D1FB002E6484 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,6 +344,7 @@
 				D2D1A6C21F84F4DB0083D4C5 /* Gallery */,
 				D2D1A68F1F84F4DB0083D4C5 /* Images */,
 				D2D1A6961F84F4DB0083D4C5 /* Utils */,
+				7979785623439AB300C3AEAE /* Extensions */,
 				D2D1A6C41F84F4DB0083D4C5 /* Videos */,
 			);
 			path = Sources;
@@ -474,6 +485,7 @@
 				D2D1A6D21F84F4DB0083D4C5 /* DropdownController.swift in Sources */,
 				D2D1A6D41F84F4DB0083D4C5 /* Array+Extensions.swift in Sources */,
 				D2D1A6F71F84F4DB0083D4C5 /* VideoCell.swift in Sources */,
+				7979785823439AF000C3AEAE /* UIColor.swift in Sources */,
 				D2D1A6E81F84F4DB0083D4C5 /* VideoEditor.swift in Sources */,
 				D2D1A6DA1F84F4DB0083D4C5 /* UIViewController+Extensions.swift in Sources */,
 				D2D1A6CC1F84F4DB0083D4C5 /* Image.swift in Sources */,
