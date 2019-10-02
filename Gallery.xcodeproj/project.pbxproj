@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		796D2A1C2344993400992164 /* UIBlurEffect+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796D2A1B2344993400992164 /* UIBlurEffect+Style.swift */; };
 		7979785823439AF000C3AEAE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979785723439AF000C3AEAE /* UIColor.swift */; };
 		D24CF7321E93D1FB002E6484 /* Gallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D24CF7311E93D1FB002E6484 /* Gallery.bundle */; };
 		D27B72ED1D6EEEC80093318F /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EC1D6EEEC80093318F /* Tests.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		796D2A1B2344993400992164 /* UIBlurEffect+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBlurEffect+Style.swift"; sourceTree = "<group>"; };
 		7979785723439AF000C3AEAE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D24CF7311E93D1FB002E6484 /* Gallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Gallery.bundle; sourceTree = "<group>"; };
 		D27B72EC1D6EEEC80093318F /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				7979785723439AF000C3AEAE /* UIColor.swift */,
+				796D2A1B2344993400992164 /* UIBlurEffect+Style.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2D1A6F21F84F4DB0083D4C5 /* StackView.swift in Sources */,
+				796D2A1C2344993400992164 /* UIBlurEffect+Style.swift in Sources */,
 				D2D1A6F81F84F4DB0083D4C5 /* VideosController.swift in Sources */,
 				D2D1A6CA1F84F4DB0083D4C5 /* Album.swift in Sources */,
 				D2D1A6F11F84F4DB0083D4C5 /* ShutterButton.swift in Sources */,

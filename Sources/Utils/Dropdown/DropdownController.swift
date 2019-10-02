@@ -86,7 +86,7 @@ class DropdownController: UIViewController {
   }
 
   func makeBlurView() -> UIVisualEffectView {
-    let view = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    let view = UIVisualEffectView(effect: UIBlurEffect(style: .albumsStyle))
 
     return view
   }
