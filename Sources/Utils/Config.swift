@@ -81,7 +81,7 @@ public struct Config {
   }
 
   public struct Permission {
-    public static var image: UIImage? = GalleryBundle.image("gallery_permission_view_camera")
+    public static var image: UIImage? = GalleryBundle.image("camera")
     public static var textColor: UIColor = .labelColor
 
     public struct Button {
