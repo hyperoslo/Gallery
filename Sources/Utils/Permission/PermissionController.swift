@@ -37,7 +37,12 @@ class PermissionController: UIViewController {
                                          for: .touchUpInside)
     permissionView.settingButton.addTarget(self, action: #selector(settingButtonTouched(_:)),
                                            for: .touchUpInside)
-    permissionView.g_pinEdges()
+
+    permissionView.translatesAutoresizingMaskIntoConstraints = false
+    permissionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0).isActive = true
+    permissionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0).isActive = true
+    permissionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+    permissionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
   }
 
   // MARK: - Logic

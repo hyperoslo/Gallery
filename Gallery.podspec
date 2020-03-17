@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "Gallery"
   s.summary          = "Something good about gallery"
-  s.version          = "2.0.8"
+  s.version          = "2.0.9"
   s.homepage         = "https://github.com/apploft/Gallery"
   s.license          = 'MIT'
   s.author           = { "Hyper Interaktiv AS" => "ios@hyper.no", "Famara Kassama" => "famara.kassama@gmail.com" }
