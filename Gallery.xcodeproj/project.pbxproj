@@ -58,6 +58,7 @@
 		D2D1A6F81F84F4DB0083D4C5 /* VideosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D1A6C81F84F4DB0083D4C5 /* VideosController.swift */; };
 		D2D1A6F91F84F4DB0083D4C5 /* VideosLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D1A6C91F84F4DB0083D4C5 /* VideosLibrary.swift */; };
 		D5B2E8AA1C3A780C00C0327D /* Gallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2E89F1C3A780C00C0327D /* Gallery.framework */; };
+		D6432906250B153700471966 /* OrientationMan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6432905250B153700471966 /* OrientationMan.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +129,7 @@
 		D5C6298B1C3A8BBD007F7B7C /* Info-iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		D5C6298C1C3A8BBD007F7B7C /* Info-Mac.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Mac.plist"; sourceTree = "<group>"; };
 		D5C629901C3A8BDA007F7B7C /* Info-iOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		D6432905250B153700471966 /* OrientationMan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationMan.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 		D2D1A6961F84F4DB0083D4C5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D6432905250B153700471966 /* OrientationMan.swift */,
 				D2D1A6971F84F4DB0083D4C5 /* Config.swift */,
 				D2D1A6981F84F4DB0083D4C5 /* Constraints.swift */,
 				D2D1A6991F84F4DB0083D4C5 /* Dropdown */,
@@ -481,6 +484,7 @@
 				D2D1A6E51F84F4DB0083D4C5 /* AdvancedVideoEditor.swift in Sources */,
 				D2D1A6F31F84F4DB0083D4C5 /* TripleButton.swift in Sources */,
 				D2D1A6F01F84F4DB0083D4C5 /* CameraView.swift in Sources */,
+				D6432906250B153700471966 /* OrientationMan.swift in Sources */,
 				D2D1A6EE1F84F4DB0083D4C5 /* CameraController.swift in Sources */,
 				D2D1A6D51F84F4DB0083D4C5 /* AVAsset+Extensions.swift in Sources */,
 				D2D1A6F61F84F4DB0083D4C5 /* VideoBox.swift in Sources */,
