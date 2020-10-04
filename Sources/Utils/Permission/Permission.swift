@@ -22,7 +22,7 @@ struct Permission {
         return .denied
       case .authorized:
         return .authorized
-      @unknown default:
+      default:
         fatalError("Unexpected PHAuthorizationStatus value")
         }
     }
