@@ -32,7 +32,7 @@ class PagesController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .black
+    view.backgroundColor = Config.PageIndicator.backgroundColor
     setup()
   }
 
