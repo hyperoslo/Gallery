@@ -43,24 +43,20 @@ class GridView: UIView {
         bottomView.addSubview($0)
     }
 
+    var safeAreaInsetTop: CGFloat = 0
+    if #available(iOS 11, *) {
+      safeAreaInsetTop = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
+    }
+
     Constraint.on(
       topView.leftAnchor.constraint(equalTo: topView.superview!.leftAnchor),
       topView.rightAnchor.constraint(equalTo: topView.superview!.rightAnchor),
-      topView.heightAnchor.constraint(equalToConstant: 40),
+      topView.topAnchor.constraint(equalTo: topView.superview!.topAnchor),
+      topView.heightAnchor.constraint(equalToConstant: 40 + safeAreaInsetTop),
 
       loadingIndicator.centerXAnchor.constraint(equalTo: loadingIndicator.superview!.centerXAnchor),
       loadingIndicator.centerYAnchor.constraint(equalTo: loadingIndicator.superview!.centerYAnchor)
     )
-
-    if #available(iOS 11, *) {
-      Constraint.on(
-        topView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)
-      )
-    } else {
-      Constraint.on(
-        topView.topAnchor.constraint(equalTo: topView.superview!.topAnchor)
-      )
-    }
 
     bottomView.g_pinDownward()
     bottomView.g_pin(height: 80)
@@ -72,11 +68,12 @@ class GridView: UIView {
 
     bottomBlurView.g_pinEdges()
 
-    closeButton.g_pin(on: .top)
+    closeButton.g_pin(on: .top, constant: safeAreaInsetTop)
     closeButton.g_pin(on: .left)
     closeButton.g_pin(size: CGSize(width: 40, height: 40))
 
-    arrowButton.g_pinCenter()
+    arrowButton.g_pin(on: .centerX)
+    arrowButton.g_pin(on: .top, constant: safeAreaInsetTop)
     arrowButton.g_pin(height: 40)
 
     doneButton.g_pin(on: .centerY)
@@ -87,7 +84,7 @@ class GridView: UIView {
 
   private func makeTopView() -> UIView {
     let view = UIView()
-    view.backgroundColor = UIColor.white
+    view.backgroundColor = .backgroundColor
 
     return view
   }
@@ -141,7 +138,7 @@ class GridView: UIView {
     layout.minimumLineSpacing = 2
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    view.backgroundColor = UIColor.white
+    view.backgroundColor = UIColor.backgroundColor
 
     return view
   }

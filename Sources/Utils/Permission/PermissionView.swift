@@ -12,7 +12,7 @@ class PermissionView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = UIColor.white
+    backgroundColor = UIColor.backgroundColor
     setup()
 
   }
@@ -28,7 +28,7 @@ class PermissionView: UIView {
       addSubview($0)
     }
 
-    closeButton.g_pin(on: .top)
+    closeButton.g_pin(on: .top, constant: UIApplication.shared.statusBarFrame.height)
     closeButton.g_pin(on: .left)
     closeButton.g_pin(size: CGSize(width: 44, height: 44))
 
@@ -77,7 +77,7 @@ class PermissionView: UIView {
   func makeCloseButton() -> UIButton {
     let button = UIButton(type: .custom)
     button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
-    button.tintColor = Config.Grid.CloseButton.tintColor
+    button.tintColor = Config.Permission.CloseButton.tintColor
 
     return button
   }

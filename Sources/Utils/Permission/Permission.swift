@@ -22,7 +22,9 @@ struct Permission {
         return .denied
       case .authorized:
         return .authorized
-      }
+      default:
+        fatalError("Unexpected PHAuthorizationStatus value")
+        }
     }
 
     static func request(_ completion: @escaping () -> Void) {
@@ -34,7 +36,7 @@ struct Permission {
 
   struct Camera {
     static var needsPermission: Bool {
-      return Config.tabsToShow.index(of: .cameraTab) != nil
+      return Config.tabsToShow.firstIndex(of: .cameraTab) != nil
     }
 
     static var status: Status {
@@ -47,7 +49,9 @@ struct Permission {
         return .denied
       case .authorized:
         return .authorized
-      }
+      @unknown default:
+        fatalError("Unexpected PHAuthorizationStatus value")
+        }
     }
 
     static func request(_ completion: @escaping () -> Void) {

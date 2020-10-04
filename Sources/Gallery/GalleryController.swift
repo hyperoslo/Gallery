@@ -22,7 +22,7 @@ open class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   public required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: aDecoder)
   }
 
   // MARK: - Life cycle
@@ -41,7 +41,7 @@ open class GalleryController: UIViewController, PermissionControllerDelegate {
   }
 
   open override var prefersStatusBarHidden : Bool {
-    return true
+    return Config.showStatusBar
   }
 
   // MARK: - Child view controller
@@ -93,7 +93,7 @@ open class GalleryController: UIViewController, PermissionControllerDelegate {
     }
 
     let controller = PagesController(controllers: controllers)
-    controller.selectedIndex = tabsToShow.index(of: Config.initialTab ?? .cameraTab) ?? 0
+    controller.selectedIndex = tabsToShow.firstIndex(of: Config.initialTab ?? .cameraTab) ?? 0
 
     return controller
   }

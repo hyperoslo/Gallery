@@ -32,7 +32,7 @@ class PagesController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .black
+    view.backgroundColor = Config.PageIndicator.backgroundColor
     setup()
   }
 
@@ -109,6 +109,10 @@ class PagesController: UIViewController {
     view.addSubview(scrollView)
     scrollView.addSubview(scrollViewContentView)
 
+    if #available(iOS 11.0, *) {
+      scrollView.contentInsetAdjustmentBehavior = .never
+    }
+    
     scrollView.g_pinUpward()
     if usePageIndicator {
       scrollView.g_pin(on: .bottom, view: pageIndicator, on: .top)
@@ -182,6 +186,9 @@ extension PagesController: UIScrollViewDelegate {
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
+    if index >= controllers.count || index < 0 {
+        return
+    }
     pageIndicator.select(index: index)
     updateAndNotify(index)
   }
