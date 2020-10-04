@@ -23,6 +23,8 @@ public struct Config {
   // Defaults to cameraTab if present, or whatever tab is first if cameraTab isn't present.
   public static var initialTab: GalleryTab?
   
+  public static var showStatusBar: Bool = false
+  
   public enum GalleryTab {
     case imageTab
     case cameraTab
