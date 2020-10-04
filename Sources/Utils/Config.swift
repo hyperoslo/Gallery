@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import Photos
 
 public struct Config {
 
@@ -131,4 +132,6 @@ public struct Config {
     public static var portraitSize: CGSize = CGSize(width: 360, height: 640)
     public static var landscapeSize: CGSize = CGSize(width: 640, height: 360)
   }
+    
+  public static var blacklistedAssetMediaSubtypes: [PHAssetMediaSubtype] = []
 }
