@@ -26,14 +26,9 @@ extension Image {
     options.isNetworkAccessAllowed = true
     options.deliveryMode = .highQualityFormat
 
-    let targetSize = CGSize(
-      width: asset.pixelWidth,
-      height: asset.pixelHeight
-    )
-
     PHImageManager.default().requestImage(
       for: asset,
-      targetSize: targetSize,
+      targetSize: PHImageManagerMaximumSize,
       contentMode: .default,
       options: options) { (image, _) in
         completion(image)
