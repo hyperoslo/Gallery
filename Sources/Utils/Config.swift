@@ -81,13 +81,19 @@ public struct Config {
   }
 
   public struct Permission {
-    public static var image: UIImage? = GalleryBundle.image("gallery_permission_view_camera")
-    public static var textColor: UIColor = UIColor(red: 102/255, green: 118/255, blue: 138/255, alpha: 1)
+    public static var image: UIImage? {
+        if #available(iOS 13, *) {
+            return UIImage(systemName: "camera")
+        } else {
+            return GalleryBundle.image("gallery_permission_view_camera")
+        }
+    }
+    public static var textColor: UIColor = .labelColor
 
     public struct Button {
       public static var textColor: UIColor = UIColor.white
       public static var highlightedTextColor: UIColor = UIColor.lightGray
-      public static var backgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
+      public static var backgroundColor = UIColor.blueColor
     }
   }
 
