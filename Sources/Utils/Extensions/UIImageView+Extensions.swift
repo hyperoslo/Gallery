@@ -17,6 +17,7 @@ extension UIImageView {
 
     let options = PHImageRequestOptions()
     options.isNetworkAccessAllowed = true
+    options.resizeMode = .none
 
     let id = PHImageManager.default().requestImage(
       for: asset,
