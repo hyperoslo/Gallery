@@ -12,7 +12,7 @@ class PermissionView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = UIColor.white
+    backgroundColor = UIColor.backgroundColor
     setup()
 
   }

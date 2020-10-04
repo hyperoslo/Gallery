@@ -84,7 +84,7 @@ class GridView: UIView {
 
   private func makeTopView() -> UIView {
     let view = UIView()
-    view.backgroundColor = Config.Grid.TopView.backgroundColor
+    view.backgroundColor = .backgroundColor
 
     return view
   }
@@ -138,7 +138,7 @@ class GridView: UIView {
     layout.minimumLineSpacing = 2
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    view.backgroundColor = UIColor.white
+    view.backgroundColor = UIColor.backgroundColor
 
     return view
   }

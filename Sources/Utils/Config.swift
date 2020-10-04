@@ -7,13 +7,13 @@ public struct Config {
   public static var showsVideoTab: Bool {
     // Maintains backwards-compatibility.
     get {
-      return tabsToShow.index(of: .videoTab) != nil
+      return tabsToShow.firstIndex(of: .videoTab) != nil
     }
     set(newValue) {
       if !newValue {
         tabsToShow = tabsToShow.filter({$0 != .videoTab})
       } else {
-        if tabsToShow.index(of: .videoTab) == nil {
+        if tabsToShow.firstIndex(of: .videoTab) == nil {
           tabsToShow.append(.videoTab)
         }
       }
@@ -85,13 +85,19 @@ public struct Config {
   }
 
   public struct Permission {
-    public static var image: UIImage? = GalleryBundle.image("gallery_permission_view_camera")
-    public static var textColor: UIColor = UIColor(red: 102/255, green: 118/255, blue: 138/255, alpha: 1)
+    public static var image: UIImage? {
+        if #available(iOS 13, *) {
+            return UIImage(systemName: "camera")
+        } else {
+            return GalleryBundle.image("gallery_permission_view_camera")
+        }
+    }
+    public static var textColor: UIColor = .labelColor
 
     public struct Button {
       public static var textColor: UIColor = UIColor.white
       public static var highlightedTextColor: UIColor = UIColor.lightGray
-      public static var backgroundColor = UIColor(red: 40/255, green: 170/255, blue: 236/255, alpha: 1)
+      public static var backgroundColor = UIColor.blueColor
     }
 
     public struct CloseButton {

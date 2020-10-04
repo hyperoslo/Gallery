@@ -182,6 +182,9 @@ extension PagesController: UIScrollViewDelegate {
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
+    if index >= controllers.count || index < 0 {
+        return
+    }
     pageIndicator.select(index: index)
     updateAndNotify(index)
   }
