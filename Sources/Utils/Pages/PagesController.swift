@@ -109,6 +109,10 @@ class PagesController: UIViewController {
     view.addSubview(scrollView)
     scrollView.addSubview(scrollViewContentView)
 
+    if #available(iOS 11.0, *) {
+      scrollView.contentInsetAdjustmentBehavior = .never
+    }
+    
     scrollView.g_pinUpward()
     if usePageIndicator {
       scrollView.g_pin(on: .bottom, view: pageIndicator, on: .top)
