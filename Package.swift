@@ -24,7 +24,8 @@ let package = Package(
         .target(
             name: "Gallery",
             dependencies: [],
-            resources: [.copy("Resources/Gallery.bundle")]),
+            exclude: ["Extensions/Bundle+Resources.swift"],
+            resources: [.process("Resources/Gallery.bundle")]),
         .testTarget(
             name: "GalleryTests",
             dependencies: ["Gallery"]),
