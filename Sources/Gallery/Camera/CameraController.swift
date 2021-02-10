@@ -65,6 +65,9 @@ class CameraController: UIViewController {
     cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
     cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
     cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+
+    let pinchRecognizer = UIPinchGestureRecognizer(target: self, action:#selector(pinch(_:)))
+    cameraView.addGestureRecognizer(pinchRecognizer)
   }
 
   func setupLocation() {
@@ -160,6 +163,29 @@ class CameraController: UIViewController {
     view.delegate = self
 
     return view
+  }
+
+  @objc func pinch(_ pinch : UIPinchGestureRecognizer) {
+    guard let device = cameraMan.currentInput?.device else { return }
+    let zoomFactor = device.videoZoomFactor * pinch.scale
+    pinch.scale = 1.0
+
+    let minZoomFactor = max(Config.Camera.minZoomFactor, device.minAvailableVideoZoomFactor)
+    let maxZoomFactor = min(Config.Camera.maxZoomFactor, device.maxAvailableVideoZoomFactor)
+    do {
+      try device.lockForConfiguration()
+
+      defer {
+        device.unlockForConfiguration()
+      }
+
+      if (zoomFactor <= maxZoomFactor && zoomFactor >= minZoomFactor) {
+        device.videoZoomFactor = zoomFactor
+      }
+      
+    } catch {
+      assertionFailure("Unable to set video zoom factor")
+    }
   }
 }
 
