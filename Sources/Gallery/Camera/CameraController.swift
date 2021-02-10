@@ -165,37 +165,26 @@ class CameraController: UIViewController {
     return view
   }
 
-  @objc func pinch(_ pinch: UIPinchGestureRecognizer) {
-    let minimumZoom: CGFloat = 1.0
-    let maximumZoom: CGFloat = 3.0
-    var lastZoomFactor: CGFloat = 1.0
-
+  @objc func pinch(_ pinch : UIPinchGestureRecognizer) {
     guard let device = cameraMan.currentInput?.device else { return }
+    let zoomFactor = device.videoZoomFactor * pinch.scale
+    pinch.scale = 1.0
 
-    // Return zoom value between the minimum and maximum zoom values
-    func minMaxZoom(_ factor: CGFloat) -> CGFloat {
-      return min(min(max(factor, minimumZoom), maximumZoom), device.activeFormat.videoMaxZoomFactor)
-    }
+    let minZoomFactor = max(Config.Camera.minZoomFactor, device.minAvailableVideoZoomFactor)
+    let maxZoomFactor = min(Config.Camera.maxZoomFactor, device.maxAvailableVideoZoomFactor)
+    do {
+      try device.lockForConfiguration()
 
-    func update(scale factor: CGFloat) {
-      do {
-        try device.lockForConfiguration()
-        defer { device.unlockForConfiguration() }
-        device.videoZoomFactor = factor
-      } catch {
-        print("\(error.localizedDescription)")
+      defer {
+        device.unlockForConfiguration()
       }
-    }
 
-    let newScaleFactor = minMaxZoom(pinch.scale * lastZoomFactor)
-
-    switch pinch.state {
-    case .began: fallthrough
-    case .changed: update(scale: newScaleFactor)
-    case .ended:
-      lastZoomFactor = minMaxZoom(newScaleFactor)
-      update(scale: lastZoomFactor)
-    default: break
+      if (zoomFactor <= maxZoomFactor && zoomFactor >= minZoomFactor) {
+        device.videoZoomFactor = zoomFactor
+      }
+      
+    } catch {
+      assertionFailure("Unable to set video zoom factor")
     }
   }
 }
