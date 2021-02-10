@@ -65,6 +65,9 @@ class CameraController: UIViewController {
     cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
     cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
     cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+
+    let pinchRecognizer = UIPinchGestureRecognizer(target: self, action:#selector(pinch(_:)))
+    cameraView.addGestureRecognizer(pinchRecognizer)
   }
 
   func setupLocation() {
@@ -160,6 +163,40 @@ class CameraController: UIViewController {
     view.delegate = self
 
     return view
+  }
+
+  @objc func pinch(_ pinch: UIPinchGestureRecognizer) {
+    let minimumZoom: CGFloat = 1.0
+    let maximumZoom: CGFloat = 3.0
+    var lastZoomFactor: CGFloat = 1.0
+
+    guard let device = cameraMan.currentInput?.device else { return }
+
+    // Return zoom value between the minimum and maximum zoom values
+    func minMaxZoom(_ factor: CGFloat) -> CGFloat {
+      return min(min(max(factor, minimumZoom), maximumZoom), device.activeFormat.videoMaxZoomFactor)
+    }
+
+    func update(scale factor: CGFloat) {
+      do {
+        try device.lockForConfiguration()
+        defer { device.unlockForConfiguration() }
+        device.videoZoomFactor = factor
+      } catch {
+        print("\(error.localizedDescription)")
+      }
+    }
+
+    let newScaleFactor = minMaxZoom(pinch.scale * lastZoomFactor)
+
+    switch pinch.state {
+    case .began: fallthrough
+    case .changed: update(scale: newScaleFactor)
+    case .ended:
+      lastZoomFactor = minMaxZoom(newScaleFactor)
+      update(scale: lastZoomFactor)
+    default: break
+    }
   }
 }
 
