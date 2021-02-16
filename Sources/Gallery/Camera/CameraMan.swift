@@ -15,7 +15,6 @@ class CameraMan {
   let session = AVCaptureSession()
   let queue = DispatchQueue(label: "no.hyper.Gallery.Camera.SessionQueue", qos: .background)
   let savingQueue = DispatchQueue(label: "no.hyper.Gallery.Camera.SavingQueue", qos: .background)
-  let orientationMan = OrientationMan()
 
   var backCamera: AVCaptureDeviceInput?
   var frontCamera: AVCaptureDeviceInput?
@@ -127,11 +126,10 @@ class CameraMan {
     }
   }
 
-  func takePhoto(_ previewLayer: AVCaptureVideoPreviewLayer, location: CLLocation?, completion: @escaping ((PHAsset?) -> Void)) {
+  func takePhoto(_ previewLayer: AVCaptureVideoPreviewLayer, locationProvider: LocationProviding?, completion: @escaping ((PHAsset?) -> Void)) {
     guard let connection = stillImageOutput?.connection(with: .video) else { return }
 
-    // It should be set the image orientation with the device current orientation
-    connection.videoOrientation = self.orientationMan.videoOrientation()
+    connection.videoOrientation = Utils.videoOrientation()
 
     queue.async {
       self.stillImageOutput?.captureStillImageAsynchronously(from: connection) {
@@ -147,12 +145,12 @@ class CameraMan {
             return
         }
 
-        self.savePhoto(image, location: location, completion: completion)
+        self.savePhoto(image, locationProvider: locationProvider, completion: completion)
       }
     }
   }
 
-  func savePhoto(_ image: UIImage, location: CLLocation?, completion: @escaping ((PHAsset?) -> Void)) {
+  func savePhoto(_ image: UIImage, locationProvider: LocationProviding?, completion: @escaping ((PHAsset?) -> Void)) {
     var localIdentifier: String?
 
     savingQueue.async {
@@ -162,7 +160,9 @@ class CameraMan {
           localIdentifier = request.placeholderForCreatedAsset?.localIdentifier
 
           request.creationDate = Date()
-          request.location = location
+          #if GALLERY_USE_LOCATION
+          request.location = locationProvider?.location
+          #endif
         }
 
         DispatchQueue.main.async {

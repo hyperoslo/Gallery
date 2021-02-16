@@ -56,9 +56,11 @@
 		3605647F25837D3F00B9F493 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3605644A25837D3F00B9F493 /* Permission.swift */; };
 		3605648025837D3F00B9F493 /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3605644B25837D3F00B9F493 /* PermissionView.swift */; };
 		3605648125837D3F00B9F493 /* PermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3605644C25837D3F00B9F493 /* PermissionController.swift */; };
-		3605648225837D3F00B9F493 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3605644D25837D3F00B9F493 /* LocationManager.swift */; };
 		3605648325837D3F00B9F493 /* PagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3605644F25837D3F00B9F493 /* PagesController.swift */; };
 		3605648425837D3F00B9F493 /* PageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3605645025837D3F00B9F493 /* PageIndicator.swift */; };
+		5346BEF825DC00D7008494CE /* LocationProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5346BEF425DC00D7008494CE /* LocationProviding.swift */; };
+		5346BEFA25DC00D7008494CE /* LocationManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5346BEF625DC00D7008494CE /* LocationManaging.swift */; };
+		5346BEFB25DC00D7008494CE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5346BEF725DC00D7008494CE /* LocationManager.swift */; };
 		D27B72ED1D6EEEC80093318F /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B72EC1D6EEEC80093318F /* Tests.swift */; };
 		D2D1A6F41F84F4DB0083D4C5 /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D1A6C31F84F4DB0083D4C5 /* GalleryController.swift */; };
 		D5B2E8AA1C3A780C00C0327D /* Gallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B2E89F1C3A780C00C0327D /* Gallery.framework */; };
@@ -124,9 +126,11 @@
 		3605644A25837D3F00B9F493 /* Permission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		3605644B25837D3F00B9F493 /* PermissionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
 		3605644C25837D3F00B9F493 /* PermissionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionController.swift; sourceTree = "<group>"; };
-		3605644D25837D3F00B9F493 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3605644F25837D3F00B9F493 /* PagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagesController.swift; sourceTree = "<group>"; };
 		3605645025837D3F00B9F493 /* PageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageIndicator.swift; sourceTree = "<group>"; };
+		5346BEF425DC00D7008494CE /* LocationProviding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationProviding.swift; sourceTree = "<group>"; };
+		5346BEF625DC00D7008494CE /* LocationManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManaging.swift; sourceTree = "<group>"; };
+		5346BEF725DC00D7008494CE /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		D27B72EC1D6EEEC80093318F /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		D27B730C1D6EF04D0093318F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/iOS/Cartography.framework; sourceTree = "<group>"; };
 		D2D1A6C31F84F4DB0083D4C5 /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
@@ -228,8 +232,8 @@
 				3605644625837D3F00B9F493 /* Fetcher.swift */,
 				3605644725837D3F00B9F493 /* Utils.swift */,
 				3605644825837D3F00B9F493 /* OrientationMan.swift */,
+				5346BEF325DC00D7008494CE /* Location */,
 				3605644925837D3F00B9F493 /* Permission */,
-				3605644D25837D3F00B9F493 /* LocationManager.swift */,
 				3605644E25837D3F00B9F493 /* Pages */,
 			);
 			path = Utils;
@@ -297,6 +301,16 @@
 				3605645025837D3F00B9F493 /* PageIndicator.swift */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		5346BEF325DC00D7008494CE /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				5346BEF425DC00D7008494CE /* LocationProviding.swift */,
+				5346BEF625DC00D7008494CE /* LocationManaging.swift */,
+				5346BEF725DC00D7008494CE /* LocationManager.swift */,
+			);
+			path = Location;
 			sourceTree = "<group>";
 		};
 		D27B730E1D6EF0640093318F /* Frameworks */ = {
@@ -481,9 +495,9 @@
 			files = (
 				3605647B25837D3F00B9F493 /* GridView.swift in Sources */,
 				3605647C25837D3F00B9F493 /* Fetcher.swift in Sources */,
-				3605648225837D3F00B9F493 /* LocationManager.swift in Sources */,
 				3605646725837D3F00B9F493 /* DropdownController.swift in Sources */,
 				3605648425837D3F00B9F493 /* PageIndicator.swift in Sources */,
+				5346BEF825DC00D7008494CE /* LocationProviding.swift in Sources */,
 				3605648025837D3F00B9F493 /* PermissionView.swift in Sources */,
 				3605647725837D3F00B9F493 /* EmptyView.swift in Sources */,
 				3605646B25837D3F00B9F493 /* VideoEditor.swift in Sources */,
@@ -519,6 +533,7 @@
 				3605647125837D3F00B9F493 /* UIImageView+Extensions.swift in Sources */,
 				3605646225837D3F00B9F493 /* ImageCell.swift in Sources */,
 				3605645425837D3F00B9F493 /* VideoBox.swift in Sources */,
+				5346BEFA25DC00D7008494CE /* LocationManaging.swift in Sources */,
 				3605646125837D3F00B9F493 /* Cart.swift in Sources */,
 				3605646525837D3F00B9F493 /* UIBlurEffect+Style.swift in Sources */,
 				3605648325837D3F00B9F493 /* PagesController.swift in Sources */,
@@ -528,6 +543,7 @@
 				3605647925837D3F00B9F493 /* AlbumCell.swift in Sources */,
 				3605647A25837D3F00B9F493 /* ArrowButton.swift in Sources */,
 				3605645A25837D3F00B9F493 /* CameraMan.swift in Sources */,
+				5346BEFB25DC00D7008494CE /* LocationManager.swift in Sources */,
 				3605645825837D3F00B9F493 /* CameraController.swift in Sources */,
 				3605645225837D3F00B9F493 /* VideosLibrary.swift in Sources */,
 				3605647625837D3F00B9F493 /* UIScrollView+Extensions.swift in Sources */,
