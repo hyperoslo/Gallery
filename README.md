@@ -64,11 +64,20 @@ The delegate methods give you `Image` and `Video`, which are just wrappers aroun
 
 `Gallery` handles permissions for you. It checks and askes for photo and camera usage permissions at first launch. As of iOS 10, we need to explicitly declare usage descriptions in plist files
 
+### Madatory
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>This app requires access to camera</string>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>This app requires access to photo library</string>
+```
+
+### Optional
+If defining the `GALLERY_USE_LOCATION` compiler flag for the purposes of recording location information then the following usage string is required:
+
+```xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app requires location when in use</string>
 ```
 
 ### Configuration
@@ -80,6 +89,20 @@ Config.Permission.image = UIImage(named: ImageList.Gallery.cameraIcon)
 Config.Font.Text.bold = UIFont(name: FontList.OpenSans.bold, size: 14)!
 Config.Camera.recordLocation = true
 Config.tabsToShow = [.imageTab, .cameraTab]
+```
+
+Note: When utilising the `recordLocation` property, `GALLERY_USE_LOCATION` needs defining first in order to expose this functionality. If using Cocoapods this can be done with the usage of post install hook as follows:
+
+```ruby
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if target.name == 'Gallery'
+            target.build_configurations.each do |config|
+                config.build_settings['OTHER_SWIFT_FLAGS'] = '-DGALLERY_USE_LOCATION'
+            end
+        end
+    end
+end
 ```
 
 ### Video Editor

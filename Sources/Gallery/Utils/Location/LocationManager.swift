@@ -1,9 +1,10 @@
+#if GALLERY_USE_LOCATION
 import Foundation
 import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+class LocationManager: NSObject, LocationManaging, CLLocationManagerDelegate {
   var locationManager = CLLocationManager()
-  var latestLocation: CLLocation?
+  var latestLocationProvider: LocationProviding?
 
   override init() {
     super.init()
@@ -24,7 +25,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     // Pick the location with best (= smallest value) horizontal accuracy
-    latestLocation = locations.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }.first
+	if let location = locations.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }.first {
+		latestLocationProvider = LocationProvider(location: location)
+	}
   }
 
   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -35,3 +38,5 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
   }
 }
+
+#endif

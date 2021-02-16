@@ -3,7 +3,7 @@ import AVFoundation
 
 class CameraController: UIViewController {
 
-  var locationManager: LocationManager?
+  var locationManager: LocationManaging?
   lazy var cameraMan: CameraMan = self.makeCameraMan()
   lazy var cameraView: CameraView = self.makeCameraView()
   let once = Once()
@@ -68,9 +68,11 @@ class CameraController: UIViewController {
   }
 
   func setupLocation() {
+    #if GALLERY_USE_LOCATION
     if Config.Camera.recordLocation {
       locationManager = LocationManager()
     }
+    #endif
   }
 
   // MARK: - Action
@@ -117,7 +119,8 @@ class CameraController: UIViewController {
     })
 
     self.cameraView.stackView.startLoading()
-    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) { [weak self] asset in
+
+    self.cameraMan.takePhoto(previewLayer, locationProvider: locationManager?.latestLocationProvider) { [weak self] asset in
       guard let strongSelf = self else {
         return
       }
