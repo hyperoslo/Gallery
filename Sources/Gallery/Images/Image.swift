@@ -14,7 +14,7 @@ public class Image: Equatable {
 }
 
 // MARK: - UIImage with metadata typealias
-public typealias UIImageData = (UIImage, CGImageMetadata)
+public typealias UIImageData = (image: UIImage, metadata: CGImageMetadata)
 
 // MARK: - UIImage
 
@@ -29,7 +29,7 @@ extension Image {
     options.isNetworkAccessAllowed = true
     options.deliveryMode = .highQualityFormat
     PHImageManager.default().requestImageData(for: asset, options: options) { imageData, dataUTI, _, _ in
-      var destData = NSMutableData() as CFMutableData
+      let destData = NSMutableData() as CFMutableData
       guard let imageData = imageData,
             let dataUTI = dataUTI,
             let imageSource = CGImageSourceCreateWithData(imageData as CFData, nil),
