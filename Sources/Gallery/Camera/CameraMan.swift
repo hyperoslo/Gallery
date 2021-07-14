@@ -3,7 +3,7 @@ import AVFoundation
 import PhotosUI
 import Photos
 
-protocol CameraManDelegate: class {
+protocol CameraManDelegate: AnyObject {
   func cameraManNotAvailable(_ cameraMan: CameraMan)
   func cameraManDidStart(_ cameraMan: CameraMan)
   func cameraMan(_ cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput)
@@ -197,6 +197,28 @@ class CameraMan {
       self.lock {
         device.focusPointOfInterest = point
       }
+    }
+  }
+    
+  func cameraZoomWithPinchVelocity(velocity: CGFloat) {
+    var pinchVelocityDividerFactor = 40.0
+    if (velocity < 0) {
+        pinchVelocityDividerFactor = 6.0 //zoom in
+    }
+        
+    if let videoInput = currentInput {
+        if(videoInput.device.position == .back) {
+            do {
+                try videoInput.device.lockForConfiguration()
+                let desiredZoomFactor = videoInput.device.videoZoomFactor + CGFloat(atan2f(Float(velocity), Float(pinchVelocityDividerFactor)));
+                // Check if desiredZoomFactor fits required range from 1.0 to activeFormat.videoMaxZoomFactor
+                let maxFactor = min(10, videoInput.device.activeFormat.videoMaxZoomFactor)
+                videoInput.device.videoZoomFactor = max(1.0, min(desiredZoomFactor, maxFactor))
+                videoInput.device.unlockForConfiguration()
+            } catch {
+                print("cameraZoomWithPinchVelocity error: \(error)")
+            }
+        }
     }
   }
 

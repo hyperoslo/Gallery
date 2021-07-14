@@ -65,6 +65,9 @@ class CameraController: UIViewController {
     cameraView.stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
     cameraView.shutterButton.addTarget(self, action: #selector(shutterButtonTouched(_:)), for: .touchUpInside)
     cameraView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+    
+    let pinchGesture = UIPinchGestureRecognizer(target:self, action: #selector(pinchToZoom(_:)))
+    view.addGestureRecognizer(pinchGesture)
   }
 
   func setupLocation() {
@@ -74,6 +77,12 @@ class CameraController: UIViewController {
   }
 
   // MARK: - Action
+
+  @objc func pinchToZoom(_ pinch: UIPinchGestureRecognizer) {
+    if pinch.state == .changed {
+        cameraMan.cameraZoomWithPinchVelocity(velocity: pinch.velocity)
+    }
+  }
 
   @objc func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
